@@ -1,0 +1,53 @@
+# Pinned environment for the thirteen exercises and their worked solutions.
+#
+# This is the exercise stack. It deliberately excludes
+# posebusters, posecheck, prolif, MDAnalysis, flowmol, torchcfm and everything
+# else needed only to REGENERATE the cached tables from scratch. Every
+# exercise reads a committed result instead, so this list is what a lecturer or a
+# learner has to install.
+#
+# Tested on Python 3.11.15, linux, CPU only. No GPU, no API key, no network access
+# is required at run time; the only network access is this install.
+#
+# The versions below are the ones the shipped executed outputs were produced with.
+# Later versions will very probably work: every tolerance in the self-checks is set
+# wide enough to absorb minor numerical drift, and the one bit-for-bit value in the
+# set (the X0 canary, 0.8089776623453144) is an RDKit fingerprint that has been
+# stable across recent releases. If the canary check fails, the exercises still run
+# and every tolerance still passes; X0 prints which of the two causes it is.
+
+numpy==2.4.6
+scipy==1.17.1
+pandas==3.0.5
+matplotlib==3.11.1
+rdkit==2026.3.5
+torch==2.13.0
+scikit-learn==1.9.0
+
+# Only needed to execute the notebooks headlessly (a lecturer batch-running them, or
+# CI). Reading and running them in Jupyter or Colab does not need these.
+nbformat==5.10.4
+
+# ---------------------------------------------------------------------------
+# Three ways to install this, each reaching the same stack.
+#
+# uv (fastest, and installs the exact pins above):
+#
+#   uv venv --python 3.11 && source .venv/bin/activate
+#   uv pip install -r requirements.txt
+#
+# conda, which is what the tested environment used. pytorch-cpu rather than
+# pytorch keeps the download near 100 MB instead of near 2 GB, and nothing here
+# touches a GPU:
+#
+#   conda create -n generate-verify -c conda-forge python=3.11 numpy scipy pandas \
+#       matplotlib-base rdkit pytorch-cpu scikit-learn nbformat
+#
+# plain pip into any Python 3.10 or later environment:
+#
+#   pip install -r requirements.txt
+#
+# On Colab, everything except rdkit is already present:
+#
+#   %pip install -q rdkit
+# ---------------------------------------------------------------------------

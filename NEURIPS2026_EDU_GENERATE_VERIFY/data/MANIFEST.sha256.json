@@ -1,0 +1,102 @@
+{
+ "3rfm_caffeine_ref.sdf": {
+  "bytes": 2029,
+  "sha256": "fd237a6f83d55436dbcd3bae7b58db190d65570db7b7c29783d9f90f96c2212a"
+ },
+ "3rfm_protein.pdb": {
+  "bytes": 182335,
+  "sha256": "f0c7b41585254f72337a1d5b91ad53254c3a970b1622125ff9e45713b019dffa"
+ },
+ "boltz2_comparison.csv": {
+  "bytes": 2158,
+  "sha256": "bbf25e53535a905c487463bc2265092a68504c1f3ffe1680254cddb4bf756f29"
+ },
+ "designability_scaling.json": {
+  "bytes": 11492,
+  "sha256": "fd063353fd35cc3fef994fc18741eaca7a13d6e9a7005e7cf11563a3a1d12692"
+ },
+ "diffdock_redock_posebusters.csv": {
+  "bytes": 3799,
+  "sha256": "08c4dd491cb2d8e74dae56700ea70eaa4a3b8d12ce16c1175bed21bf73fbe56a"
+ },
+ "diffsbdd_generated.sdf": {
+  "bytes": 29972,
+  "sha256": "72c92115133dd7b1eecfbc033b49ff463c7ce76cc9f7fcd57118eacf61c2995f"
+ },
+ "diffsbdd_inpaint_metrics.json": {
+  "bytes": 4197,
+  "sha256": "d869aaed86f51250899c3184efec0281b79d60eee787e0c1b9dcb875b98ae6e3"
+ },
+ "diffsbdd_inpainted.sdf": {
+  "bytes": 16090,
+  "sha256": "a9c9c209abd0e6e35f3c44aa25ae025248b482437cc3481dc235400f2eed925a"
+ },
+ "diffsbdd_metrics.csv": {
+  "bytes": 2596,
+  "sha256": "ed459697833cd116f91f0d55af1af5497d534e95059689807db096e704c90c3d"
+ },
+ "diffsbdd_optimize_metrics.json": {
+  "bytes": 751,
+  "sha256": "ef605c8b0f57d070e67cc2af5773ec14ea199dc36c5248f476c05c73995a7326"
+ },
+ "diversity_metadata.json": {
+  "bytes": 3879,
+  "sha256": "98d6a5da48b685aa0eec4803596180073ae2ac7990743756895e853af080ede1"
+ },
+ "flowmol3_generated.sdf": {
+  "bytes": 45550,
+  "sha256": "6782cb9c5a456a5113e913b734416dc3a2205c6ebb9def412186926c2c363a3e"
+ },
+ "flowmol3_metrics.csv": {
+  "bytes": 249,
+  "sha256": "85f4c82d8f299cb871e177e8cee5e59855fe3a14e56726bf38b25b69185b3754"
+ },
+ "novelty_diffsbdd.csv": {
+  "bytes": 8443,
+  "sha256": "412603955246238bbf200abb96f88b41e51417155844f9020411f4d5747813e7"
+ },
+ "novelty_flowmol3.csv": {
+  "bytes": 3112,
+  "sha256": "8ec4f439c081c53906811cfc1c3c23c308cfc2df1a57294bc96436a276fcdd22"
+ },
+ "posebusters_diffsbdd.csv": {
+  "bytes": 5157,
+  "sha256": "de1062e5c6d1630a0f9f2711949ae71cfa5c23aa3da5caa3c851c02aece0f218"
+ },
+ "posebusters_flowmol3.csv": {
+  "bytes": 2743,
+  "sha256": "b729067ab17a40297f5263dc27064c998e7cf6b14d9335854d75a445fad0ab7a"
+ },
+ "posecheck_diffsbdd.csv": {
+  "bytes": 2197,
+  "sha256": "b5616469c013cecd97420719f1e61a64ec0b648f5eb96bdae99d2d1d1caf604b"
+ },
+ "posecheck_strain_flowmol3.csv": {
+  "bytes": 954,
+  "sha256": "1636d053e21b969ec0902b3574fac5fa8280f7e0f477654d869416e22b8bc10e"
+ },
+ "reos_flowmol3.csv": {
+  "bytes": 4103,
+  "sha256": "e3f6348e4963365130eb0da178ac712de7fe13546a2e1f5e2e9aac01784d8815"
+ },
+ "selfconsistency_full.json": {
+  "bytes": 6293,
+  "sha256": "676630a442952755e868d884b4d7b596293d844f9056a21cdfbb1135b06d7f55"
+ },
+ "toy_ddpm_trained.pt": {
+  "bytes": 304929,
+  "sha256": "e41876ed790f0ab13f06f8df6659e56330442af8d98eb461377fe6a4ff4d260f"
+ },
+ "toy_eta_sweep.csv": {
+  "bytes": 842,
+  "sha256": "73151bdfeb87ab3018d18bf476f69b0571adcd68e4cdf15a8b6f06e22724dc52"
+ },
+ "toy_fm_trained.pt": {
+  "bytes": 305661,
+  "sha256": "8625418062dd55be60ae5549aadc1b0baa4ddd65341ab47b16a57c1997104a18"
+ },
+ "toy_sampler_sweep.csv": {
+  "bytes": 10042,
+  "sha256": "5374402b664cbd52ba7c9288c41bad4f1de8c339fd6f006dea3d1181a5ae0bae"
+ }
+}

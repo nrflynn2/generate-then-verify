@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this resource, please cite it."
+title: "Generate, then verify: pairing a molecular generative model with the checks that can fail it"
+abstract: >-
+  An eight-module teaching resource for molecular design that pairs a generative
+  model with a verification check that can fail it, from toy diffusion and
+  flow-matching samplers through pocket-conditioned ligand generation with
+  PoseBusters and PoseCheck, a co-folding verifier, and a transfer of the same
+  loop to protein design. Runs on a laptop CPU with no GPU, API key, or download.
+type: software
+authors:
+  - family-names: Flynn
+    given-names: Noah
+    affiliation: "University of California, Berkeley"
+license:
+  - CC-BY-4.0
+  - Apache-2.0
+repository-code: "https://github.com/nrflynn2/generate-then-verify"
+keywords:
+  - molecular generative models
+  - verification
+  - drug discovery
+  - diffusion models
+  - flow matching
+  - structure-based drug design
+  - machine learning education
+  - NeurIPS 2026 Education Track

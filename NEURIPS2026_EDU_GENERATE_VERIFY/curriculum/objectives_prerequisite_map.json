@@ -1,0 +1,337 @@
+{
+  "audience_and_leveling": {
+    "audiences": [
+      {
+        "audience": "First-time attendees, young researchers or anyone new to AI",
+        "how_this_resource_serves_them": "The concept is taught from a two-dimensional toy the learner can plot in full before any chemistry appears, and every specialist term is defined at first use. Module 1 assumes only Python and the idea of a normal distribution.",
+        "entry_point": "M1, demo path, 15 minutes"
+      },
+      {
+        "audience": "Educators who need to keep curricula current, and who can reuse or reshape the materials",
+        "how_this_resource_serves_them": "Eight separable modules, each with its own objectives, prerequisites, duration for two delivery modes and compute tier; three pre-cut configurations; exercises separated from solutions; a module map figure; and instructor notes stating what to cut.",
+        "entry_point": "reuse_and_adaptation_plan.md"
+      },
+      {
+        "audience": "Lecturers and research groups who want to teach or learn with clear and self-contained examples",
+        "how_this_resource_serves_them": "Every module has a path that runs on a laptop CPU with no key, no GPU and no download, against seventeen shipped data files totalling 706 kB. Nothing in the teaching path depends on the author's compute.",
+        "entry_point": "the environment self-check X0, then any module"
+      },
+      {
+        "audience": "Non-specialists for whom the core ideas are otherwise hidden behind specialist terminology",
+        "how_this_resource_serves_them": "The opening paragraph of the paper contains no specialist-tier glossary term by construction, and the glossary tiers every term with the module where it is first used. The chemistry a learner needs is eleven terms, all given inline.",
+        "entry_point": "the paper, then START_HERE"
+      }
+    ],
+    "level_claimed": "Advanced undergraduate and graduate: advanced undergraduate for modules 1 to 3, graduate for modules 4 to 8. The level is stated explicitly, and the accessibility work (a plain-language opening, inline definitions, CPU-only paths) is described separately rather than lowering the level.",
+    "prerequisites_assumed": [
+      {
+        "item": "Python fluency",
+        "level": "required",
+        "detail": "Reading and modifying a function, indexing a DataFrame, writing a loop. No package authoring, no classes.",
+        "where_it_bites": "Every exercise."
+      },
+      {
+        "item": "Basic probability",
+        "level": "required",
+        "detail": "What a normal distribution is, what sampling from one means, what a mean and a median are. Nothing measure-theoretic; no need to have seen a stochastic differential equation.",
+        "where_it_bites": "M1 and M2."
+      },
+      {
+        "item": "Numpy and pandas at reading level",
+        "level": "required",
+        "detail": "Enough to read a column out of a CSV and take a median.",
+        "where_it_bites": "M3 onward, where every exercise reads a shipped table."
+      },
+      {
+        "item": "Neural network basics",
+        "level": "assumed lightly",
+        "detail": "That a network is trained by minimizing a loss with gradient descent, and what a forward pass is. The curriculum never asks the learner to design an architecture.",
+        "where_it_bites": "M1's training loop, which is read rather than written."
+      },
+      {
+        "item": "Calculus",
+        "level": "helpful, not required",
+        "detail": "An ordinary differential equation is introduced in M2 as 'the current tells the particle where to drift next', and forward Euler is presented as taking a step along it. A learner who has never integrated an ODE can follow the whole of M2.",
+        "where_it_bites": "M2, softened by the river analogy."
+      },
+      {
+        "item": "Chemistry or structural biology",
+        "level": "NOT REQUIRED",
+        "detail": "No chemistry background is assumed. Eleven terms carry the entire chemical content and each is given inline at first use.",
+        "where_it_bites": "nowhere, by design."
+      },
+      {
+        "item": "A GPU, an API key, or a cloud account",
+        "level": "NOT REQUIRED",
+        "detail": "Every module has a CPU-only cached path using shipped files. Two modules (M7, M8) cannot be re-run at full scale by anyone without an A100, and the materials say so plainly rather than implying otherwise.",
+        "where_it_bites": "nowhere on the teaching path."
+      }
+    ],
+    "minimal_chemistry_vocabulary_given_inline": [
+      {
+        "term": "ligand",
+        "gloss": "the small molecule that binds to the protein",
+        "module": "M5"
+      },
+      {
+        "term": "binding pocket",
+        "gloss": "the cavity on a protein's surface where a ligand sits",
+        "module": "M5"
+      },
+      {
+        "term": "binder",
+        "gloss": "a molecule that sticks to its target strongly enough to matter",
+        "module": "M7"
+      },
+      {
+        "term": "QED",
+        "gloss": "one number from 0 to 1 summarizing how drug-like a molecule looks, where higher is more drug-like",
+        "module": "M3"
+      },
+      {
+        "term": "synthetic accessibility (SA)",
+        "gloss": "an estimate from 1 to 10 of how hard a molecule would be to make, where lower is easier",
+        "module": "M3"
+      },
+      {
+        "term": "valence",
+        "gloss": "how many bonds an atom is allowed to have; breaking it makes a molecule impossible rather than merely unusual",
+        "module": "M3"
+      },
+      {
+        "term": "pose",
+        "gloss": "the specific position and orientation of a ligand inside a pocket",
+        "module": "M6"
+      },
+      {
+        "term": "strain energy",
+        "gloss": "how much a molecule's shape has been bent away from the shape it would relax into, in kcal/mol",
+        "module": "M4"
+      },
+      {
+        "term": "angstrom",
+        "gloss": "a tenth of a nanometre; a carbon-carbon bond is about 1.5 of them, so a 4 angstrom disagreement is a few bond lengths",
+        "module": "M6"
+      },
+      {
+        "term": "co-crystal structure",
+        "gloss": "an experimentally measured structure of a protein with a ligand bound, which is the closest thing to ground truth in this material",
+        "module": "M5"
+      },
+      {
+        "term": "protein backbone",
+        "gloss": "the chain of atoms running through a protein, without the side chains that decorate it",
+        "module": "M8"
+      }
+    ],
+    "what_a_learner_can_do_at_the_end": "Read the results table of a 2026 generative-chemistry paper and say which numbers are measurements, which are definitions in disguise, and which could not have failed. Run a pocket-conditioned generator's output through a physical validity battery and interpret the verdict. Say why two independent methods disagreeing is information rather than an error. And decline to quote a number without naming what computed it."
+  },
+  "objectives": [
+    {
+      "id": "O1",
+      "statement": "Given the closed-form forward noising expression, compute the noised sample at a stated noise level and state which of the two weights dominates at high and at low noise.",
+      "bloom": "Apply",
+      "module": "M1",
+      "artifact": "the `forward_noising` figure; M1 walkthrough",
+      "exercise": "X1"
+    },
+    {
+      "id": "O2",
+      "statement": "Predict, before running it, whether shrinking the reverse step budget from 200 to 8 raises or lowers the energy distance, then run the sweep and report the measured value at both budgets from data/toy_sampler_sweep.csv.",
+      "bloom": "Analyze",
+      "module": "M1",
+      "artifact": "data/toy_sampler_sweep.csv; M1 walkthrough",
+      "exercise": "X1"
+    },
+    {
+      "id": "O3",
+      "statement": "Explain in one sentence, without using the word noise, why a metric computed between two point clouds is a validator and a per-sample loss is not, and state the two-sample floor of the energy distance at the sample size used.",
+      "bloom": "Understand",
+      "module": "M1",
+      "artifact": "the energy-distance floor 0.0001 at n equal to 2000; M2 walkthrough",
+      "exercise": "X2"
+    },
+    {
+      "id": "O4",
+      "statement": "State the training target of a flow-matching network in one line and contrast it with the diffusion network's target, given that both use the identical architecture in these notebooks.",
+      "bloom": "Understand",
+      "module": "M2",
+      "artifact": "M2 walkthrough",
+      "exercise": "X3"
+    },
+    {
+      "id": "O5",
+      "statement": "Read the crossing budget for each sampler off data/toy_sampler_sweep.csv at the 0.01 band and report the fourfold flow-matching advantage, naming the band as the definition that makes the ratio meaningful.",
+      "bloom": "Apply",
+      "module": "M2",
+      "artifact": "data/toy_sampler_sweep.csv; the `stepcount_thesis_figure` figure",
+      "exercise": "X3"
+    },
+    {
+      "id": "O6",
+      "statement": "Identify the confound in the claim that path curvature explains the step advantage, name the control that removes it, and state what the controlled measurement shows (the gap widens rather than narrows).",
+      "bloom": "Evaluate",
+      "module": "M2",
+      "artifact": "data/toy_eta_sweep.csv; M2 walkthrough",
+      "exercise": "X2"
+    },
+    {
+      "id": "O7",
+      "statement": "Name the three things a molecule has that a two-dimensional point does not, and for each, name the mechanism FlowMol3 uses to handle it.",
+      "bloom": "Understand",
+      "module": "M3",
+      "artifact": "M3 walkthrough",
+      "exercise": "X4"
+    },
+    {
+      "id": "O8",
+      "statement": "Locate the knee in the validity-against-step-budget curve from data/flowmol3_metrics.csv, report validity at 10, 25 and 50 steps, and state the budget past which additional steps do not improve validity.",
+      "bloom": "Apply",
+      "module": "M3",
+      "artifact": "data/flowmol3_metrics.csv; the `flowmol3_stepcount` figure",
+      "exercise": "X4"
+    },
+    {
+      "id": "O9",
+      "statement": "Demonstrate that the knee location depends on which quality metric was asked about, by showing from the same file that mean synthetic accessibility keeps improving past the step count at which validity has saturated.",
+      "bloom": "Analyze",
+      "module": "M3",
+      "artifact": "data/flowmol3_metrics.csv columns validity_pct and mean_sa",
+      "exercise": "X4"
+    },
+    {
+      "id": "O10",
+      "statement": "Explain why a 100 percent graph-validity result says nothing about geometry, and name two specific geometric failures a valid graph can carry.",
+      "bloom": "Understand",
+      "module": "M4",
+      "artifact": "data/posebusters_diffsbdd.csv; M4 walkthrough",
+      "exercise": "X5"
+    },
+    {
+      "id": "O11",
+      "statement": "Discover, by measuring rather than by being told, that six of the nine intermolecular PoseBusters checks in the shipped table could not have failed because the receptor file contains no cofactors and no waters, and state what the verdict would have been had the co-crystal ligand been retained.",
+      "bloom": "Evaluate",
+      "module": "M4",
+      "artifact": "data/posebusters_diffsbdd.csv header lines; data/3rfm_protein.pdb; data/3rfm_caffeine_ref.sdf; data/diffsbdd_generated.sdf",
+      "exercise": "X5"
+    },
+    {
+      "id": "O12",
+      "statement": "Compute the pairwise diversity of the same twenty molecules under two fingerprints and report both values, then state the reporting rule that follows (name the fingerprint or the number is not interpretable).",
+      "bloom": "Apply",
+      "module": "M4",
+      "artifact": "data/diffsbdd_generated.sdf or data/diffsbdd_metrics.csv; data/diversity_metadata.json",
+      "exercise": "X6"
+    },
+    {
+      "id": "O13",
+      "statement": "Classify each of four verification numbers as reproducible, drifting, definition-dependent or vacuous, and justify each classification from the file or the notebook comment that establishes it.",
+      "bloom": "Evaluate",
+      "module": "M4",
+      "artifact": "data/posecheck_diffsbdd.csv; data/posebusters_diffsbdd.csv; data/diversity_metadata.json; M4 walkthrough",
+      "exercise": "X7"
+    },
+    {
+      "id": "O14",
+      "statement": "State what is frozen and what is denoised in pocket-conditioned diffusion, and explain why the network's output being a displacement makes translation invariance automatic while rotation must be built in.",
+      "bloom": "Understand",
+      "module": "M5",
+      "artifact": "M5 walkthrough",
+      "exercise": "X8"
+    },
+    {
+      "id": "O15",
+      "statement": "Given the three tasks one frozen DiffSBDD checkpoint performs, state for each what is held fixed and where the reverse chain is started, and place a fourth task of your own in that scheme.",
+      "bloom": "Create",
+      "module": "M5",
+      "artifact": "data/diffsbdd_optimize_metrics.json; data/diffsbdd_inpaint_metrics.json; M5 walkthrough",
+      "exercise": "X8"
+    },
+    {
+      "id": "O16",
+      "statement": "Show from the shipped inpainting metrics that scaffold retention is 10 of 10 by coordinate and 2 of 10 by aromatic SMARTS, and explain which measurement answers the question the method promises.",
+      "bloom": "Analyze",
+      "module": "M5",
+      "artifact": "data/diffsbdd_inpaint_metrics.json fields median_scaffold_coord_retention and scaffold_retention_pct",
+      "exercise": "X8"
+    },
+    {
+      "id": "O17",
+      "statement": "Report, from data/diffdock_redock_posebusters.csv, how many of twenty top-ranked re-docked poses fall within 2 angstroms of the generated pose and how many re-docked centroids fall within 5 angstroms of the co-crystal ligand, and state the one-sentence conclusion those two numbers support together.",
+      "bloom": "Analyze",
+      "module": "M6",
+      "artifact": "data/diffdock_redock_posebusters.csv",
+      "exercise": "X9"
+    },
+    {
+      "id": "O18",
+      "statement": "Show that the two pose sources fail the identical PoseBusters battery in opposite directions, and explain why neither can be called correct for a molecule that has never been made.",
+      "bloom": "Evaluate",
+      "module": "M6",
+      "artifact": "data/diffdock_redock_posebusters.csv and data/posebusters_diffsbdd.csv; the `redock` figure panel (a)",
+      "exercise": "X9"
+    },
+    {
+      "id": "O19",
+      "statement": "Distinguish Boltz-2's two affinity outputs by the job each was trained for, and state which one is the gate.",
+      "bloom": "Understand",
+      "module": "M7",
+      "artifact": "data/boltz2_comparison.csv columns; M7 walkthrough",
+      "exercise": "X10"
+    },
+    {
+      "id": "O20",
+      "statement": "Convert the continuous affinity values for caffeine and for the FlowMol3 molecule to micromolar, observe that the rejected molecule appears more potent than the known binder, and state why that conversion is invalid for one of the two.",
+      "bloom": "Evaluate",
+      "module": "M7",
+      "artifact": "data/boltz2_comparison.csv column modal_affinity_pred_value_log10_IC50_uM",
+      "exercise": "X10"
+    },
+    {
+      "id": "O21",
+      "statement": "Compute the rank agreement between the two Boltz-2 implementations, identify which molecules swap, and state what it means for a conclusion that the two that swap are the top two designs.",
+      "bloom": "Analyze",
+      "module": "M7",
+      "artifact": "data/boltz2_comparison.csv columns modal_rank and nim_rank",
+      "exercise": "X10"
+    },
+    {
+      "id": "O22",
+      "statement": "Describe the three-stage self-consistency loop in one sentence per stage, naming which model is independent of which and why that independence is what makes the test informative.",
+      "bloom": "Understand",
+      "module": "M8",
+      "artifact": "M8 walkthrough",
+      "exercise": "X11"
+    },
+    {
+      "id": "O23",
+      "statement": "Apply the designability criteria to data/selfconsistency_full.json to reproduce the count of designs inside the box, and compute the designable fraction at each backbone length from data/designability_scaling.json.",
+      "bloom": "Apply",
+      "module": "M8",
+      "artifact": "data/selfconsistency_full.json; data/designability_scaling.json",
+      "exercise": "X11"
+    },
+    {
+      "id": "O24",
+      "statement": "Map the generate-then-verify loop onto a 2022-to-2026 paper the learner has not seen, naming its generator, its verifier and the number the verifier reports, choosing from the curriculum's cited set.",
+      "bloom": "Create",
+      "module": "M8",
+      "artifact": "conference_bridge.md; the six frontier citations",
+      "exercise": "X12"
+    }
+  ],
+  "coverage_invariants": {
+    "every_objective_maps_to_a_module": true,
+    "every_objective_maps_to_an_exercise": true,
+    "every_exercise_cites_at_least_one_objective": true,
+    "orphans_in_either_direction": 0,
+    "checked_how": "Programmatic cross-reference of module.objectives against objective.module, objective.exercise against exercise.objectives, and exercise.module against module.exercises. Ran with no errors; one intentional exception is recorded: exercise X2 assesses O3 (an M1 objective) from within M2, because the energy-distance floor is best appreciated after a second sampler exists. The checker must allow an exercise to assess an objective from an earlier module, but not from a later one."
+  },
+  "bloom_distribution": {
+    "Apply": 5,
+    "Analyze": 5,
+    "Understand": 7,
+    "Evaluate": 5,
+    "Create": 2
+  }
+}

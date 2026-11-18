@@ -1,0 +1,338 @@
+{
+  "tiers": {
+    "specialist": "A term whose meaning is set by a specific method, tool or paper. Forbidden in the opening paragraph. Must be defined within 200 characters of first use everywhere else.",
+    "domain": "A term from chemistry, structural biology or machine learning that a non-specialist will not know but that takes one clause to define. Allowed anywhere after the opening paragraph, defined at first use.",
+    "general": "A term whose plain-English meaning is close enough to its technical meaning that a non-specialist reads it correctly. Allowed in the opening paragraph."
+  },
+  "counts": {
+    "general": 11,
+    "domain": 15,
+    "specialist": 28
+  },
+  "terms": [
+    {
+      "term": "generative model",
+      "tier": "general",
+      "definition": "A model that produces new examples of something rather than labelling examples it is given.",
+      "first_used": "M1"
+    },
+    {
+      "term": "sample",
+      "tier": "general",
+      "definition": "One example produced by a generative model, or one example drawn from a distribution.",
+      "first_used": "M1"
+    },
+    {
+      "term": "noise",
+      "tier": "general",
+      "definition": "Random values with no structure, used here as the starting point a generator refines away from.",
+      "first_used": "M1"
+    },
+    {
+      "term": "step budget",
+      "tier": "general",
+      "definition": "How many times a generator is allowed to refine its answer before it has to hand it over.",
+      "first_used": "M1"
+    },
+    {
+      "term": "validator",
+      "tier": "general",
+      "definition": "Any measurement that can tell you the generator's output is wrong.",
+      "first_used": "M1"
+    },
+    {
+      "term": "verification",
+      "tier": "general",
+      "definition": "Checking a generated result against something that did not produce it.",
+      "first_used": "M1"
+    },
+    {
+      "term": "molecule",
+      "tier": "general",
+      "definition": "A specific arrangement of atoms joined by bonds.",
+      "first_used": "M3"
+    },
+    {
+      "term": "protein",
+      "tier": "general",
+      "definition": "A large biological molecule; here, the target a designed molecule is meant to act on.",
+      "first_used": "M5"
+    },
+    {
+      "term": "target",
+      "tier": "general",
+      "definition": "The protein a drug is intended to act on.",
+      "first_used": "M5"
+    },
+    {
+      "term": "drug-like",
+      "tier": "general",
+      "definition": "Having the size, greasiness and hydrogen-bonding profile typical of molecules that work as oral drugs.",
+      "first_used": "M3"
+    },
+    {
+      "term": "cached path",
+      "tier": "general",
+      "definition": "Running a notebook against results committed to the bundle instead of recomputing them, so it works with no GPU and no download.",
+      "first_used": "M1"
+    },
+    {
+      "term": "diffusion model",
+      "tier": "domain",
+      "definition": "A generator trained to reverse a process that gradually turns data into noise, producing samples by taking many small denoising steps.",
+      "first_used": "M1"
+    },
+    {
+      "term": "flow matching",
+      "tier": "domain",
+      "definition": "A generator trained to predict a velocity that carries a noise sample along a chosen path to a data sample, so sampling is following a current rather than reversing a random walk.",
+      "first_used": "M2"
+    },
+    {
+      "term": "denoiser",
+      "tier": "domain",
+      "definition": "The network inside a diffusion model, which is given a noisy sample and its noise level and predicts the noise that was added.",
+      "first_used": "M1"
+    },
+    {
+      "term": "energy distance",
+      "tier": "domain",
+      "definition": "A single number measuring how far one cloud of points sits from another, zero when the two are indistinguishable.",
+      "first_used": "M1"
+    },
+    {
+      "term": "ligand",
+      "tier": "domain",
+      "definition": "The small molecule that binds to a protein.",
+      "first_used": "M5"
+    },
+    {
+      "term": "binding pocket",
+      "tier": "domain",
+      "definition": "The cavity on a protein's surface where a ligand sits.",
+      "first_used": "M5"
+    },
+    {
+      "term": "binder",
+      "tier": "domain",
+      "definition": "A molecule that sticks to its target strongly enough to matter.",
+      "first_used": "M7"
+    },
+    {
+      "term": "pose",
+      "tier": "domain",
+      "definition": "The specific position and orientation of a ligand inside a pocket.",
+      "first_used": "M6"
+    },
+    {
+      "term": "docking",
+      "tier": "domain",
+      "definition": "Predicting where and how a given molecule sits in a given pocket.",
+      "first_used": "M6"
+    },
+    {
+      "term": "co-crystal structure",
+      "tier": "domain",
+      "definition": "An experimentally measured structure of a protein with a ligand bound, the closest thing to ground truth in this material.",
+      "first_used": "M5"
+    },
+    {
+      "term": "angstrom",
+      "tier": "domain",
+      "definition": "A tenth of a nanometre; a carbon-carbon bond is about 1.5 of them, so a 4 angstrom disagreement is a few bond lengths.",
+      "first_used": "M6"
+    },
+    {
+      "term": "valence",
+      "tier": "domain",
+      "definition": "How many bonds an atom is allowed to have; breaking it makes a molecule impossible rather than merely unusual.",
+      "first_used": "M3"
+    },
+    {
+      "term": "protein backbone",
+      "tier": "domain",
+      "definition": "The chain of atoms running through a protein, without the side chains that decorate it.",
+      "first_used": "M8"
+    },
+    {
+      "term": "inverse folding",
+      "tier": "domain",
+      "definition": "Given a protein shape, predicting an amino-acid sequence that would fold into it.",
+      "first_used": "M8"
+    },
+    {
+      "term": "co-folding",
+      "tier": "domain",
+      "definition": "Predicting the structure of a protein and a ligand together, as one complex, rather than separately.",
+      "first_used": "M7"
+    },
+    {
+      "term": "DDPM",
+      "tier": "specialist",
+      "definition": "Denoising diffusion probabilistic model, the formulation in which the network predicts the noise added at a given level and sampling walks that ladder back down.",
+      "first_used": "M1"
+    },
+    {
+      "term": "DDIM",
+      "tier": "specialist",
+      "definition": "A deterministic sampler for an already-trained diffusion network, used here as the control that separates path curvature from sampling noise.",
+      "first_used": "M1"
+    },
+    {
+      "term": "eta",
+      "tier": "specialist",
+      "definition": "The dial on the DDIM sampler that sets how much fresh noise is injected per step; at 1 it reproduces ancestral sampling, at 0 it is fully deterministic.",
+      "first_used": "M2"
+    },
+    {
+      "term": "ancestral sampling",
+      "tier": "specialist",
+      "definition": "The original diffusion sampler, which adds a small amount of fresh noise back at every reverse step.",
+      "first_used": "M1"
+    },
+    {
+      "term": "cosine schedule",
+      "tier": "specialist",
+      "definition": "A choice of how fast signal fades to noise across the forward process, fading gently rather than crashing to zero early.",
+      "first_used": "M1"
+    },
+    {
+      "term": "velocity field",
+      "tier": "specialist",
+      "definition": "A function giving, for any position and time, which direction to move and how fast; what a flow-matching network learns.",
+      "first_used": "M2"
+    },
+    {
+      "term": "conditional flow matching",
+      "tier": "specialist",
+      "definition": "The training objective that regresses on the velocity of one noise-to-data line at a time, which recovers the correct average field without ever writing it down.",
+      "first_used": "M2"
+    },
+    {
+      "term": "forward Euler",
+      "tier": "specialist",
+      "definition": "The simplest ODE integrator: assume the velocity is constant across a step and move along it.",
+      "first_used": "M2"
+    },
+    {
+      "term": "SE(3)-equivariance",
+      "tier": "specialist",
+      "definition": "The property that rotating or translating a molecule rotates or translates the model's prediction the same way, so the model never relearns that physics is orientation-independent.",
+      "first_used": "M3"
+    },
+    {
+      "term": "continuous-time Markov chain (CTMC)",
+      "tier": "specialist",
+      "definition": "The mechanism a multi-modal flow model uses for categorical parts of a molecule, where labels jump between categories at learned rates instead of sliding continuously.",
+      "first_used": "M3"
+    },
+    {
+      "term": "multi-modal flow matching",
+      "tier": "specialist",
+      "definition": "Running a continuous flow on coordinates and a categorical jump process on atom and bond types on one shared clock, so geometry and identity finish together.",
+      "first_used": "M3"
+    },
+    {
+      "term": "QED",
+      "tier": "specialist",
+      "definition": "Quantitative estimate of drug-likeness, one number from 0 to 1 rolling size, greasiness and hydrogen bonding together, where higher is more drug-like.",
+      "first_used": "M3"
+    },
+    {
+      "term": "synthetic accessibility (SA) score",
+      "tier": "specialist",
+      "definition": "An estimate from 1 to 10 of how hard a molecule would be to make, where lower is easier.",
+      "first_used": "M3"
+    },
+    {
+      "term": "PoseBusters",
+      "tier": "specialist",
+      "definition": "A battery of pass/fail geometric checks on a pose, covering bond lengths, bond angles, internal clashes, ring flatness and distances to the protein and its cofactors.",
+      "first_used": "M4"
+    },
+    {
+      "term": "PoseCheck",
+      "tier": "specialist",
+      "definition": "A tool that reports strain energy and a protein-ligand interaction profile for a pose, quantities with no pass/fail line.",
+      "first_used": "M4"
+    },
+    {
+      "term": "strain energy",
+      "tier": "specialist",
+      "definition": "How far a pose's shape has been bent from the shape the molecule would relax into, in kcal/mol; here computed as the pose energy minus the energy of a relaxed conformer ensemble.",
+      "first_used": "M4"
+    },
+    {
+      "term": "Tanimoto similarity",
+      "tier": "specialist",
+      "definition": "A 0-to-1 overlap score between two molecular fingerprints; meaningless without naming the fingerprint that produced it.",
+      "first_used": "M4"
+    },
+    {
+      "term": "molecular fingerprint",
+      "tier": "specialist",
+      "definition": "A bit vector summarizing a molecule's substructures; different fingerprint definitions give different, equally correct similarity numbers.",
+      "first_used": "M4"
+    },
+    {
+      "term": "pocket-conditioned generation",
+      "tier": "specialist",
+      "definition": "Generating a ligand while a protein pocket is held fixed and fed to the network as context at every step.",
+      "first_used": "M5"
+    },
+    {
+      "term": "inpainting",
+      "tier": "specialist",
+      "definition": "Fixing part of a molecule and letting the model generate the rest around it, borrowed from image models that fill a masked region.",
+      "first_used": "M5"
+    },
+    {
+      "term": "scaffold",
+      "tier": "specialist",
+      "definition": "A substructure a chemist wants to keep, typically because it is known to bind, is patent-free, or is easy to make.",
+      "first_used": "M5"
+    },
+    {
+      "term": "binder gate",
+      "tier": "specialist",
+      "definition": "The 0.5 threshold on Boltz-2's binary head, above which a molecule is called a binder; the continuous affinity value is not calibrated below it.",
+      "first_used": "M7"
+    },
+    {
+      "term": "ipTM",
+      "tier": "specialist",
+      "definition": "A confidence score for a predicted interface between two chains; high ipTM means the model is sure where the ligand sits, not that it belongs there.",
+      "first_used": "M7"
+    },
+    {
+      "term": "pLDDT",
+      "tier": "specialist",
+      "definition": "A per-atom or per-residue confidence score from a structure predictor; Boltz-2 reports it on a 0-to-1 scale where ESMFold uses 0 to 100.",
+      "first_used": "M7"
+    },
+    {
+      "term": "self-consistency RMSD (scRMSD)",
+      "tier": "specialist",
+      "definition": "The distance between a designed protein backbone and the structure an independent predictor produces from the designed sequence alone; below 2 angstroms with pLDDT above 70 is the field's designability bar.",
+      "first_used": "M8"
+    },
+    {
+      "term": "designability",
+      "tier": "specialist",
+      "definition": "Whether a real sequence could encode a generated backbone, judged by the self-consistency test rather than by the generator's own confidence.",
+      "first_used": "M8"
+    },
+    {
+      "term": "hotspot residues",
+      "tier": "specialist",
+      "definition": "Named positions on a target's surface that a conditional backbone generator is told to aim its new binder at.",
+      "first_used": "M8"
+    },
+    {
+      "term": "REOS alerts",
+      "tier": "specialist",
+      "definition": "Rule-based structural alerts flagging substructures a screening library would normally exclude.",
+      "first_used": "M4"
+    }
+  ]
+}

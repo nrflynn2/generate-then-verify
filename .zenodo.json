@@ -1,0 +1,23 @@
+{
+ "title": "Generate, then verify: pairing a molecular generative model with the checks that can fail it",
+ "upload_type": "lesson",
+ "description": "An eight-module teaching resource for molecular design that pairs a generative model with a verification check that can fail it: toy diffusion and flow-matching samplers, pocket-conditioned ligand generation checked with PoseBusters and PoseCheck, a co-folding verifier, and a transfer of the same loop to protein design. Every module runs on a laptop CPU with no GPU, API key, or download. Curriculum and prose are CC BY 4.0; the code is Apache-2.0.",
+ "creators": [
+  {
+   "name": "Flynn, Noah",
+   "affiliation": "University of California, Berkeley"
+  }
+ ],
+ "license": "cc-by-4.0",
+ "access_right": "open",
+ "keywords": [
+  "molecular generative models",
+  "verification",
+  "drug discovery",
+  "diffusion models",
+  "flow matching",
+  "structure-based drug design",
+  "machine learning education",
+  "NeurIPS 2026 Education Track"
+ ]
+}

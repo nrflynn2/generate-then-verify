@@ -1,0 +1,83 @@
+{
+ "values": [
+  "newly_authored_2026_track",
+  "prior_published_reused",
+  "third_party"
+ ],
+ "closed_enumeration": true,
+ "classification_rules": {
+  "newly_authored_2026_track": "Written for this resource and not published anywhere before it. The curriculum, the exercises and their worked solutions, the shared toolkit, and the packaging files.",
+  "prior_published_reused": "Authored by the author but published before this resource, and reused here as the data substrate. The cached result files and the figures. Requires a non-empty citation field.",
+  "third_party": "Not authored by the author (a PDB entry, a corpus sample, a model checkpoint). Requires a citation and a redistribution-compatible license, or is referenced by URL rather than bundled."
+ },
+ "decision_procedure": "Ask in order. (1) Did someone other than the author create the content? If yes, third_party. (2) Was it published before this resource? If yes, prior_published_reused. (3) Otherwise newly_authored_2026_track. Exactly one value applies to every file.",
+ "required_fields_by_value": {
+  "newly_authored_2026_track": [
+   "path",
+   "sha256"
+  ],
+  "prior_published_reused": [
+   "path",
+   "sha256",
+   "citation"
+  ],
+  "third_party": [
+   "path_or_url",
+   "citation",
+   "license",
+   "bundled"
+  ]
+ },
+ "counts": {
+  "newly_authored_2026_track": 40,
+  "third_party": 5,
+  "prior_published_reused": 90
+ },
+ "per_directory": [
+  {
+   "directory": "curriculum/",
+   "provenance": "newly_authored_2026_track",
+   "note": "lesson guide, module map, objectives, assessment blueprint, glossary, instructor notes, conference bridge, concept statement, originality statement, frontier citations"
+  },
+  {
+   "directory": "exercises/ and solutions/",
+   "provenance": "newly_authored_2026_track",
+   "note": "twelve assessed tasks and an environment check across four notebooks, worked solutions in a separate directory"
+  },
+  {
+   "directory": "gv_toolkit.py, README.md, START_HERE.md, MANIFEST.json, LICENSE-*",
+   "provenance": "newly_authored_2026_track",
+   "note": "the shared toolkit and the packaging authored for this resource"
+  },
+  {
+   "directory": "paper/",
+   "provenance": "newly_authored_2026_track",
+   "note": "the two-page paper and its LaTeX source"
+  },
+  {
+   "directory": "data/ (cached result files)",
+   "provenance": "prior_published_reused",
+   "note": "results computed by the author for prior published material, reused as the substrate that makes a CPU-only path possible"
+  },
+  {
+   "directory": "figures/",
+   "provenance": "prior_published_reused",
+   "note": "figures from the same prior published material; the corrected boltz2_complex replaces the stale copy"
+  },
+  {
+   "directory": "data/3rfm_*.pdb, data/3rfm_caffeine_ref.sdf",
+   "provenance": "third_party",
+   "note": "PDB entry 3RFM (CC0)"
+  },
+  {
+   "directory": "data/corpus_sample_*.smi",
+   "provenance": "third_party",
+   "note": "seeded samples of public preprocessings of CrossDocked2020 (CC0) and GEOM-Drugs (CC-BY-4.0)"
+  },
+  {
+   "directory": "external (not bundled)",
+   "provenance": "third_party",
+   "note": "DiffSBDD and FlowMol3 weights and an AlphaFold-DB MSA, referenced by URL"
+  }
+ ]
+}
