@@ -1,5 +1,7 @@
 # Generate, then verify
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24327744.svg)](https://doi.org/10.5281/zenodo.24327744)
+
 Teaching materials for the NeurIPS 2026 Education Track, by Noah Flynn (University of California,
 Berkeley). An eight-module "generate, then verify" curriculum for molecular design: it pairs a
 generative model with a check that can fail it, from toy diffusion and flow-matching samplers,
