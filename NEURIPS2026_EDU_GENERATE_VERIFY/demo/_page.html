@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Generate, then verify</title>
+<style>
+  :root{
+    --bg:#0B0909; --ink:#F7F3F1; --dim:#9A918D; --dimmer:#5E5653;
+    --crimson:#FF3D62;
+    --amber:#F7B23B; --line:#2A2224;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","DejaVu Sans Mono",Menlo,monospace;
+    --serif:Georgia,"Iowan Old Style","Palatino Linotype",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --evid:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);cursor:none}
+  /* the evidence pane shows real notebook output; a programming-font ligature
+     would redraw ">=" as a glyph the notebook never printed. */
+  #pane,.prov,.tile .v,.qrtext,.legend .k,.run,.choice .kk{
+    font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+  body{font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  .screen{position:fixed;inset:0;display:none;flex-direction:column;padding:2.4vh 2.6vw}
+  .screen.on{display:flex}
+
+  /* ---------------- idle ---------------- */
+  #idle{display:none;gap:2.6vw}
+  #idle.on{display:grid;grid-template-columns:1.42fr 1fr;align-items:center}
+  .figwrap{background:#fff;border-radius:10px;padding:1.1vh 1.0vw 0;overflow:hidden;
+           aspect-ratio:2399/1500;width:100%;align-self:center;max-height:100%}
+  .figwrap img{width:100%;height:auto;display:block}
+  .idleright{display:flex;flex-direction:column;gap:2.4vh;min-width:0}
+  .kicker{font-family:var(--mono);font-size:clamp(13px,1.45vh,21px);letter-spacing:.26em;
+          text-transform:uppercase;color:var(--crimson)}
+  .title{font-family:var(--serif);font-size:clamp(28px,4.6vh,62px);line-height:1.08;font-weight:500}
+  .byline{font-size:clamp(14px,1.8vh,25px);color:var(--dim)}
+  .thesis{font-family:var(--serif);font-size:clamp(20px,3.45vh,48px);line-height:1.3;
+          border-left:4px solid var(--crimson);padding-left:1.1vw}
+  .qrrow{display:flex;align-items:center;gap:1.4vw;margin-top:.6vh}
+  .qr{background:#fff;padding:10px;border-radius:6px;flex:0 0 auto}
+  .qr svg{display:block;width:clamp(96px,13.5vh,190px);height:auto;shape-rendering:crispEdges}
+  .qrtext{font-family:var(--mono);font-size:clamp(12px,1.55vh,22px);color:var(--dim);line-height:1.55}
+  .qrtext b{color:var(--ink);font-weight:600}
+  .prompt{margin-top:1.4vh;font-size:clamp(18px,2.9vh,40px);color:var(--ink)}
+  .prompt .k{color:var(--crimson);font-family:var(--mono);font-weight:700}
+  .blink{animation:fade 2.2s ease-in-out infinite}
+  @keyframes fade{0%,100%{opacity:1}50%{opacity:.34}}
+
+  /* ---------------- beat ---------------- */
+  #beat{gap:1.5vh}
+  .head{display:flex;align-items:baseline;justify-content:space-between;gap:2vw;
+        border-bottom:1px solid var(--line);padding-bottom:1.1vh}
+  .head h2{font-family:var(--serif);font-size:clamp(20px,3.4vh,46px);font-weight:500;line-height:1.1}
+  .head .sub{font-size:clamp(12px,1.6vh,23px);color:var(--dim);margin-top:.4vh}
+  .prov{font-family:var(--mono);font-size:clamp(10px,1.25vh,17px);color:var(--dimmer);
+        text-align:right;white-space:nowrap;line-height:1.5}
+  .prov .live{color:var(--crimson)}
+
+  #pane{flex:1 1 auto;min-height:0;overflow:hidden;font-family:var(--mono);
+        font-size:var(--evid);line-height:1.45;position:relative}
+  #paneinner{position:absolute;left:0;right:0;bottom:0;white-space:pre}
+  .ln{color:#BDB4B0}
+  .ln.mark{color:#fff;background:rgba(255,61,98,.20);
+           box-shadow:-.5ch 0 0 rgba(255,61,98,.20),.5ch 0 0 rgba(255,61,98,.20)}
+  .cellhdr{color:var(--dim);margin-top:.5em}
+  .cellhdr .arrow{color:var(--crimson)}
+  .cellhdr .nb{color:#CFC7C3}
+  .cellhdr .ms{color:var(--dimmer)}
+
+  .tiles{display:flex;gap:1.6vw;align-items:stretch;min-height:15vh}
+  .tile{flex:1 1 0;min-width:0;overflow:hidden;display:flex;flex-direction:column;
+        border-top:3px solid var(--crimson);padding-top:1.1vh;opacity:0;
+        transform:translateY(10px);transition:opacity .28s,transform .28s}
+  .tile.on{opacity:1;transform:none}
+  .tile .v{font-family:var(--mono);font-size:9.5vh;line-height:1.04;
+           font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+  .tile .l{font-size:clamp(11px,1.6vh,23px);color:var(--dim);margin-top:auto;padding-top:.8vh;
+           text-transform:uppercase;letter-spacing:.11em}
+  .tile.dead{border-top-color:var(--dimmer)}
+  .tile.dead .v{color:var(--dimmer);text-decoration:line-through;
+                text-decoration-thickness:4px}
+  .tile.dead .l{color:var(--dimmer)}
+
+  .cap{font-family:var(--serif);font-size:clamp(20px,4.0vh,56px);line-height:1.22;
+       min-height:10vh;display:flex;align-items:center}
+  .cap .q{color:var(--amber);display:block;margin-top:.35em}
+  .cap.hold{color:#fff}
+  .legend{display:flex;justify-content:space-between;align-items:center;
+          border-top:1px solid var(--line);padding-top:1.0vh;
+          font-size:clamp(12px,1.75vh,25px);color:var(--dim)}
+  .legend .k{font-family:var(--mono);color:var(--ink);font-weight:700;
+             border:1px solid var(--line);border-radius:5px;padding:.1em .5em;margin-right:.35em}
+  .legend .hot .k{color:var(--crimson);border-color:var(--crimson)}
+  .run{color:var(--crimson);font-family:var(--mono)}
+
+  /* ---------------- handoff ---------------- */
+  #hand{align-items:center;justify-content:center;text-align:center;gap:3.2vh}
+  #hand .big{font-family:var(--serif);font-size:clamp(28px,6.2vh,86px);line-height:1.15;max-width:80vw}
+  #hand .body{font-size:clamp(16px,2.6vh,36px);color:var(--dim);max-width:62vw;line-height:1.4}
+  .choices{display:flex;gap:3.2vw;margin-top:1vh}
+  .choice{border:2px solid var(--crimson);border-radius:12px;padding:2.0vh 2.4vw;min-width:19vw}
+  .choice .kk{font-family:var(--mono);font-size:clamp(34px,8.5vh,110px);font-weight:700;
+              color:var(--crimson);line-height:1}
+  .choice .nm{font-size:clamp(13px,1.9vh,27px);color:var(--ink);margin-top:.8vh;
+              text-transform:uppercase;letter-spacing:.1em}
+  .choice .ds{font-size:clamp(12px,1.7vh,24px);color:var(--dim);margin-top:.5vh}
+  #hand .qrrow{justify-content:center;margin-top:1.4vh}
+
+  .err{font-family:var(--mono);color:var(--crimson);white-space:pre-wrap;font-size:18px}
+</style>
+</head>
+<body>
+
+<section id="idle" class="screen on">
+  <div class="figwrap"><img id="fig" src="/figure.svg" alt="module map: the generate and verify loop"></div>
+  <div class="idleright">
+    <div class="kicker">NeurIPS 2026 &middot; Education Track</div>
+    <div class="title">Generate, then&nbsp;verify</div>
+    <div class="byline" id="byline"></div>
+    <div class="thesis" id="thesis"></div>
+    <div class="qrrow">
+      <div class="qr" id="qr"></div>
+      <div class="qrtext"><b id="repo"></b><br><span id="doi"></span><br>
+        everything on this screen runs on a laptop CPU</div>
+    </div>
+    <div class="prompt blink">press <span class="k">any key</span> to run it live</div>
+  </div>
+</section>
+
+<section id="beat" class="screen">
+  <div class="head">
+    <div><h2 id="bname"></h2><div class="sub" id="bsub"></div></div>
+    <div class="prov" id="bprov"></div>
+  </div>
+  <div id="pane"><div id="paneinner"></div></div>
+  <div class="tiles" id="tiles"></div>
+  <div class="cap" id="cap"></div>
+  <div class="legend">
+    <div id="legleft"></div>
+    <div id="legright"></div>
+  </div>
+</section>
+
+<section id="hand" class="screen">
+  <div class="big" id="hhead"></div>
+  <div class="body" id="hbody"></div>
+  <div class="choices">
+    <div class="choice"><div class="kk">5</div><div class="nm">X5</div>
+      <div class="ds">the check that could not have failed</div></div>
+    <div class="choice"><div class="kk">0</div><div class="nm">X10</div>
+      <div class="ds">read the wrong number on purpose</div></div>
+  </div>
+  <div class="qrrow"><div class="qr" id="qr2"></div>
+    <div class="qrtext" style="text-align:left"><b id="repo2"></b><br>
+      <span id="hinvite"></span></div></div>
+  <div class="legend" style="width:72vw;border-top:none"><div></div><div id="hleg"></div></div>
+</section>
+
+<script>
+const CFG = __CONFIG__;
+const $ = s => document.querySelector(s);
+
+/* ---------- QR ---------- */
+function qrSvg(){
+  const m = CFG.qr, n = m.length, q = 2, s = n + 2*q;
+  let r = '';
+  for (let y=0;y<n;y++) for (let x=0;x<n;x++)
+    if (m[y][x] === '1') r += `<rect x="${x+q}" y="${y+q}" width="1" height="1"/>`;
+  return `<svg viewBox="0 0 ${s} ${s}" xmlns="http://www.w3.org/2000/svg">`
+       + `<rect width="${s}" height="${s}" fill="#fff"/><g fill="#0B0909">${r}</g></svg>`;
+}
+
+/* ---------- state ---------- */
+let state = 'idle', es = null, q = [], timer = null, draining = false;
+let cur = null, curExtra = false, tileEls = [], seenTiles = [], idleTimer = null;
+
+function show(id){
+  for (const el of document.querySelectorAll('.screen')) el.classList.toggle('on', el.id === id);
+  state = id;
+}
+function armIdle(ms){
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => toIdle(), ms);
+}
+function toIdle(){
+  stop(); show('idle'); clearTimeout(idleTimer);
+}
+function stop(){
+  if (es){ es.close(); es = null; }
+  if (timer){ clearTimeout(timer); timer = null; }
+  q = []; draining = false;
+  fetch('/stop', {method:'POST'}).catch(()=>{});
+}
+
+/* ---------- evidence pane ---------- */
+let paneSize = 26;
+const paneStart = () => Math.max(16, Math.round(window.innerHeight * 0.026));
+const paneFloor = () => Math.max(10, Math.round(window.innerHeight * 0.011));
+function setPaneSize(px){ paneSize = px; document.documentElement.style.setProperty('--evid', px+'px'); }
+function paneReset(){ $('#paneinner').innerHTML = ''; setPaneSize(paneStart()); }
+function fitPane(){
+  const pane = $('#pane'), inner = $('#paneinner');
+  while (paneSize > paneFloor() && inner.scrollWidth > pane.clientWidth) setPaneSize(paneSize - 1);
+  // trim lines that have scrolled off the top
+  while (inner.childElementCount > 2 && inner.scrollHeight > pane.clientHeight)
+    inner.removeChild(inner.firstElementChild);
+}
+function addLine(html, cls){
+  const d = document.createElement('div');
+  d.className = cls; d.innerHTML = html;
+  $('#paneinner').appendChild(d); fitPane(); return d;
+}
+const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* ---------- tiles ---------- */
+function tilesReset(defs){
+  const box = $('#tiles'); box.innerHTML = ''; tileEls = []; seenTiles = [];
+  defs.forEach(() => {
+    const t = document.createElement('div'); t.className = 'tile';
+    t.innerHTML = '<div class="v"></div><div class="l"></div>';
+    box.appendChild(t); tileEls.push(t); seenTiles.push(false);
+  });
+}
+function fitTile(el){
+  const v = el.querySelector('.v');
+  let px = Math.round(window.innerHeight * 0.095);
+  v.style.fontSize = px + 'px';
+  while (px > 18 && v.scrollWidth > el.clientWidth){ px -= 2; v.style.fontSize = px + 'px'; }
+}
+function tryTiles(line, defs){
+  defs.forEach((d, i) => {
+    if (seenTiles[i]) return;
+    const m = new RegExp(d.rx).exec(line);
+    if (!m) return;
+    seenTiles[i] = true;
+    const el = tileEls[i], v = m[d.g] || m[0];
+    el.querySelector('.v').textContent = v;
+    el.querySelector('.l').textContent = d.label;
+    el.classList.add('on');
+    fitTile(el);
+    if (d.strike !== undefined && tileEls[d.strike]) tileEls[d.strike].classList.add('dead');
+  });
+}
+
+/* ---------- captions / legend ---------- */
+function setCap(text, hold){
+  const c = $('#cap'); c.className = 'cap' + (hold ? ' hold' : '');
+  if (!hold) { c.innerHTML = '<div>' + esc(text) + '</div>'; return; }
+  const m = /^(.*?)\s*([^.?!]*\?)\s*$/s.exec(text);
+  c.innerHTML = m && m[1]
+    ? '<div>' + esc(m[1]) + '<span class="q">' + esc(m[2]) + '</span></div>'
+    : '<div>' + esc(text) + '</div>';
+}
+function legend(left, right){ $('#legleft').innerHTML = left; $('#legright').innerHTML = right; }
+const KEY = (k, t, hot) => `<span class="${hot?'hot':''}"><span class="k">${k}</span>${t}</span>`;
+const LEGEND_KEYS = KEY('SPACE','next') + ' &nbsp; ' + KEY('5','X5') + ' &nbsp; '
+                  + KEY('0','X10') + ' &nbsp; ' + KEY('R','reset');
+
+/* ---------- running a beat ---------- */
+function startBeat(id, extra){
+  const b = CFG.beats[id];
+  cur = id; curExtra = !!extra;
+  const conf = extra ? b.extra : b;
+  show('beat'); armIdle(CFG.idle_ms + 60000);   // safety net if a beat never finishes
+  $('#bname').textContent = b.name;
+  $('#bsub').textContent = extra ? 'the answer' : b.sub;
+  $('#bprov').innerHTML = '';
+  paneReset(); tilesReset(conf.tiles); setCap(conf.lead || '', false);
+  legend('<span class="run">running…</span>', LEGEND_KEYS);
+
+  stopES();
+  es = new EventSource('/run/' + id + (extra ? '?extra=1' : ''));
+  es.onmessage = ev => {
+    const d = JSON.parse(ev.data);
+    if (d.t === 'done' || d.t === 'error'){ if (es){ es.close(); es = null; } }
+    q.push(d); pump();
+  };
+  es.onerror = () => { if (es) { es.close(); es = null; } };
+}
+function stopES(){ if (es){ es.close(); es = null; } if (timer){ clearTimeout(timer); timer = null; } q = []; }
+
+let curHdr = null, lineBudget = 0;
+function pump(){
+  if (timer || !q.length) return;
+  const ev = q.shift();
+  let delay = handle(ev);
+  if (draining) delay = 0;
+  timer = setTimeout(() => { timer = null; pump(); }, delay);
+}
+function handle(ev){
+  const b = CFG.beats[cur], conf = curExtra ? b.extra : b;
+  if (ev.t === 'begin'){
+    $('#bprov').innerHTML = ev.files.map(f =>
+      `${esc(f.rel)} <span class="live">${f.sha}</span>`).join('<br>');
+    return 260;
+  }
+  if (ev.t === 'cell'){
+    curHdr = addLine(
+      `<span class="arrow">▸</span> <span class="nb">${esc(ev.nb_label || ev.rel)}</span>`
+      + ` <span class="ms">cell ${ev.idx}</span>  ${esc(ev.label)}`, 'cellhdr');
+    lineBudget = 0;
+    return 380;
+  }
+  if (ev.t === 'out'){
+    const marked = conf.marks.some(r => new RegExp(r).test(ev.s));
+    addLine(esc(ev.s) || '&nbsp;', 'ln' + (marked ? ' mark' : ''));
+    tryTiles(ev.s, conf.tiles);
+    lineBudget += 1;
+    return lineBudget > 10 ? 16 : 52;
+  }
+  if (ev.t === 'cell_done'){
+    if (curHdr) curHdr.innerHTML += `   <span class="ms">✓ ${(ev.ms/1000).toFixed(2)} s</span>`;
+    const say = conf.says ? conf.says[String(ev.i)] : null;
+    if (say) setCap(say, false);
+    return ev.dwell || 240;
+  }
+  if (ev.t === 'done'){
+    finish(ev.ms);
+    return 0;
+  }
+  if (ev.t === 'error'){
+    addLine('<span style="color:var(--crimson)">' + esc(ev.s) + '</span>', 'ln');
+    legend('<span class="run">that beat failed — press R</span>', LEGEND_KEYS);
+    return 0;
+  }
+  return 0;
+}
+function finish(ms){
+  const b = CFG.beats[cur], conf = curExtra ? b.extra : b;
+  draining = false;
+  setCap(conf.hold, true);
+  const nxt = CFG.order[CFG.order.indexOf(cur) + 1];
+  let left = `<span class="run">${(ms/1000).toFixed(2)} s of machine time, just now</span>`;
+  let right = LEGEND_KEYS;
+  if (!curExtra && b.extra)
+    right = KEY(b.extra.key, b.extra.prompt.replace(/^press\s+\S+\s+/, ''), true)
+          + ' &nbsp; ' + LEGEND_KEYS;
+  legend(left, right);
+  armIdle(CFG.idle_ms);
+}
+
+/* ---------- keys ---------- */
+function advance(){
+  if (state === 'idle') return startBeat(CFG.order[0], false);
+  if (state === 'hand') return startBeat(CFG.order[0], false);
+  if (q.length || timer){ draining = true; if (timer){ clearTimeout(timer); timer = null; } return pump(); }
+  const i = CFG.order.indexOf(cur);
+  if (curExtra) return startBeat(CFG.order[i+1] || CFG.order[0], false);
+  if (i >= 0 && i < CFG.order.length - 1) return startBeat(CFG.order[i+1], false);
+  stop(); show('hand'); armIdle(CFG.idle_ms);
+}
+document.addEventListener('keydown', e => {
+  const k = e.key;
+  if (k === 'F11' || e.metaKey || e.ctrlKey || e.altKey) return;
+  e.preventDefault();
+  clearTimeout(idleTimer);
+  if (k === '5') return startBeat('x5', false);
+  if (k === '0') return startBeat('x10', false);
+  if (k === 'r' || k === 'R' || k === 'Escape') return toIdle();
+  if ((k === 'x' || k === 'X') && state === 'beat' && cur === 'x5' && !curExtra
+      && !q.length && !timer) return startBeat('x5', true);
+  advance();
+});
+window.addEventListener('resize', () => {
+  if (state !== 'beat') return;
+  setPaneSize(paneStart()); fitPane();
+  tileEls.forEach((el, i) => { if (seenTiles[i]) fitTile(el); });
+});
+
+/* ---------- boot ---------- */
+$('#qr').innerHTML = qrSvg(); $('#qr2').innerHTML = qrSvg();
+$('#thesis').textContent = CFG.thesis;
+$('#byline').textContent = CFG.byline;
+$('#repo').textContent = CFG.repo.replace(/^https:\/\//,'');
+$('#repo2').textContent = CFG.repo.replace(/^https:\/\//,'');
+$('#doi').textContent = 'doi ' + CFG.doi;
+$('#hhead').textContent = CFG.handoff.head;
+$('#hbody').textContent = CFG.handoff.body;
+$('#hinvite').textContent = CFG.handoff.invite;
+$('#hleg').innerHTML = LEGEND_KEYS;
+</script>
+</body>
+</html>

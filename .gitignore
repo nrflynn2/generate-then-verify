@@ -1,0 +1,4 @@
+# Created by the booth demo build: the local environment and its bytecode.
+.venv/
+__pycache__/
+*.pyc
