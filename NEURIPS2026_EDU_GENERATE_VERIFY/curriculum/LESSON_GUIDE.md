@@ -15,8 +15,8 @@ every exercise. When this guide says "X5", the specification is there.
 
 A note on the numbers. Every quantity quoted below traces to a file that ships in this bundle, and
 the caption or text beside it names the file and how to recompute it.
-Where a number drifts between runs, this guide says so at the point of use rather than in a
-footnote. That discipline is part of the subject being taught: a number you cannot reproduce is a
+Where a number drifts between runs, this guide flags it right where it appears.
+That discipline is part of the subject being taught: a number you cannot reproduce is a
 number you cannot defend.
 
 ---
@@ -25,19 +25,17 @@ number you cannot defend.
 
 ![The eight modules on the generate-then-verify loop](../figures/module_map.png)
 
-**Figure 1.** The eight modules of this curriculum, drawn as a closed loop rather than as a pipeline.
-The upper arc carries the four modules where something is produced (a toy sampler, a 3D molecule, a
-ligand inside a pocket, meaning a small molecule that binds to a protein, a protein backbone, which
-is the chain of atoms running through a protein without the side chains that decorate it) and the lower arc, in crimson, carries the four whose job
-is to test what came out. The two arcs close: generation hands over a pose, which is the specific
-position and orientation of a molecule inside a pocket, or a batch or a sequence, and verification
-returns a step budget, a receptor preparation or a rejected candidate. Panel (b) is the
-compute honesty strip, one cell per module, cached path above and full experience below. Every cached
-path is T0, meaning a laptop CPU reading files that ship in the bundle, with no GPU, no key and no
-download; the three cells outlined in heavy crimson are the modules whose full experience needs a GPU
-or a hosted endpoint, and each of those modules says in its own section what the cached path shows
-instead. Vector copies for a poster or a slide deck are `figures/module_map.svg` and
-`figures/module_map.pdf`.
+**Figure 1.** The eight modules of this curriculum form a closed loop. The upper arc carries the four
+generation modules: a toy sampler, a 3D molecule, a ligand (a small molecule that binds a protein)
+inside a binding pocket, and a protein backbone (the main-chain atoms without side chains). The lower
+arc, in crimson, carries the four verification modules that test those outputs. Generation hands over
+a pose (a ligand's position and orientation in a pocket), a batch, or a sequence; verification
+returns a step budget, a receptor preparation, or a rejected candidate. Panel (b) is the compute
+honesty strip, one cell per module, with the cached path above and the full run below. Every cached
+path is T0: a laptop CPU reading shipped files, with no GPU, API key, or download. Heavy crimson
+outlines mark the three modules whose full run requires a GPU or hosted endpoint, and each module
+section states what its cached path covers instead. Vector copies for slides or posters ship at
+`figures/module_map.svg` and `figures/module_map.pdf`.
 
 The figure is the argument, so use it as the first slide of whichever configuration you run and come
 back to it when you cross from an upper-arc module to a lower-arc one.
@@ -61,19 +59,18 @@ network to predict a velocity that carries a noise sample along a chosen path to
 2022. Both are settled machinery, and neither is the lesson. Filtering generated molecules is older
 still: drug-likeness rules, docking scores and synthetic-accessibility estimates have screened
 candidate structures for decades, and say so in the room, because a chemist in the
-audience will know it and the claim here is narrower than it first sounds. What changed between 2023
-and 2026 is narrower: a named, reproducible physical and structural
-verification stack became something the field builds, reports and reads beside the generator, as one
-system. PoseCheck (2023), a tool that
-reports strain energy (how far a molecule's shape has been bent from the shape it would relax into)
-and a protein-ligand contact profile for a pose, measured that pocket-conditioned generators, which
-design a molecule while a protein pocket is held fixed and fed to the network as context, produce
-more physical violations and fewer real contacts than conventional baselines. PoseBusters (2024), a battery of pass/fail geometric checks on a pose,
-turned physical plausibility into a test any pose must clear, and found that deep-learning docking
-methods, which predict where and how a given molecule sits in a given pocket, fail it. Boltz-2 (2025) put a co-folding model, one that predicts the structure of a protein and a ligand
-together as a single complex rather than separately, and an affinity estimate at the end of the
-pipeline, so the filter itself became a model with its own failure modes. FLOWR (2026) and TABASCO
-(2025) are introduced by the PoseBusters validity they reach rather than by their loss curves.
+audience will know it and the claim here is narrower than it first sounds. What changed between 2023 and 2026 is narrower: the field began building, reporting, and reading a
+named physical and structural verification stack alongside the generator as one system. PoseCheck
+(2023) measures strain energy (how far a pose bends a molecule from its relaxed shape) and
+protein-ligand contacts; applying it to pocket-conditioned generators (models that design a molecule
+with a fixed protein pocket as context) showed higher physical violation rates and fewer recovered
+contacts than docking baselines. PoseBusters (2024), a pass/fail geometric battery on a pose, turned
+physical plausibility into a standard test and showed that deep-learning docking methods (models that
+predict where a given molecule sits in a pocket) frequently fail it. Boltz-2 (2025) placed a
+co-folding model (predicting protein and ligand structure jointly as one complex) and an affinity
+head at the end of the pipeline, turning the verifier into a learned model with its own calibration
+limits. By 2025 and 2026, generators such as TABASCO and FLOWR lead with the PoseBusters pass rates
+they reach instead of their training losses.
 
 That is the argument you are making when you teach this, and it has a practical form: a 2026 paper on molecular generation reports PoseBusters validity, strain energy, contact recovery
 and a binder call, meaning a verdict on whether the molecule sticks to its target strongly enough to
@@ -116,12 +113,11 @@ asked to design an architecture; the training loops are read, not written.
 **Helpful, not required.** Calculus. Module 2 introduces an ordinary differential equation as a
 current that tells a particle where to drift next, and uses the bluntest integrator there is.
 
-**Not required: chemistry or structural biology.** This claim carries the whole leveling section and it is worth defending in the room, because a chemistry-free audience will
-assume otherwise and disengage early. Eleven terms carry the entire chemical content, and
-each is defined in one clause where it first appears. They are short enough to print on a card and
-hand out, which is what the list below is for. Treat the list as the chemistry on-ramp: spend the
-first few minutes of M3 walking it rather than assuming it, because that is the module where a
-chemistry-free learner first meets a real molecule and the one place the vocabulary load spikes.
+**Not required: chemistry or structural biology.** State this up front in the room, because an
+audience without chemistry training will assume otherwise and tune out early. Eleven terms carry all
+the chemical vocabulary, each defined in one clause at first use. Print the list below on a card if
+helpful, and spend the opening minutes of M3 walking through it, since M3 is where learners first
+meet a real molecule.
 
 - **ligand**, the small molecule that binds to the protein
 - **binding pocket**, the cavity on a protein's surface where a ligand sits
@@ -177,14 +173,13 @@ success. If you cut everything else, keep those.
 Each of the eight sections below has the same seven parts, in the same order, so you can teach from
 any one of them without reading the others.
 
-**The one idea** is what a learner should be able to say a week later. **The teaching narrative** is
-the order to say things in, written as guidance rather than as a script. **What to open** names the
-the exercise it feeds and the figure by its file stem, because the two
-numbering schemes do not agree and guessing costs you a minute in front of a room. **Misconceptions
-and discussion prompts** are a pointer rather than content: both live in `INSTRUCTOR_NOTES.md`
-section 4, where each prompt is printed immediately above its expected answer, so a lecturer
-preparing a session works from one file rather than two. **The exercise** points at the blueprint. **Timing and compute** gives the demo and hands-on minutes and states
-plainly what the cached path does and does not give you.
+**The one idea** is what a learner should be able to say a week later. **The teaching narrative**
+gives the sequence of points for the room without scripting your exact words. **What to open** names
+the exercise it feeds and the figure by its file stem, because the two numbering schemes differ and
+guessing costs a minute at the podium. **Misconceptions and discussion prompts** point to
+`INSTRUCTOR_NOTES.md` section 4, where each prompt sits directly above its expected answer so you
+prepare from one file. **The exercise** points to `assessment_blueprint.md`. **Timing and compute**
+gives demo and hands-on minutes and states what the cached path covers.
 
 ---
 
@@ -198,9 +193,9 @@ distance is the referee.
 
 **The teaching narrative.**
 
-Open on the frustration rather than on the algorithm. An autoencoder decodes a molecule in one
-forward pass, so every mistake is a final mistake, and there is no moment at which a half-formed,
-slightly wrong structure can be nudged back. That is the sentence the rest of the module answers.
+Open on the limitation of one-shot decoding. An autoencoder decodes a molecule in one
+forward pass, so every mistake is final, leaving no step where a half-formed,
+slightly wrong structure can be nudged back. That is the problem the rest of the module solves.
 Iterative refinement is the answer, and a diffusion model is the version of it you build here: a
 generator trained to reverse a process that gradually turns data into noise, so sampling starts from
 noise and takes dozens or hundreds of small denoising corrections, giving the model a chance to fix
@@ -223,14 +218,13 @@ sampling rule for an already-trained diffusion network, run on the same trained 
 retraining, which is the first appearance of a move this curriculum repeats:
 the sampler and the trained model are separable, and swapping one changes the answer.
 
-Now the part that makes this module module one rather than an introduction. Shrink the step budget
-and watch it break. The moons fray at 8 steps and collapse into a diffuse blob at 4. Before you show
-the number, ask the room to rank the panels by eye. They will do it confidently and they will be
-roughly right, and that is the setup: on a two-dimensional target eyes work, and this is the last
-time in the whole curriculum that eyes work. So introduce the energy distance here, a single number measuring how far one cloud of points sits
-from another and zero when the two are indistinguishable, while its verdict can still be checked
-against intuition. Show that it agrees with the eye
-ranking. That agreement is what buys it trust for the seven modules where nobody can look.
+Now shrink the step budget and watch the sampler fail. The moons fray at 8 steps and collapse into a
+diffuse blob at 4. Before showing any metric, ask the room to rank the panels by eye. They will rank
+them quickly and roughly right: on a two-dimensional target your eyes still work, for the last time
+in the course. Introduce the energy distance here (a scalar measuring how far one point cloud sits
+from another, zero when the two match) while the room can check its verdict against the scatter
+plots. Seeing the metric agree with visual inspection builds trust for the seven modules where 3D
+molecular coordinates cannot be judged by eye.
 
 Close with the definition the curriculum runs on: a generator is a sampler plus the measurement that
 can fail it, and you have now built both.
@@ -239,13 +233,12 @@ can fail it, and you have now built both.
 `forward_noising` for the forward dissolution at six noise levels, and `reverse_denoising` for the
 successful 200-step run in panel (a) and the collapse under shrinking budgets in panel (b).
 
-**Figure caution.** Panel (b) of the `reverse_denoising` figure prints a per-panel energy distance that traces to a file
-this bundle does not ship, and no seed in either shipped sweep reproduces it. Do not read a number
-off that panel. If you want the numbers on the slide, relabel from `data/toy_sampler_sweep.csv`,
-where the seed-mean energy distance at an 8-step budget is 0.0407 for the ancestral DDPM sampler
-(a denoising diffusion probabilistic model sampled with fresh noise added back at every reverse
-step) and 0.00998 for flow matching. This is not a blemish to hide; if you have time, show the room that you caught it,
-because it is the same failure mode module 4 is about.
+**Figure caution.** Panel (b) of `reverse_denoising` prints a per-panel energy distance from an
+unshipped sweep that no seed in either shipped CSV reproduces. Do not quote a number off that panel.
+If you want values on the slide, read `data/toy_sampler_sweep.csv`, where the five-seed mean at 8
+steps is 0.0407 for ancestral DDPM (a denoising diffusion probabilistic model sampled with fresh
+Gaussian noise at every reverse step) and 0.00998 for flow matching. If time permits, show the room
+how checking the figure against the CSV caught that discrepancy, previewing module 4.
 
 **Misconceptions and discussion prompts.** The wrong models learners arrive with in this
 module, and the prompts for the room, are in `INSTRUCTOR_NOTES.md` section 4 under M1, each
@@ -258,7 +251,7 @@ is graded for being made, not for being right.
 
 **Timing and compute.** 15 minutes as a demo, 30 minutes hands-on. Cached tier is the CPU-only
 cached path, and so is the full experience: this is the only module where those are the same thing.
-Module 1's toy sampler reads no data file at all and trains toy sampler inline in about three minutes on any
+Module 1's fresh walkthrough trains the toy sampler inline in about three minutes on any
 laptop. Nothing is lost, nothing is downloaded, and no credential is involved.
 
 ---
@@ -296,22 +289,21 @@ about a threshold rather than about the samplers. At a 200-step budget the same 
 0.00147 and 0.00177 apart, a ratio of 1.2. Same architecture, same data, one number is 4 and one is 1.2,
 and the difference is entirely in where you drew the line.
 
-Now the part that makes this module worth its slot. The obvious explanation for the fourfold gap is
-that flow matching's paths are straighter, so a crude integrator makes less error per step. That is
-plausible, it is what the literature says, and it has a confound sitting in plain sight. The flow
-sampler is a deterministic ODE solve. Ancestral DDPM injects fresh noise at every reverse step. Two
-things differ, and the experiment attributes the whole gap to one of them.
+Now test the standard explanation for that fourfold gap. Papers routinely attribute flow matching's
+low-step advantage to straighter transport paths, which reduce Forward Euler truncation error. That
+mechanism is plausible, yet a second variable changes alongside it: flow matching runs a
+deterministic ODE solve, whereas ancestral DDPM injects fresh Gaussian noise at every reverse step.
 
-Ask the room to find the confound before you name it. The hint that works is "what else is different
-about these two samplers besides the path". Then build the control, which is available for free
-because of the separability M1 established: DDIM with its noise dial set to zero is a deterministic
-sampler on the diffusion model, so running it holds the sampler family fixed and isolates path
-curvature.
+Ask the room to spot that confound before naming it ("what else differs between these two samplers
+besides the path?"). Then run the control that M1's sampler separability gives you for free: DDIM at
+`eta = 0` evaluates the same diffusion checkpoint deterministically, holding stochasticity fixed
+across both families.
 
-Then run it and let the answer be the wrong one. With both diffusion samplers made deterministic the
-gap widens rather than narrows: deterministic DDIM without clipping never reaches the 0.01 band
-within the 200 available noise levels, sitting at 0.0732, and at a fixed 8-step budget removing the
-sampling noise costs a factor of 20.8. The stochasticity was helping diffusion, not handicapping it.
+Run the sweep and watch the prediction invert. Making diffusion deterministic widens the gap instead
+of closing it: unclipped DDIM at `eta = 0` sits at 0.0732 even at 200 steps and never enters the
+0.01 band, and at a fixed 8-step budget stripping the injected noise worsens energy distance by
+20.8x (0.8486 against 0.0407). On this checkpoint, per-step noise was damping prediction error, not
+hurting it.
 
 Say what this licenses and what it does not. It does not overturn the claim that flow matching needs
 fewer steps; that measurement stands. It does overturn the explanation, on this target, at this
@@ -382,20 +374,16 @@ should know what produced the twelve structures on the slide. The cached path re
 a shipped SDF, which matters here more than anywhere else in the curriculum, because installing
 FlowMol3 is the single most likely place a learner stalls.
 
-Score them, and here is where the module earns its place in the verify arc. Run the step-count sweep
-and read chemical validity as a function of integration steps: 41.7 percent at 10 steps, 83.3 percent
-at 25, 100 percent at 50, and flat at 100 and 250. The batch size is 12 at every setting, so those
-percentages are 5 of 12 and 10 of 12; say the denominator out loud, because a percentage on twelve
-items is exactly the kind of number that needs its batch size stated. This is module 1's budget sweep
-with a chemistry metric substituted for the energy distance, and that is what makes the transfer
-visible: it is the same experiment, and a learner should recognize it as the same experiment.
+Score the twelve molecules across integration budgets to mirror module 1's sweep. Chemical validity
+climbs from 41.7 percent at 10 steps (5 of 12) to 83.3 percent at 25 (10 of 12) and 100 percent at
+50 (12 of 12), holding flat at 100 and 250. State the denominator of 12 out loud every time, since a
+single molecule moves the percentage by 8.3 points. Learners should recognize module 1's step-budget
+experiment with chemical validity in place of energy distance.
 
-Then the reveal, which is the hinge of the entire curriculum and should get its own beat. Validity is
-a question about the molecular graph. It asks whether every atom has a legal number of bonds and
-whether the structure parses as a molecule. It says nothing whatsoever about where the atoms are.
-A molecule can score 100 percent valid and have a ring bent into a shape no crystal has ever held.
-Everything module 4 does follows from that one sentence, so make the point and then stop; do not start
-module 4 here.
+Pause on what chemical validity checks. RDKit sanitization asks only whether every atom obeys
+valence rules and whether the bond graph parses. It never inspects 3D coordinates: a molecule can
+score 100 percent valid with a benzene ring folded like an envelope or two non-bonded atoms 0.5
+angstroms apart. Stop there so module 4 can pick up the geometric question directly.
 
 If you have the minutes, add the metric-dependence point, which X4 assesses. Validity saturates at 50
 steps. Mean synthetic accessibility, an estimate from 1 to 10 of how hard a molecule would be to make
@@ -426,8 +414,8 @@ a real install, not a pip line. What is lost on the cached path: the experience 
 generator run, and the ability to change the sampling seed or the atom count. What is not lost: every
 number in the module. Note for anyone writing about the checkpoint, since the field usually gets this
 wrong: the FlowMol source code is MIT licensed, and the pretrained weights are distributed separately
-from a plain HTTP directory with no license statement of any kind, which is more restrictive in effect
-than MIT rather than less.
+from a plain HTTP directory with no license statement of any kind, making the weights more
+restrictive in effect than MIT.
 
 ---
 
@@ -456,33 +444,28 @@ the failures concentrate in internal geometry rather than in the ligand's relati
 protein. That decomposition is the habit to instill. A pass rate is a summary of a battery, and the
 battery is where the information is.
 
-The second kind is continuous, has no pass line, and does not reproduce. PoseCheck reports strain
-energy, which is how far a pose has been bent away from the shape the molecule would relax into, in
-kcal/mol. The pocket-conditioned batch has a median around 134 kcal/mol against 0.39 for the caffeine
-co-crystal pose measured the same way, roughly 350 times higher. Now say the caveat in the same
-breath, because it is the lesson rather than a disclaimer: PoseCheck builds its relaxed reference
-ensemble without passing a random seed, so re-running moves individual ligands by up to about 3
-percent while leaving most bit-identical. The ratio is the least stable number in the whole dataset,
-because both its numerator and its denominator drift. The conclusion rests on the order of magnitude
-and not on the digits, and you should never write a strain number to more than three significant
-figures.
+The second kind is continuous, has no pass line, and drifts between runs. PoseCheck reports strain
+energy: how far a pose bends a molecule from its relaxed conformation, in kcal/mol. The
+pocket-conditioned batch has a median of 134.5 kcal/mol against 0.39 for the caffeine co-crystal
+pose, roughly 350 times higher. State the reproducibility limit immediately: PoseCheck embeds its
+relaxed reference ensemble without a fixed random seed, so re-running shifts individual ligands by up
+to about 3 percent while leaving most unchanged. Because both numerator and denominator drift, their
+ratio is the least stable figure in the bundle; report strain to at most three significant figures,
+as an order of magnitude.
 
-Then the sharpest thing in the module, and it takes one sentence: within that same tool, one metric
-drifts and another does not. PoseCheck's clash counts are computed from fixed geometry with no
-embedding step, so the median clash count of 2.5 for the batch and 3 for the caffeine pose reproduce
-exactly. Same tool, same run, two different epistemic statuses. A learner who absorbs that stops
-asking "is this tool reliable" and starts asking "is this number reliable", which is the right
-question.
+Contrast that with a second column from the same PoseCheck table: clash counts are computed directly
+from fixed input coordinates with no conformer embedding, so the batch median of 2.5 and caffeine's 3
+reproduce identically every run. One tool, one table, two different reproducibility guarantees. Ask
+"is this metric deterministic?" instead of "is this tool reliable?".
 
 The third kind is definition-dependent. Compute the pairwise diversity of the same twenty molecules
 under two fingerprints, where a fingerprint is a bit vector summarizing a molecule's substructures.
 Under the RDKit topological fingerprint at library defaults it is 0.8090. Under Morgan at radius 2
-with 2048 bits it is 0.9175. Same molecules, same definition of diversity, a gap of 0.11. Neither is
-wrong. A similarity or diversity number without its fingerprint named is not a result, and that is a
-rule your learners should leave with.
+with 2048 bits it is 0.9175. Same molecules, same formula, a gap of 0.11. Neither value is wrong, and
+quoting either without naming its fingerprint leaves the number uninterpretable.
 
-Then the fourth kind, and this one is discovered rather than told, which is why it is an exercise
-rather than a slide. Do not preview it. Run X5 and let the room find it.
+The fourth kind is a vacuous check that could not fail on the input it received. Do not preview it on
+a slide; run X5 and let the room uncover it from the files.
 
 **What to open.** Work the teaching narrative above alongside exercise `EX2` (tasks X5, X6 and X7).
 Figures: `validity`, whose panel (a) gives intramolecular pass fractions for both batches, panel (b)
@@ -497,28 +480,24 @@ including on a slide.
 module, and the prompts for the room, are in `INSTRUCTOR_NOTES.md` section 4 under M4, each
 prompt printed beside its expected answer.
 
-**The exercises.** Three, and this is the heaviest exercise load in the curriculum.
+**The exercises.** Three, making M4 the heaviest exercise block in the course.
 
-X5, "The check that could not have failed", 20 minutes, advanced, is the required failure-discovery
-exercise and the single item this whole resource is built around. Learners are shown the published
-table reporting that all twenty ligands pass every intermolecular check, including two checks about
-organic cofactors. They then measure, themselves, that every one of the twenty has an atom within
-0.564 angstroms of the co-crystallized caffeine, with a median closest approach of 0.346 angstroms.
-The contradiction is theirs to resolve. Resolving it means discovering that the receptor file holds
-2250 protein atom records and zero cofactor or water records, so six of the nine intermolecular
-checks were structurally incapable of failing. Had the caffeine been retained in the file, it would
-have been read as a cofactor that every ligand overlaps, and the overall pass count would have been 0
-of 20 rather than 15 of 20. The last part asks which preparation is correct, and the answer is that
-it depends: dropping the reference ligand is right here, because the design task is to replace it,
-and the same preparation would be wrong for a genuine cofactor such as a catalytic metal that a
-designed ligand must not overlap. That is a scientific judgement the check cannot make for you.
-Nothing in the stem hints that anything is wrong, and nothing in your framing should either.
+X5, "The check that could not have failed", 20 minutes, advanced, is the first failure-discovery
+exercise. Learners read the shipped PoseBusters table, where all twenty ligands pass every
+intermolecular check including both organic-cofactor columns. Next they measure that every ligand has
+an atom within 0.564 angstroms of the co-crystallized caffeine (median closest approach 0.346
+angstroms). Reconciling the two requires inspecting `data/3rfm_protein.pdb`, which holds 2250 ATOM
+records and zero HETATM records, leaving six of the nine intermolecular checks with nothing to test.
+Had caffeine remained in the PDB, PoseBusters would have treated it as an organic cofactor and failed
+all twenty ligands, dropping overall validity from 15 of 20 to 0 of 20. Part four asks which
+preparation is right: stripping caffeine is appropriate here because the design replaces it, whereas
+stripping a catalytic zinc or heme cofactor hides a fatal clash. Give no hint in your framing before
+learners run the census.
 
-X6, "Two correct answers to one question", 10 minutes, intermediate, is the fingerprint exercise. Two
-traps are graded, and both are worth knowing about before the room hits them: the hydrogen convention
-must be stated, since adding explicit hydrogens drops the RDKit value to 0.4777, and dividing the
-pair-similarity sum by the number of molecules rather than the number of pairs gives a negative number,
-which is not a diversity at all.
+X6, "Two correct answers to one question", 10 minutes, intermediate, covers the fingerprint gap. Two
+traps are graded: learners must state the hydrogen convention (adding explicit hydrogens with
+`Chem.AddHs` drops RDKit diversity to 0.4777), and must average over the 190 pairs instead of
+dividing the pair sum by 20 molecules (which yields -0.815).
 
 X7, "Sort four numbers by how much you can trust them", 12 minutes, advanced, is the synthesis item
 and the one to keep if only one M4 exercise survives a cut. Four numbers, four classifications:
@@ -546,7 +525,7 @@ helps, and it buys a new failure: a molecule can satisfy the protein and still b
 
 Everything so far generated molecules in a vacuum. Now generate them for a purpose.
 
-Set the scene concretely rather than abstractly. The target is the adenosine A2A receptor, PDB entry
+Anchor the module on one concrete complex. The target is the adenosine A2A receptor, PDB entry
 3RFM, with caffeine sitting in its orthosteric site. A ligand is the small molecule that binds to the
 protein; a binding pocket is the cavity on the protein's surface where it sits; a co-crystal structure
 is an experimentally measured structure of the two together, and it is the closest thing to ground
@@ -567,31 +546,27 @@ Then, because one frozen checkpoint can be steered, show the other two things it
 retraining. An evolutionary loop that starts from caffeine at a drug-likeness of 0.5385 and reaches
 0.7229 over three generations with a population of eight, keeping the top three each round. And
 scaffold inpainting, which fixes the nine-atom purine core of caffeine and grows new chemistry around
-it, borrowed straight from image models that fill in a masked region. One checkpoint, three tasks,
-and the only thing that changed is what was held fixed and where the reverse chain was started. That
-framing is worth writing on the board, because X8 asks learners to add a fourth row to it.
+it, borrowed straight from image models that fill in a masked region. One checkpoint performs all
+three tasks; only the fixed atom mask and the reverse-chain starting point change. Put that two-column
+table on the board, since X8 asks learners to add a fourth row.
 
-Now the verify half, and this is exactly where it has to be loudest. Conditioning is the point at
-which a room starts to believe the output, because it looks purposeful and the `pocket_ligand` figure is persuasive:
-a high-drug-likeness ligand seated in the A2A pocket, cartoon protein, translucent surface. That
-picture carries an argument on its own, and the honest thing is to qualify it in the same sitting.
+Now bring in the checks while the `pocket_ligand` rendering is still on screen: a high-QED ligand
+seated in the A2A pocket, cartoon helices, translucent surface. Rooms tend to trust a pocket-fitted
+picture on sight, so qualify it immediately.
 
-Run the same PoseBusters battery from M4 and note that it fails in the opposite direction from the
-unconditioned batch. Every ligand-to-protein check passes. Bond angles fail on three of twenty and
-bond lengths on two. Conditioning bought a better relationship to the protein and did not buy better
-internal geometry. Strain is the sharpest signal here: a median around 134 kcal/mol against 0.39 for
-the caffeine reference pose measured identically, roughly 350 times higher, with the unseeded-ensemble
-caveat attached as always.
+Run the PoseBusters battery from M4 and contrast its failures with the unconditional batch. Every
+ligand-to-protein check passes, while bond angles fail on three of twenty and bond lengths on two.
+Conditioning aligned the ligand to the pocket without fixing internal geometry. Strain confirms it:
+a median of 134.5 kcal/mol against 0.39 for the caffeine co-crystal pose, roughly 350 times higher
+(subject to the unseeded-ensemble drift noted in M4).
 
-Then close on scaffold retention, which is the module's own definition trap and a callback to M2's
-threshold point and M4's fingerprint point. Did the scaffold survive the inpainting? By coordinate,
-all ten molecules kept the nine pinned atoms exactly where they were put, a retention of 1.00. By a
-strict aromatic-purine pattern match, 2 of 10, a retention of 20 percent. Both measurements are
-correct and they answer different questions. The coordinate measurement answers the question the
-method promises, because inpainting fixes atom positions and element identities and says nothing
-about bond orders, which are re-perceived from the geometry afterwards and can come back with a
-different aromatic assignment. If you have thirty seconds, this is the third time the room has seen
-"the answer depends on the definition", and naming that out loud is worth more than the detail.
+Close on scaffold retention, calling back to M2's band threshold and M4's fingerprint choice. Did
+caffeine's purine core survive inpainting? By coordinate, all ten designs kept the nine pinned atoms
+in place (median retention 1.00). By strict aromatic-purine SMARTS match (`c1ncc2ncnc2n1`), only 2 of
+10 match (20.0 percent). Both numbers are accurate: inpainting pins element types and 3D positions,
+while OpenBabel re-perceives bond orders afterward from interatomic distances and assigns non-aromatic
+ring patterns to eight of the ten products. State the general rule a third time: a summary metric is
+defined only alongside the procedure that computed it.
 
 **What to open.** Work the teaching narrative above alongside exercise `EX3` (task X8). Figures:
 `diffsbdd_optimization` for best and mean drug-likeness across the three generations against the
@@ -599,11 +574,10 @@ caffeine baseline; `diffsbdd_inpaint` for the ten inpainted molecules with six d
 `pocket_ligand` for the rendered ligand in the pocket; `two_directions_sbdd` for fixing the pocket
 and generating the ligand against fixing the ligand and generating the pocket, which sets up M8.
 
-**A trap in the files themselves.** The pocket-render figure ships as `pocket_ligand`. One published
-data cell that raises a NameError on the cached path: its
-trailing print reads a variable that is assigned only in the fresh branch. Drop the print, or read the
-best drug-likeness value of 0.7229067081355963 from `data/diffsbdd_optimize_metrics.json`. Do not
-silently patch the published notebook; the exercise notebook is a separate file and says why.
+**A trap in the files themselves.** The pocket-render figure ships as `pocket_ligand`. One recorded
+QED-optimization cell raises `NameError` on the cached path because its trailing print reads a
+variable assigned only in the fresh-compute branch. Drop the print, or read `best_qed`
+(`0.7229067081355963`) from `data/diffsbdd_optimize_metrics.json`, as `EX3` does.
 
 **Figure caution.** The `pocket_ligand` figure is a rendering of a single generated pose, and it is exactly the image
 M6 exists to qualify. Whenever you show it, the M6 result must appear within one slide or one paragraph.
@@ -675,24 +649,18 @@ differing by about 4 angstroms is the right amount of confidence to have in a re
 pushes for a verdict, give them the docking model's own hedge: its median top-pose confidence is 0.10,
 and seven of the twenty are negative. The second opinion is not confident either.
 
-**Shared bias, and why it is the harder half of this module.** The disagreement above is easy to read:
-two methods disagree, so you trust the rendering less. The subtler and more important case is the one
-where the second method agrees, and it is worth a beat of its own, because a learner who leaves thinking
-"get a second opinion" without this will over-trust the next agreement they see. A second method is
-independent evidence only to the degree that it can fail differently from the first. DiffSBDD, the
-generator, and DiffDock, the re-docker, are both SE(3)-equivariant diffusion models trained on
-PDB-derived protein-ligand complexes: they share an architecture family and much of a training
-distribution. Two models that learned the same priors from overlapping data fail in correlated ways, so
-if they had agreed on a pose, the agreement would carry less evidence than two independent
-methods agreeing would, because they can be wrong together and call it consensus. Here they happen to
-disagree, which is the informative outcome and the reason the module works; but the transferable lesson
-is the question, not the answer. Before you count a second method's agreement as confirmation, ask what
-it shares with the generator: the architecture, the training set, the representation, the failure modes.
-The gold standard for independence is an experimental measurement, which shares none of these and which
-nothing in this bundle has. Everything computational here is one calculation checking another, and two
-calculations drawn from the same well are less independent than they look. (The same caution returns in
-M7, where the verifier is also PDB-trained, and in M8, where ESMFold and the backbone generator are a
-closer approximation to independence because they are trained on different objectives.)
+**Shared bias: when agreement is weak evidence.** Disagreement is straightforward to interpret: two
+methods differ by 4.4 angstroms, so you lower your confidence in a single pose. Agreement is subtler,
+and learners who leave with only "get a second opinion" will over-trust the next match they see. A
+second method provides independent evidence only insofar as its failure modes differ from the
+generator's. DiffSBDD and DiffDock are both SE(3)-equivariant diffusion models trained on PDB
+protein-ligand complexes; they share an architecture family and overlapping training structures.
+Models trained on the same priors fail in correlated ways and can place a ligand in the same wrong
+pose. Here they disagree anyway, giving M6 its result, yet the question to carry forward is what the
+verifier shares with the generator in architecture, training set, and representation. Only an
+experimental structure or binding assay shares none of those priors. (M7 returns to this point for
+PDB-trained Boltz-2, and M8 contrasts it with RFdiffusion plus ESMFold, which train on distinct
+objectives.)
 
 **What to open.** Work the teaching narrative above alongside exercise `EX3` (task X9). Figure
 `redock`: panel (a) puts both pose sources on the identical battery, panel (b) shows the pose
@@ -785,15 +753,15 @@ models happen to share. The transferable form is the M6 question pointed at the 
 pipeline: a model verifier is only as independent as its training, and its agreement is worth what its
 independence is worth.
 
-Finish with the implementation check, which is the module's quietest and most unsettling result. The same
-seven molecules were scored twice, by two independent Boltz-2 builds. The two agree on everything a
-summary statistic would report: rank correlation 0.964, mean absolute difference in binder probability
-0.029, five of seven ranks identical. And they swap exactly the top two designs. Under one build design 0
-leads; under the other, design 2. So the sentence a project would write, "design 2 was our best candidate", is a statement about an implementation. "Which designs are plausible" is stable; "which design
-is best" is not. That distinction is the whole module in one line, and it is a better argument for
-reporting your build than any policy statement.
+Finish with the implementation comparison. Two Boltz-2 builds (a pinned local build and a hosted
+endpoint) scored the same seven molecules. Every summary statistic indicates close agreement:
+Spearman rank correlation 0.964, mean absolute probability difference 0.029, five of seven ranks
+identical. Even so, the two builds swap the top two DiffSBDD designs: design 0 leads under the pinned
+build (0.4440 vs 0.4391), while design 2 leads on the hosted endpoint (0.4492 vs 0.3633). Writing
+"design 2 was our best candidate" describes the build that ran, not the ligand set. Shortlist
+membership holds steady across both builds; single-winner selection does not. Always name the build.
 
-**What to open.** Work the teaching narrative above alongside exercise `EX3` (tasks X10 and X11).
+**What to open.** Work the teaching narrative above alongside exercise `EX3` (task X10).
 Figures: `boltz_a2a_triage`, panel (a) for structural confidence across five diffusion samples and
 panel (b) for the affinity read against the 0.5 line; `boltz2_comparison` for binder probability under
 two implementations; `boltz2_complex` for the rendered design overlaid on the model's caffeine pose;
@@ -805,11 +773,9 @@ when you describe the rendered ligand in the `boltz2_complex` figure, name the i
 describe it as the highest-drug-likeness design that was also scored, at 0.7942. Which design ranks
 first depends on the build, so any description of it has to say which build.
 
-**One more scoping fact worth saying out loud.** Only five of the twenty pocket-conditioned ligands were
-ever affinity-scored. No superlative over the full batch of twenty is available from this data, and a
-sentence like "the best of the twenty" cannot be supported. Say "the best of the five that were scored".
-Learners will reach for the batch-wide superlative on their own; catching it is good practice for reading
-other people's tables.
+**Batch scope.** Only five of the twenty pocket-conditioned ligands were affinity-scored, so the data
+supports "best of the five scored", never "best of the twenty". Prompt learners when they reach for
+the batch-wide superlative.
 
 **Misconceptions and discussion prompts.** The wrong models learners arrive with in this
 module, and the prompts for the room, are in `INSTRUCTOR_NOTES.md` section 4 under M7, each
@@ -858,26 +824,25 @@ There is no experimental structure. What do you do? Ask a method that never saw 
 the designed sequence from scratch, and the deviation between where it puts the chain and where the
 generator put it is the self-consistency RMSD, the field's measure of designability: whether a real
 sequence could encode the generated backbone. The field's bar is below 2 angstroms with a folding
-confidence above 70. Worth a sentence here, because it closes the shared-bias thread from M6 and M7:
-ESMFold and RFdiffusion are a better approximation to two independent witnesses than the ligand-side
-pair were, because they are trained on different objectives (one folds a given sequence, the other
-generates a backbone), so their agreement is stronger evidence than DiffDock agreeing with DiffSBDD
-would have been. Independence is a spectrum, and this is the far end of what the curriculum reaches.
+confidence above 70. Notice how this closes the shared-bias thread from M6 and M7: ESMFold folds a
+single sequence while RFdiffusion denoises 3D coordinates, so their distinct training objectives make
+agreement stronger evidence here than between DiffDock and DiffSBDD.
 
-The numbers: 23 of 24 designs clear it, the exception grazing at 2.05 angstroms, median 0.715 angstroms.
-Then the length sweep, which is the pleasant surprise: the designable fraction rises from 58.3 percent at 60
-residues to 70.8 at 90, 83.3 at 120 and 87.5 percent at 150. The pipeline scales rather than degrades, which
-is the opposite of what most rooms predict, and worth asking them to predict first.
+Twenty-three of 24 designs clear that bar (median scRMSD 0.715 angstroms; the lone miss sits at 2.05
+angstroms). Ask the room to predict how the designable fraction behaves as backbone length grows from
+60 to 150 residues before showing the sweep: it climbs from 58.3 percent at 60 residues to 70.8 at
+90, 83.3 at 120, and 87.5 percent at 150, inverting the common guess that longer chains fail more
+often.
 
-Now close the loop explicitly, because this sentence is the single most diagnostic thing in the curriculum.
-RFdiffusion plays the generator, as DiffSBDD did. ESMFold plays the independent second method, as DiffDock
-did. The self-consistency RMSD is the same kind of quantity as the pose RMSD from M6: a disagreement between
-two methods that never saw each other's output. A learner who can write that sentence has the concept. A
-learner who cannot has learned two pipelines, whatever their scores elsewhere.
+Close the loop by mapping the roles back onto M6: RFdiffusion is the generator (like DiffSBDD),
+ESMFold is the independent second method (like DiffDock), and scRMSD is the counterpart of pose RMSD,
+measuring disagreement between two models that never saw each other's output. Learners who can write
+that mapping see one loop across both domains; learners who cannot have memorized two separate
+pipelines.
 
 Then hand them the bridge, which is section 7 of this guide, and stop.
 
-**What to open.** Work the teaching narrative above alongside exercise `EX3` (task X12). Figures:
+**What to open.** Work the teaching narrative above alongside exercise `EX3` (tasks X11 and X12). Figures:
 `two_directions_sbdd` reused from M5 as the transfer hinge, and `designability` with the backbone
 against the refold in panel (a), per-residue deviation in (b), the designable box in (c) and the
 length sweep in (d).
@@ -941,8 +906,8 @@ number in it, and state what you could not check.
 Minute-by-minute run sheets, the clock discipline for each, the cut order when you fall behind and what each
 cut costs are in `INSTRUCTOR_NOTES.md` section 5, which also carries a model on-ramp budget, the minutes each
 model needs introducing with what the introduction must establish, and one full session worked minute by minute and
-by medium, so the within-session ordering of slide, model introduction, figure, demo and exercise is written out
-rather than left to be improvised. `reuse_and_adaptation_plan.md` carries the same three plus
+by medium, spelling out the within-session sequence of slide, model introduction, figure, demo and
+exercise. `reuse_and_adaptation_plan.md` carries the same three plus
 five substitutions for a course that matches none of them.
 
 ## 7. The bridge: what a learner can now read
@@ -973,9 +938,9 @@ The four papers, in the order to read them: PoseCheck (Harris et al., arXiv:2308
 PoseBusters (Buttenschoen et al., Chemical Science, doi:10.1039/D3SC04185A, 2024) turned it into a test everyone
 runs; Boltz-2 (Passaro et al., doi:10.1101/2025.06.14.659707, 2025) made the test itself a model; FLOWR (Cremer et
 al., Nature Computational Science, doi:10.1038/s43588-026-00998-8, 2026) is a generator introduced by how well it
-passes. That sequence is the emergence argument with citations attached. Two more are worth knowing and are not
-assigned: TABASCO (2025), which discards the equivariance module 3 taught and defends the choice on the battery
-alone, and DiffSBDD (2024), the generator module 5 runs.
+passes. That sequence is the emergence argument with citations attached. Two additional papers in the
+reference list are unassigned here: TABASCO (2025), which discards the equivariance module 3 taught
+and defends the choice on the battery alone, and DiffSBDD (2024), the generator module 5 runs.
 
 At a poster, three questions, in this order. They are the curriculum compressed to fit in a corridor.
 
@@ -1019,10 +984,9 @@ who wants that transfer should expect a new toolkit rather than a reuse of this 
 ran against a hosted endpoint whose served weights differ from the public release, and M7's affinity scoring wants
 24 to 48 GB of video memory. Both ship complete recordings and both say so in their own sections. What no cached file replaces is running either one on a molecule of your own choosing.
 
-### Open problems the resource points at but does not solve
+### Open problems the resource points at
 
-These are worth naming in a graduate room, because they are where the field is and where a learner who finishes
-could contribute. They are not covered material; they are the edge of it.
+Name these in a graduate room to mark the boundary between settled curriculum and active research.
 
 **Verifiers that do not share the generator's priors.** The strongest version of the loop would pair a generator
 with a verifier that fails differently, and the most common pairings today (a PDB-trained generator with a

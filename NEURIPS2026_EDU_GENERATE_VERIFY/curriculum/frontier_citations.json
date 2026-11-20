@@ -19,11 +19,11 @@
       "id": "arXiv:2308.07413",
       "doi": null,
       "openalex_id": "W4385889851",
-      "how_it_uses_generate_then_verify": "Introduces PoseCheck and applies it to several state-of-the-art pocket-conditioned generators, finding the generated molecules carry more physical violations and fewer key protein-ligand interactions than baselines, which is the measurement that turned verification into a reported stage rather than an assumption.",
+      "how_it_uses_generate_then_verify": "Introduces PoseCheck and applies it to several state-of-the-art pocket-conditioned generators, finding the generated molecules carry more physical violations and fewer key protein-ligand interactions than baselines; that measurement made verification a reported stage of the pipeline.",
       "role_in_curriculum": "frontier evidence for the verify half; an instrument the modules run",
       "verified_via": "arXiv metadata on 2308.07413: title, seven-author list, submitted 2023-08-14, primary_category q-bio.BM, abstract states the physical-violation finding verbatim. OpenAlex on 10.48550/arxiv.2308.07413 confirms the same record, publication_date 2023-08-14, no journal_ref (still a preprint at retrieval). OpenAlex work id W4385889851.",
       "taught_in_modules": [
-        "M3",
+        "M4",
         "M5"
       ]
     },
@@ -40,12 +40,13 @@
       "id": "doi:10.1039/D3SC04185A",
       "doi": "10.1039/d3sc04185a",
       "openalex_id": "W4389696354",
-      "how_it_uses_generate_then_verify": "Turns physical plausibility into a reusable pass/fail battery over bond geometry, internal clashes, ring flatness and ligand-to-protein distances, and applies it to show that deep-learning docking methods fail it, which is why every module of this curriculum runs the battery rather than reporting graph validity alone.",
+      "how_it_uses_generate_then_verify": "Turns physical plausibility into a reusable pass/fail battery over bond geometry, internal clashes, ring flatness and ligand-to-protein distances, and shows that deep-learning docking methods fail it; modules 4 to 6 run this battery alongside graph validity.",
       "role_in_curriculum": "frontier evidence for the verify half; the battery behind the cofactor-trap exercise",
       "verified_via": "OpenAlex on DOI 10.1039/d3sc04185a: W4389696354, Chemical Science, volume 15 issue 9 pages 3130-3139, online 2023-12-13 with the 2024 issue, three authors as listed, is_retracted false, open access (diamond). OpenAlex work id W4389696354.",
       "taught_in_modules": [
-        "M3",
-        "M5"
+        "M4",
+        "M5",
+        "M6"
       ]
     },
     {
@@ -70,8 +71,8 @@
       "id": "doi:10.1038/s43588-024-00737-x",
       "doi": "10.1038/s43588-024-00737-x",
       "openalex_id": "W4405194591",
-      "how_it_uses_generate_then_verify": "The pocket-conditioned generator the curriculum runs in M4, and the paper that steers one frozen checkpoint three ways (de novo, property optimization, scaffold inpainting) and then evaluates the output against physical and chemical filters rather than stopping at graph validity.",
-      "role_in_curriculum": "frontier evidence for the generate half operating under conditioning; the model behind M4",
+      "how_it_uses_generate_then_verify": "The pocket-conditioned generator the curriculum runs in M5, steering one frozen checkpoint three ways (de novo, property optimization, scaffold inpainting) and evaluating the output against physical and chemical filters.",
+      "role_in_curriculum": "frontier evidence for the generate half operating under conditioning; the model behind M5",
       "verified_via": "OpenAlex on DOI 10.1038/s43588-024-00737-x: W4405194591, Nature Computational Science, published 2024-12-09, is_retracted false, twelve-author list confirmed. OpenAlex work id W4405194591.",
       "taught_in_modules": [
         "M4",
@@ -102,11 +103,11 @@
       "id": "doi:10.1101/2025.06.14.659707",
       "doi": "10.1101/2025.06.14.659707",
       "openalex_id": "W4411463597",
-      "how_it_uses_generate_then_verify": "Puts co-folding and an affinity estimate at the end of a generative pipeline, which makes the verifier itself a model with its own calibration limits, and those limits are what the curriculum's failure exercise teaches.",
-      "role_in_curriculum": "frontier evidence that the verifier is now a learned model; the filter behind M6",
+      "how_it_uses_generate_then_verify": "Puts co-folding and an affinity estimate at the end of a generative pipeline, making the verifier itself a learned model whose calibration limits exercise X10 tests.",
+      "role_in_curriculum": "frontier evidence that the verifier is now a learned model; the filter behind M7",
       "verified_via": "OpenAlex on DOI 10.1101/2025.06.14.659707: W4411463597, bioRxiv, posted 2025-06-18, type preprint, is_retracted false, fourteen authors confirmed. OpenAlex work id W4411463597.",
       "taught_in_modules": [
-        "M6"
+        "M7"
       ]
     },
     {
@@ -125,13 +126,14 @@
       "id": "doi:10.1038/s43588-026-00998-8",
       "doi": "10.1038/s43588-026-00998-8",
       "openalex_id": "W7162681529",
-      "how_it_uses_generate_then_verify": "Reports its advance over prior diffusion and flow models in PoseBusters validity, pose accuracy and interaction recovery, which is the clearest single demonstration that by 2026 a new pocket-conditioned generator is introduced by the verification battery it passes.",
-      "role_in_curriculum": "frontier evidence that the loop is now the reporting convention, not an add-on",
+      "how_it_uses_generate_then_verify": "Reports its advance over prior diffusion and flow models in PoseBusters validity, pose accuracy and interaction recovery, showing that a 2026 pocket-conditioned generator is introduced by the verification battery it passes.",
+      "role_in_curriculum": "frontier evidence that the loop is now the reporting convention",
       "verified_via": "Two-step: arXiv metadata on 2504.10564 returned the preprint (submitted 2025-04-14) whose abstract names PoseBusters-validity, pose accuracy and interaction recovery as the evaluation axes; an OpenAlex search then resolved the journal version, DOI 10.1038/s43588-026-00998-8, Nature Computational Science, published 2026-05-28, type article, is_retracted false, same six authors. OpenAlex work id W7162681529.",
       "taught_in_modules": [
+        "M3",
         "M4",
         "M5",
-        "M8"
+        "M6"
       ]
     },
     {
@@ -148,12 +150,12 @@
       "id": "arXiv:2507.00899",
       "doi": "10.48550/arxiv.2507.00899",
       "openalex_id": "W4416888805",
-      "how_it_uses_generate_then_verify": "Drops the SE(3)-equivariant inductive bias the curriculum teaches in M2 and justifies the architecture entirely by the PoseBusters validity it reaches on GEOM-Drugs, so the verification battery is the argument rather than a check on it.",
-      "role_in_curriculum": "frontier evidence that the battery now adjudicates architecture choices, including against the equivariance taught in M2",
+      "how_it_uses_generate_then_verify": "Drops the SE(3)-equivariant inductive bias taught in M3 and justifies the architecture by the PoseBusters validity it reaches on GEOM-Drugs, using the verification battery to adjudicate model design.",
+      "role_in_curriculum": "frontier evidence that the battery now adjudicates architecture choices, including against the equivariance taught in M3",
       "verified_via": "arXiv metadata on 2507.00899: four authors as listed, submitted 2025-07-01, abstract states state-of-the-art PoseBusters validity on GEOM-Drugs and roughly 10x faster inference. An OpenAlex search confirms the arXiv record under DOI 10.48550/arxiv.2507.00899; no journal version found at retrieval, so cite as a preprint. OpenAlex work id W4416888805.",
       "taught_in_modules": [
-        "M2",
-        "M3"
+        "M3",
+        "M4"
       ]
     }
   ],

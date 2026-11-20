@@ -1,7 +1,7 @@
 # Reuse and adaptation plan
 
-Three configurations a lecturer can pick up without redesigning anything, with
-the cut lines stated rather than implied. The instructor notes are written from them.
+Three configurations a lecturer can pick up ready to run, with explicit cut lines. The instructor
+notes are written from them.
 
 Read with `LESSON_GUIDE.md` for what each module contains and `assessment_blueprint.md` for what each
 exercise asks.
@@ -67,7 +67,7 @@ a different subject.
 
 **Exercises.** X0, X1, X4, X5, X10.
 
-**The cut lines.** The hard constraint is that X5 and X10 must both fit, because they are the two exercises where the learner discovers a failure rather than reproducing a success, and a lab that only reproduces successes teaches the wrong thing. X5 needs 20 minutes and cannot be compressed; it has four parts and the third is where the reconciliation happens. So: cut M2 and its exercises (X2, X3), which costs the controlled-decomposition lesson and is the most painful cut in the plan. Cut M5 to a two-slide framing, keeping its outputs. Cut M6 and M8. Drop X6 and X7 to homework, where they work well because both are reading exercises with no compute. IF THE ROOM IS SLOWER THAN EXPECTED: drop X4 (8 minutes, and M3's knee can be told rather than measured) before touching anything else. Never drop X0; a lab where three people have a broken environment loses more than 5 minutes.
+**The cut lines.** The hard constraint is that X5 and X10 must both fit: in those two exercises learners uncover a broken assumption in a reported table, and a lab that only reproduces passes misses the subject. X5 needs 20 minutes and cannot be compressed; it has four parts and the third reconciles the contradiction. Cut M2 and its exercises (X2, X3), losing the controlled-decomposition lesson. Cut M5 to a two-slide framing while keeping its outputs. Cut M6 and M8. Move X6 and X7 to homework, since both read shipped tables with negligible compute. IF THE ROOM IS SLOWER THAN EXPECTED: drop X4 (8 minutes; state M3's knee directly) before touching anything else. Never drop X0; a lab where three people have a broken environment loses far more than 5 minutes.
 
 **What a learner walks away able to do.** Has personally found a step budget at which a sampler breaks, has personally discovered that a published pass rate included checks that could not fail, and has personally computed a potency number that is meaningless and can say why. Leaves with the exercise notebook, the solutions, and homework covering the four skipped modules.
 
@@ -111,10 +111,10 @@ picks a soluble target should expect better geometry and should be asked why.
 
 **Swap the sampler.** Replace FlowMol3 in M3, or DiffSBDD in M5, with another generator of the same
 kind and keep everything downstream, because the verification stack takes an SDF and a receptor and
-does not care what produced them. This is lighter than swapping the target: only the mechanism
-narrative in that module and the per-model numbers in the guide change, while M4, M6 and M7 stay
-intact. The version worth assigning is to run two generators and compare their PoseBusters profiles,
-which is what a 2026 methods paper does and what the bridge prepares a learner to read.
+is agnostic to what produced them. Only the mechanism narrative in that module and the per-model
+numbers in the guide change, while M4, M6 and M7 stay intact. As a project, have learners run two
+generators and compare their PoseBusters profiles, matching how a 2026 methods paper presents a new
+model.
 
 **Teach only the verification half.** M4, M6 and M7 stand alone as a 60-minute unit for a course
 that has already covered diffusion. Preface with ten minutes of M3's framing so the molecules have a

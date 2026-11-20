@@ -21,18 +21,18 @@ reused here as the substrate the exercises read, which is what lets every module
 with no GPU and no network. Reproducing them would require an A100 and hosted inference endpoints, so
 shipping the recorded results is what makes the runnability claim true.
 
-Third-party material is cited with its license and, where large, referenced rather than bundled. PDB
-entry 3RFM (public domain). Seeded samples of public preprocessings of CrossDocked2020 (CC0) and
+Third-party material is cited with its license and, where large, referenced by URL without bundling.
+PDB entry 3RFM (public domain). Seeded samples of public preprocessings of CrossDocked2020 (CC0) and
 GEOM-Drugs (CC-BY-4.0). The DiffSBDD checkpoint (MIT code, CC-BY-4.0 weights) and the FlowMol3
 pretrained weights, both referenced by permanent URL and neither bundled. On the FlowMol3 weights the
-bundle records something the field usually gets wrong: the FlowMol source code is MIT licensed and the
-weights are distributed separately from a plain HTTP directory with no license statement of any kind,
-which is more restrictive in effect than MIT.
+bundle records a distinction often missed: the FlowMol source code is MIT licensed while the weights
+ship separately from a plain HTTP directory with no license statement, which is more restrictive in
+effect than MIT.
 
-Every file carries its provenance in the manifest: one of three values, from a closed enumeration,
-with the rule for assigning it stated, so the boundary between new and reused is machine-checkable
-rather than a matter of trust. The resource is the curriculum and its exercises; the cached data and
-figures are the apparatus those exercises read.
+Every file carries its provenance in the manifest: one of three values from a closed enumeration,
+with the assignment rule stated, making the boundary between new and reused directly checkable. The
+resource is the curriculum and its exercises; the cached data and figures are the apparatus those
+exercises read.
 
 ## Per-directory classification
 

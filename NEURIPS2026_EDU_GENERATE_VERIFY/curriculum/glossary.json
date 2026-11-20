@@ -1,7 +1,7 @@
 {
   "tiers": {
     "specialist": "A term whose meaning is set by a specific method, tool or paper. Forbidden in the opening paragraph. Must be defined within 200 characters of first use everywhere else.",
-    "domain": "A term from chemistry, structural biology or machine learning that a non-specialist will not know but that takes one clause to define. Allowed anywhere after the opening paragraph, defined at first use.",
+    "domain": "A term from chemistry, structural biology or machine learning that is unfamiliar to a non-specialist and takes one clause to define. Allowed anywhere after the opening paragraph, defined at first use.",
     "general": "A term whose plain-English meaning is close enough to its technical meaning that a non-specialist reads it correctly. Allowed in the opening paragraph."
   },
   "counts": {

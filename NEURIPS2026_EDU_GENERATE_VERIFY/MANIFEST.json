@@ -22,7 +22,7 @@
  "provenance_rule": "newly_authored_2026_track: the curriculum, exercises, solutions, toolkit and packaging written for this submission. prior_published_reused: cached result files and figures produced by the author for prior published material. third_party: external data with its own license.",
  "counts": {
   "present": 131,
-  "bytes_present": 26725285,
+  "bytes_present": 26711435,
   "present_by_provenance": {
    "newly_authored_2026_track": 38,
    "third_party": 5,
@@ -60,6 +60,7 @@
    "stem": "boltz2_complex",
    "formats": [
     "png",
+    "svg",
     "pdf"
    ],
    "why": "An earlier copy carried the legend 'caffeine, 3RFM co-crystal'. The rendered structure is the Boltz-2 predicted pose, so the corrected copy reads 'caffeine, Boltz-2 pose'. The bundle ships the corrected copy."
@@ -80,44 +81,44 @@
   },
   {
    "path": "LICENSE-NOTES.md",
-   "bytes": 6028,
-   "sha256": "598b2dbf9a4cf404e0f4da466366ef7951cb2ffcd18997bc5ab0bbf051b89020",
+   "bytes": 5993,
+   "sha256": "2039d2ad78d608306a7f115e6a61d2b90bd4cf29e61ba5573305b1c997d8b7be",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "README.md",
-   "bytes": 17989,
-   "sha256": "60050fc94442c344dc5ddb9164e0e39493c741365b5a4d0a5c0c1671330af011",
+   "bytes": 17624,
+   "sha256": "b9f3eb9f8fc06898e2356baba3b71723fd5bd7ad75bb02bde6799f5ad2462861",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "START_HERE.md",
-   "bytes": 7168,
-   "sha256": "42a40e53b1229f335b776408e0cff2fe2a3a0f2cf6586d1ea97595eff39f1609",
+   "bytes": 6696,
+   "sha256": "cfc539f543c337e9fda1e9bcfca6f3c36145cf4ca833805669880451bc52fd6c",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/INSTRUCTOR_NOTES.md",
-   "bytes": 63925,
-   "sha256": "a470fc7bd892c2974291683c60911303681b95a9ce4d0f49730cebb6f52eb5ec",
+   "bytes": 62477,
+   "sha256": "ed37709ea2def0b2b869b699a20805f1bbe349f66cc49301fab9c8b140dc90bb",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/LESSON_GUIDE.md",
-   "bytes": 80893,
-   "sha256": "d8c41c73a85fa7bf1f0d02b1fa94b0a980695a42fbe461c94cc345d55b5004ea",
+   "bytes": 76427,
+   "sha256": "42953434c909141ee600a61806bf9116b334229ecde22ba6e1a3d82ef45569ea",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/assessment_blueprint.json",
-   "bytes": 33195,
-   "sha256": "c38663f6f9738698b7a7d5079f96e0356be5b2f7c8eca3121e953366f957da31",
+   "bytes": 32832,
+   "sha256": "70a5e3cfe205eca5a2bda003c05c024ac11864fa85b39b6832ed6a6edf8edc3f",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/assessment_blueprint.md",
-   "bytes": 35197,
-   "sha256": "b731902332f6f3274e7258f4570b77756bb214dd25dedd6fedf7398203c7222e",
+   "bytes": 34318,
+   "sha256": "059bf47f44d39acf07689da06757540741eb3781db2f6695a5579087a95d7338",
    "provenance": "newly_authored_2026_track"
   },
   {
@@ -128,56 +129,56 @@
   },
   {
    "path": "curriculum/conference_bridge.md",
-   "bytes": 6146,
-   "sha256": "4d7cec83466caa070d1e3fe4b30e366e67c4b6b3013d7adf11379469a94ad3f5",
+   "bytes": 5632,
+   "sha256": "1f27643d75700a6d58806d3f8afc1bbbb993ee5f6ba2d262fac5c951e7198164",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/frontier_citations.json",
-   "bytes": 9690,
-   "sha256": "1c7eb34634e927d459140afcce4c1d1365b2eafb13da617d4fdbdfd422fca6e4",
+   "bytes": 9419,
+   "sha256": "d88c0a994b427c2cc5ace1e09e00e5bc66699bbaf74871c6292dee09167547ea",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/glossary.json",
-   "bytes": 13319,
-   "sha256": "4ee06547dd0e0c4d7bf80cb4fe74080b7b8683bec39849c36affd3633925c2f4",
+   "bytes": 13317,
+   "sha256": "703d712194137b5fd8feec40d89f3a0f630a5e49baba9c415c23b0a6f608fd87",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/glossary.md",
-   "bytes": 10186,
-   "sha256": "df327ebbb4c807fb698739e26369a221ba1b68edeadebe92d2f9d61b828128a1",
+   "bytes": 10039,
+   "sha256": "7985cb2d93b8b1bc04dd6e79aaea4a5a457a70d1272d8ba2eeb10c157abba978",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/objectives_prerequisite_map.json",
-   "bytes": 17597,
-   "sha256": "bcf3f26c8bd66ef8e3a5d752214fda28244870a404a97d0ae4147f1c49651ead",
+   "bytes": 17601,
+   "sha256": "cb25bc7437c1cf4b177ec6b8a0df3e7662bc79f635d48d6181b31f42a501bd45",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/objectives_prerequisite_map.md",
-   "bytes": 14188,
-   "sha256": "3c39ca99be46dc19b4fc7b1ae68798a9b9f1632225265b063e7cfe3fb289e673",
+   "bytes": 14192,
+   "sha256": "b4ad21be9454a6076ad426131cbe5a5a6071826a74050b5fe74d0e1c0f380540",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/originality_and_attribution.md",
-   "bytes": 5717,
-   "sha256": "b2cfa053063d4ade3e16a2d44ec33a308973956528b71909a9cd4618dd687dbd",
+   "bytes": 5653,
+   "sha256": "851dad4e65f9f44b0de0407d70acece31b05aed2fc88211a28807ab848a3b05f",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/provenance_taxonomy.json",
    "bytes": 3187,
-   "sha256": "bb3d72a3be20aedd143006677201960ebd88e1af52b83be51b60529553f86288",
+   "sha256": "cb99d3037b662612c884b808265323cc4b073c82a17fe76780c1aa6665330bc6",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "curriculum/reuse_and_adaptation_plan.md",
-   "bytes": 10216,
-   "sha256": "c8bd6fd8343423c3c2ddfda325a58e038d897906b4f2d904b20941165adc03e2",
+   "bytes": 9978,
+   "sha256": "c6e2d347dfa55ad8459c09173c09423fd1f1a783f548937dfdf31cc16a0eb15f",
    "provenance": "newly_authored_2026_track"
   },
   {
@@ -398,8 +399,8 @@
   },
   {
    "path": "exercises/EX0_environment_selfcheck.ipynb",
-   "bytes": 18870,
-   "sha256": "f8757471100dbb180789bcc3b4db13760ad299307eede35ee2f76d21c029117e",
+   "bytes": 18682,
+   "sha256": "f015ad30bac95d683595cd9298f4a36e2ed77bea773d8b67eb0009eaf90d0f6f",
    "provenance": "newly_authored_2026_track"
   },
   {
@@ -410,32 +411,32 @@
   },
   {
    "path": "exercises/EX2_molecules_and_their_checks.ipynb",
-   "bytes": 30171,
-   "sha256": "8385bbe7ebe4e5b9d960aec74a0c2fb0a546bba0ac4ecd7ee250b85023bcb319",
+   "bytes": 29821,
+   "sha256": "3531a97112149f86779c6302244dc396c5532c045c982fbc46706a1c5f525c14",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "exercises/EX3_second_opinions_and_transfer.ipynb",
-   "bytes": 38437,
-   "sha256": "55dc7c958fb1bfa736910b96dedf933f7ca3844520dc0a5e598c43bd10e936d1",
+   "bytes": 38235,
+   "sha256": "c893617a7323efe53027a6d33fb2420980df8d740e2252d50eb7208ac7bd0573",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "exercises/README.md",
-   "bytes": 3778,
-   "sha256": "2b28161de2a53199b5754d44b29d0fd5f76719d30ed1ef325ed9d94c6ba5efed",
+   "bytes": 3694,
+   "sha256": "f71bb1bb115c3097d4128209ef00f6f8a33222263981e261e38e281194bd7dc0",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "exercises/VALIDATION_REPORT.md",
-   "bytes": 11680,
-   "sha256": "f588efb894c005b6d539df33f5f5a449a8ad5aa77f633c1ff400e7edfe5e3657",
+   "bytes": 11665,
+   "sha256": "13030ba59328543c4dcb17db57861794e2b8821221a1dc2dd88ed258bc331c4a",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "exercises/requirements.txt",
-   "bytes": 2197,
-   "sha256": "06f7f177bd1fd40986a2a8197e67ca7afe8d16f5f8bf9e77311d689e3aa38c7a",
+   "bytes": 2179,
+   "sha256": "bfa1772e8e37f421fcc13dd6798db4e8bdfe4bf528a6c0f118c220bd0d3e7025",
    "provenance": "newly_authored_2026_track"
   },
   {
@@ -788,8 +789,8 @@
   },
   {
    "path": "gv_toolkit.py",
-   "bytes": 20066,
-   "sha256": "0949351a9a6cb21feedd4a43b77d2f8870ad74fc5fadfbf125358514a62a4ae4",
+   "bytes": 19991,
+   "sha256": "6b3a5afd419705b0f0c4e5b7c1adf59207d4b43e2e547ec7a20848ef1336e921",
    "provenance": "newly_authored_2026_track"
   },
   {
@@ -824,32 +825,32 @@
   },
   {
    "path": "solutions/SOL0_environment_selfcheck.ipynb",
-   "bytes": 5697,
-   "sha256": "5e2225b43a064a711254cc7f635255e09cbb0afdf175ab316211e0cba1338163",
+   "bytes": 5248,
+   "sha256": "15ac4107aa380729e98731f5504e462e2b1616b24bedf6b58cc664cf231479e7",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "solutions/SOL1_sampling_budget_and_controls.ipynb",
-   "bytes": 22043,
-   "sha256": "6bb5a4282c1d2465a2733d8b950cba6649dac867f64d6d2e22cd1c76ac52725d",
+   "bytes": 21574,
+   "sha256": "a5842f81b590ed54308481fe6e80da210109de0816d8728dc81bc2ab45d0adc8",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "solutions/SOL2_molecules_and_their_checks.ipynb",
-   "bytes": 34800,
-   "sha256": "c5530cdff9da87048097b480a1f1e2f8f7a449c6bc1c4136c902538d9fff5cb6",
+   "bytes": 33836,
+   "sha256": "38cbfd86fdae435aa1a556fe619813c32a9f91166c1965b9e8fd7d54921425e1",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "solutions/SOL3_second_opinions_and_transfer.ipynb",
-   "bytes": 39634,
-   "sha256": "3c5f369343d971b55a803428802d607e04fee0a97d2e545cfe2ef77a13285911",
+   "bytes": 37873,
+   "sha256": "7be5be99e66d339cc70fb1f47c200883feb03c225ec8ed7e5d04ed769d02cef3",
    "provenance": "newly_authored_2026_track"
   },
   {
    "path": "tools/build_selfcheck.py",
-   "bytes": 21116,
-   "sha256": "91d7736152ee2fe4b308eeca6e4df51671b4c8adef22eee3a4ca7e38317c788e",
+   "bytes": 21097,
+   "sha256": "ef7641bf8005a0054ecb8732e73e03f9f64ebd18a0b7ea28f2579d18d07a3c42",
    "provenance": "newly_authored_2026_track"
   }
  ]

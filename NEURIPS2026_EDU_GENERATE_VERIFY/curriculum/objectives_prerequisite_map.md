@@ -11,7 +11,7 @@ a claim that the material suits everyone.
 |---|---|---|
 | First-time NeurIPS attendees, young researchers or anyone new to AI | The concept is taught from a two-dimensional toy the learner can plot in full before any chemistry appears, and every specialist term is defined at first use. Module 1 assumes only Python and the idea of a normal distribution. | M1, demo path, 15 minutes |
 | Educators who need to keep curricula current, and who can reuse or reshape the materials | Eight separable modules, each with its own objectives, prerequisites, duration for two delivery modes and compute tier; three pre-cut configurations; exercises separated from solutions; a module map figure; and instructor notes stating what to cut. | reuse_and_adaptation_plan.md |
-| Lecturers and research groups who want to teach or learn with clear and self-contained examples | Every module has a path that runs on a laptop CPU with no key, no GPU and no download, against seventeen shipped data files totalling 706 kB. Nothing in the teaching path depends on the author's compute. | the environment self-check X0, then any module |
+| Lecturers and research groups who want to teach or learn with clear and self-contained examples | Every module has a path that runs on a laptop CPU with no key, no GPU and no download, against seventeen shipped data files totalling 722,824 bytes. Nothing in the teaching path depends on the author's compute. | the environment self-check X0, then any module |
 | Non-specialists for whom the core ideas at NeurIPS are otherwise hidden behind specialist terminology | The opening paragraph of the paper contains no specialist-tier glossary term by construction, and the glossary tiers every term with the module where it is first used. The chemistry a learner needs is eleven terms, all given inline. | the paper, then START_HERE |
 
 ## Level claimed
@@ -54,7 +54,7 @@ learner with no chemistry needs and it is deliberately short enough to print on 
 
 ## What a learner can do at the end
 
-Read the results table of a 2026 generative-chemistry paper and say which numbers are measurements, which are definitions in disguise, and which could not have failed. Run a pocket-conditioned generator's output through a physical validity battery and interpret the verdict. Say why two independent methods disagreeing is information rather than an error. And decline to quote a number without naming what computed it.
+Read the results table of a 2026 generative-chemistry paper and say which numbers are measurements, which are definitions in disguise, and which could not have failed. Run a pocket-conditioned generator's output through a physical validity battery and interpret the verdict. Read disagreement between two independent methods as a bound on pose uncertainty. Decline to quote a number without naming what computed it.
 
 ## The objectives
 

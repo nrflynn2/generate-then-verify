@@ -357,8 +357,8 @@ def pdb_record_census(path):
     """Count PDB record types by their leading keyword.
 
     A structure file is a text file with a record type in the first six columns.
-    Counting the record types is the cheapest possible audit of what a receptor
-    contains, and it is the audit almost nobody performs.
+    Counting the record types is the fastest audit of what a receptor file
+    contains and catches stripped cofactors or waters in one pass.
     """
     p = Path(path)
     if not p.exists():
@@ -388,14 +388,13 @@ def pairwise_diversity(mols, fingerprint="rdkit", remove_hs=True):
 
     `fingerprint` is 'rdkit' (topological, library defaults: 2048 bits, minPath 1,
     maxPath 7) or 'morgan' (circular, radius 2, 2048 bits). The two disagree by
-    about 0.11 on the same twenty molecules, which is the whole point of X6, so the
-    parameter is required rather than defaulted silently.
+    about 0.11 on the same twenty molecules, which is the lesson of X6; always name
+    the fingerprint when reporting the value.
 
-    `remove_hs` defaults to True and is defensive rather than corrective on the
-    shipped batch, whose SDF carries no explicit hydrogens: RemoveHs is a no-op
-    there. It matters when hydrogens ARE present. Adding them with AddHs before
-    fingerprinting drops the RDKit topological value from 0.8090 to 0.4777 and the
-    Morgan value from 0.9175 to 0.8821, measured on this batch.
+    `remove_hs` defaults to True. On the shipped DiffSBDD SDF, which carries no
+    explicit hydrogens, RemoveHs is a no-op. When hydrogens are present, adding
+    them with AddHs before fingerprinting drops the RDKit topological value from
+    0.8090 to 0.4777 and the Morgan value from 0.9175 to 0.8821 on this batch.
     """
     from rdkit import Chem, DataStructs
     from rdkit.Chem import rdFingerprintGenerator

@@ -11,17 +11,16 @@ verified against a literature database; identifiers and verification method are 
 Four things, and you can look for them in the abstract before you read the method.
 
 **A validity number with a tool name attached.** When a 2026 paper reports PoseBusters validity
-rather than chemical validity, it is answering the question module 4 taught you to ask. When it
-reports only the graph-level number, you know what has been left out, and you know the follow-up
-question: which receptor preparation, and did the intermolecular checks have anything to check.
+alongside chemical validity, it answers the question module 4 taught you to ask. When it reports
+only the graph-level number, ask the module 4 follow-up: which receptor preparation ran, and did
+the intermolecular checks have atoms to test against?
 
 **A second method that never saw the first one's output.** Re-docking, refolding, an independent
-scoring model. Modules 6 and 8 taught you that this is the same move under two names, and that the
-informative outcome is a partial disagreement rather than a match. Modules 6 and 7 also taught you to
-ask what the second method shares with the first: a re-docker or a co-folding model trained on the
-same structures as the generator fails in correlated ways, so its agreement is weaker evidence than
-two independent methods agreeing. The gold standard for independence is an experimental
-measurement, which shares none of the generator's priors.
+scoring model. Modules 6 and 8 show this same cross-check on ligands and on proteins, where a
+partial disagreement bounds your uncertainty in the geometry. Modules 6 and 7 also push you to ask
+what the second method shares with the first: a re-docker or co-folding model trained on the same
+PDB structures as the generator fails in correlated ways, weakening its agreement. An experimental
+assay shares none of the generator's priors and sets the standard for independence.
 
 **A number quoted outside its calibrated range.** Module 7 taught you that a model with two heads has
 two answers and one gate. When a paper reports a predicted affinity, the question is whether the
@@ -37,42 +36,42 @@ is not a result.
 
 Charles Harris, Kieran Didi, Arian R. Jamasb, Chaitanya K. Joshi and others. arXiv preprint (q-bio.BM), 2023. `arXiv:2308.07413`
 
-Introduces PoseCheck and applies it to several state-of-the-art pocket-conditioned generators, finding the generated molecules carry more physical violations and fewer key protein-ligand interactions than baselines, which is the measurement that turned verification into a reported stage rather than an assumption.
+Introduces PoseCheck and applies it to pocket-conditioned generators, showing that generated ligands carry higher strain and fewer protein-ligand interactions than docking baselines; that measurement made physical verification a reported stage of the pipeline.
 
-Prepared by: M3, M5.
+Prepared by: M4, M5.
 
 ### PoseBusters: AI-based docking methods fail to generate physically valid poses or generalise to novel sequences
 
 Martin Buttenschoen, Garrett M. Morris, Charlotte M. Deane. Chemical Science 15(9), 3130-3139, 2024. `doi:10.1039/D3SC04185A`
 
-Turns physical plausibility into a reusable pass/fail battery over bond geometry, internal clashes, ring flatness and ligand-to-protein distances, and applies it to show that deep-learning docking methods fail it, which is why every module of this curriculum runs the battery rather than reporting graph validity alone.
+Turns physical plausibility into a reusable pass/fail battery over bond geometry, internal clashes, ring flatness and ligand-to-protein distances, and shows that deep-learning docking methods fail it; modules 4 to 6 run this battery alongside graph validity.
 
-Prepared by: M3, M5.
+Prepared by: M4, M5, M6.
 
 ### Boltz-2: Towards Accurate and Efficient Binding Affinity Prediction
 
 Saro Passaro, Gabriele Corso, Jeremy Wohlwend, Mateo Reveiz and others. bioRxiv preprint, 2025. `doi:10.1101/2025.06.14.659707`
 
-Puts co-folding and an affinity estimate at the end of a generative pipeline, which makes the verifier itself a model with its own calibration limits, and those limits are what the curriculum's failure exercise teaches.
+Puts co-folding and an affinity estimate at the end of a generative pipeline, making the verifier itself a learned model whose calibration limits exercise X10 tests.
 
-Prepared by: M6.
+Prepared by: M7.
 
 ### FLOWR: flow matching for structure-aware de novo, interaction- and fragment-based ligand generation
 
 Julian Cremer, Ross Irwin, Alessandro Tibo, Jon Paul Janet and others. Nature Computational Science, 2026. `doi:10.1038/s43588-026-00998-8`
 
-Reports its advance over prior diffusion and flow models in PoseBusters validity, pose accuracy and interaction recovery, which is the clearest single demonstration that by 2026 a new pocket-conditioned generator is introduced by the verification battery it passes.
+Reports its advance over prior diffusion and flow models in PoseBusters validity, pose accuracy and interaction recovery, showing how a 2026 pocket-conditioned generator is introduced by the verification battery it passes.
 
-Prepared by: M4, M5, M8.
+Prepared by: M3, M4, M5, M6.
 
-Read them in that order. PoseCheck is the paper that noticed the problem, PoseBusters is the paper
-that turned it into a test everyone runs, Boltz-2 is the paper that made the test itself a model, and
-FLOWR is a 2026 generator introduced by how well it passes. That sequence is the emergence argument
-with citations attached, which is why it is also the order the PDF cites them in.
+Read them in that order. PoseCheck noticed the physical violations, PoseBusters turned them into a
+standard battery, Boltz-2 made the verifier a learned model, and FLOWR introduces a 2026 generator
+by how well it clears the stack. That sequence is the emergence argument with citations attached, in
+the order the paper cites them.
 
-Two further papers appear in the PDF's citation list and are worth knowing about, though the bridge
-does not assign them: TABASCO (2025), which throws away the SE(3) equivariance module 3 taught and
-defends the choice on PoseBusters validity alone, and DiffSBDD (2024), the generator module 5 runs.
+Two additional papers in the paper's reference list round out the picture without being assigned
+here: TABASCO (2025), which drops the SE(3) equivariance taught in module 3 and defends that choice
+on PoseBusters validity, and DiffSBDD (2024), the pocket-conditioned generator module 5 runs.
 
 ## What to do at the conference
 
@@ -90,9 +89,7 @@ useful either way.
 
 ## Honest limits of this bridge
 
-The four papers are small-molecule and protein design. The loop generalizes past them, to materials,
-crystal structures and reaction prediction, and this curriculum does not teach those. The verification
-instruments there are different (formation energies, symmetry checks, synthesizability oracles) even
-though the argument is the same, and a learner who wants that transfer should expect to learn a new
-toolkit rather than to reuse this one. Saying so is more useful than implying a generality we did not
-test.
+The four papers cover small-molecule and protein design. The loop generalizes to materials, crystal
+structures, and reaction prediction, which this curriculum does not cover. Those domains rely on
+different verifiers (formation energies, space-group checks, synthesizability oracles), so a learner
+moving into them will pick up a new toolkit while keeping the same questions.

@@ -31,15 +31,13 @@ problem sets.
 
 ## The two exercises to protect
 
-X5 and X10 are the exercises where the learner discovers a failure for themselves
-rather than being told about one. Both work exactly once. If you are teaching from
-this set, do not preview their answers, and do not hand out `../solutions/` until
-after the session.
+In X5 and X10, learners uncover a broken assumption in a reported result, and both
+surprises work only once. If you teach from this set, do not preview their answers
+and withhold `../solutions/` until after the session.
 
-X5 gives the learner a verification table and a measurement that cannot both mean
-what they appear to mean. X10 asks for a unit conversion before telling the learner
-that the conversion is undefined, so the absurd conclusion arrives in their own
-output.
+X5 hands over a verification table and a distance measurement that contradict each
+other until you inspect the receptor file. X10 asks for a unit conversion on an
+uncalibrated regression head, putting an absurd potency in the learner's own output.
 
 ## Self-checks
 
@@ -62,8 +60,7 @@ once on purpose so you have seen it.
 
 **One recorded data cell raises `NameError` on the cached path**: its
 trailing print reads a variable assigned only on the fresh-compute branch. X8 reads
-`best_qed` from `diffsbdd_optimize_metrics.json` instead, and says so rather than
-patching it silently.
+`best_qed` from `diffsbdd_optimize_metrics.json` instead and notes why.
 
 ## Install
 

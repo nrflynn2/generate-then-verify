@@ -71,14 +71,14 @@ NEURIPS2026_EDU_GENERATE_VERIFY/
 The split that matters is `curriculum/` and `exercises/` against `data/` and `figures/`. The first
 pair is the resource: it decides what is taught, in what order, to whom, and how a learner's
 understanding is checked. The second pair is the data substrate it runs on, published previously by
-the author and cited rather than claimed as new. `LICENSE-NOTES.md` states the boundary;
-`MANIFEST.json` records which side every file falls on.
+the author and cited directly. `LICENSE-NOTES.md` states the boundary; `MANIFEST.json` records which
+side every file falls on.
 
 ## Where each thing is defined once
 
-Several pieces of information could sensibly appear in more than one file. Each has a single home,
-and the other files carry a short summary that points back to it rather than a second copy to
-maintain. If two files ever disagree, the home is the one to trust and the one to edit.
+Several pieces of information could sensibly appear in more than one file. Each lives in one
+canonical home, and other files summarize it and point back. If two files ever disagree, edit and
+trust the home.
 
 | Information | Defined once in | Summarized (and deferring) in |
 |---|---|---|
@@ -130,12 +130,11 @@ is inside tolerance and, when it is not, which way to look. It never prints the 
 is a salted hash of a quantized grid cell, so reading `selfcheck_digests.json` does not hand the
 values over either.
 
-**Two exercises to protect.** X5 and X10 are the ones where a learner discovers a failure rather
-than reproducing a success, and each works exactly once. X5 hands over a verification table and a
-measurement that cannot both mean what they appear to mean. X10 asks for a unit conversion and then
-shows that the conversion is undefined, so the absurd conclusion arrives in the learner's own output.
-If you are teaching from this set, do not preview either answer and do not hand out `solutions/`
-until afterwards.
+**Two exercises to protect.** In X5 and X10, learners uncover a broken assumption in a reported
+result, and each surprise works only once. X5 hands over a verification table and a measurement that
+contradict each other until you inspect the receptor file. X10 asks for a unit conversion on an
+uncalibrated regression head, putting an absurd potency in the learner's own output. If you teach
+from this set, do not preview either answer and withhold `solutions/` until after the session.
 
 ---
 
@@ -174,11 +173,11 @@ restart. Nothing on the cached path is compute-bound, so that costs no runtime.
 
 Two results in the material were produced on hardware a learner will not have, and both ship complete
 recordings that the exercises read. The re-docking in module 6 ran against a hosted service whose
-served weights were retrained on different data, so even a learner who installs the public tool will
-not reproduce the numbers; the finding is the disagreement between two methods, which holds under
-either build, and the specific values are not. The affinity scoring in module 7 wants 24 to 48 GB of
-video memory. Reading a carefully recorded run is the normal condition of this field, and the
-material is explicit about which numbers are recordings rather than reproductions.
+served weights were retrained on different data, so installing public DiffDock returns different
+RMSDs; the 4-angstrom pose disagreement between the two methods holds under either build. The
+affinity scoring in module 7 requires 24 to 48 GB of video memory. Reading a recorded run is routine
+in this field, and the material states everywhere which numbers come from recordings and which you
+recompute locally.
 
 ---
 
@@ -258,39 +257,37 @@ download-free teaching path possible.
 | `3rfm_protein.pdb` | 182,335 | the A2A receptor, 2250 ATOM records and no HETATM records |
 | `3rfm_caffeine_ref.sdf` | 2,029 | the co-crystallized caffeine from the same entry |
 
-One number in that table is the point of exercise X5, so it is stated here plainly rather than left as
-a surprise: `3rfm_protein.pdb` contains 2250 ATOM records and zero HETATM records. Six of the nine
-intermolecular checks in the pocket-aware validity battery have nothing to test against a receptor
-prepared that way, and the pass rate changes from 0 of 20 to 15 of 20 depending on which preparation
-you use. The exercise leads a learner to that by measurement rather than by being told. Anyone quoting
-a pass rate from `posebusters_diffsbdd.csv` should say which reading it used; the file also carries a
-strict column that reads 13 of 20.
+One number in that table drives exercise X5 and is stated here for instructors: `3rfm_protein.pdb`
+contains 2250 ATOM records and zero HETATM records. Six of the nine intermolecular checks in the
+pocket-aware validity battery find nothing to test against that receptor, shifting the pass rate
+between 0 of 20 and 15 of 20 depending on preparation. Exercise X5 lets learners uncover this by
+inspecting the files directly. Anyone quoting a pass rate from `posebusters_diffsbdd.csv` should
+name the reading used; the file also carries a strict column that reads 13 of 20.
 
 ---
 
 ## Figures
 
 Every figure is in `figures/` as PNG at 300 dpi, SVG and PDF, nineteen stems in all. One of the
-nineteen, the ray-traced complex render, is PNG and PDF only, because it is a bitmap by nature.
-Filenames match the stems the material embeds, so a figure in the guide and a file on disk are always
-the same object. Captions live in the guide and the exercises, never inside the image, so the same
-file works in print and on a screen.
+nineteen, the ray-traced showcase render `boltz_showcase`, ships as PNG and PDF only because it is a
+bitmap. Filenames match the stems the material embeds, so a figure in the guide and a file on disk
+are always the same object. Captions live in the guide and the exercises, never inside the image, so
+the same file works in print and on a screen.
 
 Two cautions if you reuse a figure. The complex render `boltz2_complex` ships here in its corrected
-form, with the legend reading `caffeine, Boltz-2 pose`; if you have an older copy, replace it. And the
-energy distances printed on panel (b) of the `reverse_denoising` figure trace to a file that is not
-shipped, so relabel that panel from `data/toy_sampler_sweep.csv` or drop the numbers rather than
-restating them.
+form, with the legend reading `caffeine, Boltz-2 pose`; if you have an older copy, replace it. The
+energy distances printed on panel (b) of `reverse_denoising` trace to an unshipped sweep, so relabel
+that panel from `data/toy_sampler_sweep.csv` or omit those numbers.
 
 ---
 
 ## Reproducing a number
 
-Two things are not bit-reproducible, by nature, and the lesson guide flags each where it appears.
-Strain energies embed a conformer ensemble without a fixed random seed, so a fresh run falls within a
-few percent rather than exactly; re-running moved individual ligands by up to about 3 percent while
-leaving most identical. And the toy sweeps train small networks on multi-threaded CPU, which is not
-deterministic; the crossing points are stable, the third decimal place is not.
+Two quantities drift between runs, and the lesson guide flags each where it appears. Strain energies
+embed a conformer ensemble without a fixed random seed, so re-running moves individual ligands by up
+to about 3 percent while leaving most unchanged. The toy sweeps train small networks on
+multi-threaded CPU, which is non-deterministic; the crossing points hold steady while the third
+decimal place moves.
 
 One rule the material follows and asks you to follow. A fingerprint-derived number is meaningless
 without its fingerprint and its hydrogen treatment. The same twenty ligands have a pairwise diversity

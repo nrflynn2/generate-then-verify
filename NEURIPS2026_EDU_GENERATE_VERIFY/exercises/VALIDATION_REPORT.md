@@ -76,7 +76,7 @@ to kernel_info"). Execution therefore ran each code cell with `exec` in a shared
 namespace inside a subprocess, capturing stdout, matplotlib figures and exceptions
 per cell.
 
-That is an approximation of a Jupyter kernel, and the difference is worth stating: it
+That executor approximates a Jupyter kernel with three differences: it
 provides no IPython magics, no `get_ipython()`, and no cell-level `Out[_]` display
 semantics. None of the eight notebooks uses any of those; every cell is plain Python,
 which the static parse check independently confirms by requiring `ast.parse` to succeed

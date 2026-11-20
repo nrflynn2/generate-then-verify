@@ -15,9 +15,8 @@ resource's source code. The substrate they read is earlier work: seventeen cache
 the figures were produced for the author's prior published material and are reused here under
 citation, so a learner reproduces every number with no GPU and no network. Third-party assets (the
 PDB entry, the two corpus samples, two model checkpoints) are cited with their licenses; the
-checkpoints are referenced by permanent URL rather than bundled. Every file in the ZIP carries one of
-three provenance values in MANIFEST.json, so the boundary is machine-checkable rather than a matter
-of trust.
+checkpoints are referenced by permanent URL and omitted from the archive. Every file in the ZIP
+carries one of three provenance values in `MANIFEST.json`, making the boundary directly verifiable.
 
 ## The terms, layer by layer
 
@@ -53,8 +52,8 @@ Absence of a license grant is more restrictive in effect than MIT, not less. The
 one to read twice: it is tempting, and wrong, to write that the weights are MIT because the repository
 is. The bundle never says that, and neither should anything built on it.
 
-The two hosted inference endpoints used to produce some results in `data/` are a different surface
-again. They are governed by the service provider's terms rather than by any repository license.
+The two hosted inference endpoints used to produce some results in `data/` are a separate surface,
+governed by the service provider's terms outside any repository license.
 Nothing in the teaching path touches them.
 
 ## What the curriculum layer being CC BY 4.0 means for you
@@ -86,6 +85,6 @@ fetched only if you choose to re-run a generation step from scratch.
 
 ## The corrected figure
 
-`figures/boltz2_complex.{png,pdf}` is a corrected copy. An earlier copy labelled the rendered ligand
+`figures/boltz2_complex.{png,svg,pdf}` is a corrected copy. An earlier copy labelled the rendered ligand
 'caffeine, 3RFM co-crystal'; the structure shown is the Boltz-2 predicted pose, and the corrected copy
 says so.

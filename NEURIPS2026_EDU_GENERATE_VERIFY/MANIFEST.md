@@ -14,23 +14,23 @@ newly_authored_2026_track: the curriculum, exercises, solutions, toolkit and pac
 |---|---|---|---|
 | `LICENSE-CODE` | 914 | newly_authored_2026_track | `f4f1266d54b71793` |
 | `LICENSE-CONTENT` | 649 | newly_authored_2026_track | `dcd25998c124ec5c` |
-| `LICENSE-NOTES.md` | 6,028 | newly_authored_2026_track | `598b2dbf9a4cf404` |
-| `README.md` | 17,989 | newly_authored_2026_track | `60050fc94442c344` |
-| `START_HERE.md` | 7,168 | newly_authored_2026_track | `42a40e53b1229f33` |
-| `curriculum/INSTRUCTOR_NOTES.md` | 63,925 | newly_authored_2026_track | `a470fc7bd892c297` |
-| `curriculum/LESSON_GUIDE.md` | 80,893 | newly_authored_2026_track | `d8c41c73a85fa7bf` |
-| `curriculum/assessment_blueprint.json` | 33,195 | newly_authored_2026_track | `c38663f6f9738698` |
-| `curriculum/assessment_blueprint.md` | 35,197 | newly_authored_2026_track | `b731902332f6f327` |
+| `LICENSE-NOTES.md` | 5,993 | newly_authored_2026_track | `2039d2ad78d60830` |
+| `README.md` | 17,624 | newly_authored_2026_track | `b9f3eb9f8fc06898` |
+| `START_HERE.md` | 6,696 | newly_authored_2026_track | `cfc539f543c337e9` |
+| `curriculum/INSTRUCTOR_NOTES.md` | 62,477 | newly_authored_2026_track | `ed37709ea2def0b2` |
+| `curriculum/LESSON_GUIDE.md` | 76,427 | newly_authored_2026_track | `42953434c909141e` |
+| `curriculum/assessment_blueprint.json` | 32,832 | newly_authored_2026_track | `70a5e3cfe205eca5` |
+| `curriculum/assessment_blueprint.md` | 34,318 | newly_authored_2026_track | `059bf47f44d39acf` |
 | `curriculum/concept_statement.md` | 3,362 | newly_authored_2026_track | `229780c57679e156` |
-| `curriculum/conference_bridge.md` | 6,146 | newly_authored_2026_track | `4d7cec83466caa07` |
-| `curriculum/frontier_citations.json` | 9,690 | newly_authored_2026_track | `1c7eb34634e927d4` |
-| `curriculum/glossary.json` | 13,319 | newly_authored_2026_track | `4ee06547dd0e0c4d` |
-| `curriculum/glossary.md` | 10,186 | newly_authored_2026_track | `df327ebbb4c807fb` |
-| `curriculum/objectives_prerequisite_map.json` | 17,597 | newly_authored_2026_track | `bcf3f26c8bd66ef8` |
-| `curriculum/objectives_prerequisite_map.md` | 14,188 | newly_authored_2026_track | `3c39ca99be46dc19` |
-| `curriculum/originality_and_attribution.md` | 5,717 | newly_authored_2026_track | `b2cfa053063d4ade` |
-| `curriculum/provenance_taxonomy.json` | 3,187 | newly_authored_2026_track | `bb3d72a3be20aedd` |
-| `curriculum/reuse_and_adaptation_plan.md` | 10,216 | newly_authored_2026_track | `c8bd6fd8343423c3` |
+| `curriculum/conference_bridge.md` | 5,632 | newly_authored_2026_track | `1f27643d75700a6d` |
+| `curriculum/frontier_citations.json` | 9,419 | newly_authored_2026_track | `d88c0a994b427c2c` |
+| `curriculum/glossary.json` | 13,317 | newly_authored_2026_track | `703d712194137b5f` |
+| `curriculum/glossary.md` | 10,039 | newly_authored_2026_track | `7985cb2d93b8b1bc` |
+| `curriculum/objectives_prerequisite_map.json` | 17,601 | newly_authored_2026_track | `cb25bc7437c1cf4b` |
+| `curriculum/objectives_prerequisite_map.md` | 14,192 | newly_authored_2026_track | `b4ad21be9454a607` |
+| `curriculum/originality_and_attribution.md` | 5,653 | newly_authored_2026_track | `851dad4e65f9f44b` |
+| `curriculum/provenance_taxonomy.json` | 3,187 | newly_authored_2026_track | `cb99d3037b662612` |
+| `curriculum/reuse_and_adaptation_plan.md` | 9,978 | newly_authored_2026_track | `c6e2d347dfa55ad8` |
 | `data/3rfm_caffeine_ref.sdf` | 2,029 | third_party | `fd237a6f83d55436` |
 | `data/3rfm_protein.pdb` | 182,335 | third_party | `f0c7b41585254f72` |
 | `data/3rfm_receptor_atomonly.pdb` | 182,250 | third_party | `2d168c78c39af055` |
@@ -67,13 +67,13 @@ newly_authored_2026_track: the curriculum, exercises, solutions, toolkit and pac
 | `data/toy_eta_sweep.csv` | 842 | prior_published_reused | `73151bdfeb87ab30` |
 | `data/toy_fm_trained.pt` | 305,661 | prior_published_reused | `8625418062dd55be` |
 | `data/toy_sampler_sweep.csv` | 10,042 | prior_published_reused | `5374402b664cbd52` |
-| `exercises/EX0_environment_selfcheck.ipynb` | 18,870 | newly_authored_2026_track | `f8757471100dbb18` |
+| `exercises/EX0_environment_selfcheck.ipynb` | 18,682 | newly_authored_2026_track | `f015ad30bac95d68` |
 | `exercises/EX1_sampling_budget_and_controls.ipynb` | 26,890 | newly_authored_2026_track | `5759a091d6c6ad76` |
-| `exercises/EX2_molecules_and_their_checks.ipynb` | 30,171 | newly_authored_2026_track | `8385bbe7ebe4e5b9` |
-| `exercises/EX3_second_opinions_and_transfer.ipynb` | 38,437 | newly_authored_2026_track | `55dc7c958fb1bfa7` |
-| `exercises/README.md` | 3,778 | newly_authored_2026_track | `2b28161de2a53199` |
-| `exercises/VALIDATION_REPORT.md` | 11,680 | newly_authored_2026_track | `f588efb894c005b6` |
-| `exercises/requirements.txt` | 2,197 | newly_authored_2026_track | `06f7f177bd1fd409` |
+| `exercises/EX2_molecules_and_their_checks.ipynb` | 29,821 | newly_authored_2026_track | `3531a97112149f86` |
+| `exercises/EX3_second_opinions_and_transfer.ipynb` | 38,235 | newly_authored_2026_track | `c893617a7323efe5` |
+| `exercises/README.md` | 3,694 | newly_authored_2026_track | `f71bb1bb115c3097` |
+| `exercises/VALIDATION_REPORT.md` | 11,665 | newly_authored_2026_track | `13030ba59328543c` |
+| `exercises/requirements.txt` | 2,179 | newly_authored_2026_track | `bfa1772e8e37f421` |
 | `exercises/selfcheck_digests.json` | 122,037 | newly_authored_2026_track | `e11fa037138779c9` |
 | `figures/FORMATS.md` | 452 | prior_published_reused | `41205861abd79131` |
 | `figures/boltz2_comparison.pdf` | 19,844 | prior_published_reused | `c7e73518af8f3775` |
@@ -132,17 +132,17 @@ newly_authored_2026_track: the curriculum, exercises, solutions, toolkit and pac
 | `figures/validity.pdf` | 23,930 | prior_published_reused | `96e28c7391814fdc` |
 | `figures/validity.png` | 317,283 | prior_published_reused | `f0e67a646ebf6a29` |
 | `figures/validity.svg` | 116,787 | prior_published_reused | `ead32cbdc9e90cdc` |
-| `gv_toolkit.py` | 20,066 | newly_authored_2026_track | `0949351a9a6cb21f` |
+| `gv_toolkit.py` | 19,991 | newly_authored_2026_track | `6b3a5afd419705b0` |
 | `paper/module_map_panelA.pdf` | 35,978 | newly_authored_2026_track | `d59df84b2d4c78fe` |
 | `paper/neurips_2026.sty` | 13,705 | newly_authored_2026_track | `c56949a889e9da60` |
 | `paper/paper.pdf` | 90,535 | newly_authored_2026_track | `564df54cff41fe18` |
 | `paper/paper_final.tex` | 7,636 | newly_authored_2026_track | `1251531f1306c45f` |
 | `solutions/README.md` | 2,536 | newly_authored_2026_track | `09c59f661654d3c0` |
-| `solutions/SOL0_environment_selfcheck.ipynb` | 5,697 | newly_authored_2026_track | `5e2225b43a064a71` |
-| `solutions/SOL1_sampling_budget_and_controls.ipynb` | 22,043 | newly_authored_2026_track | `6bb5a4282c1d2465` |
-| `solutions/SOL2_molecules_and_their_checks.ipynb` | 34,800 | newly_authored_2026_track | `c5530cdff9da8704` |
-| `solutions/SOL3_second_opinions_and_transfer.ipynb` | 39,634 | newly_authored_2026_track | `3c5f369343d971b5` |
-| `tools/build_selfcheck.py` | 21,116 | newly_authored_2026_track | `91d7736152ee2fe4` |
+| `solutions/SOL0_environment_selfcheck.ipynb` | 5,248 | newly_authored_2026_track | `15ac4107aa380729` |
+| `solutions/SOL1_sampling_budget_and_controls.ipynb` | 21,574 | newly_authored_2026_track | `a5842f81b590ed54` |
+| `solutions/SOL2_molecules_and_their_checks.ipynb` | 33,836 | newly_authored_2026_track | `38cbfd86fdae435a` |
+| `solutions/SOL3_second_opinions_and_transfer.ipynb` | 37,873 | newly_authored_2026_track | `7be5be99e66d339c` |
+| `tools/build_selfcheck.py` | 21,097 | newly_authored_2026_track | `ef7641bf8005a005` |
 
 ## Referenced but not bundled
 
@@ -151,4 +151,3 @@ newly_authored_2026_track: the curriculum, exercises, solutions, toolkit and pac
 | DiffSBDD conditional full-atom checkpoint | 17,861,341 | https://zenodo.org/record/8183747/files/crossdocked_fullatom_cond.ckpt | Referenced by URL, never bundled; needed only on the fresh path. |
 | FlowMol3 pretrained weights | n/a | referenced by its authors (Dunn and Koes) | Referenced, never bundled. Do not attribute MIT to the weights. |
 | AlphaFold-DB MSA for UniProt P29274 | 9,320,318 | https://alphafold.ebi.ac.uk | Referenced, never bundled; needed only to re-run co-folding. |
-

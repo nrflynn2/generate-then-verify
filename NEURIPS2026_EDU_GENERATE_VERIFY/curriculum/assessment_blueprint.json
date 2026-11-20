@@ -25,15 +25,15 @@
     "purpose": "Confirms the bundle is intact and the base environment works, in under 30 seconds, with no model install. It exists because the largest failure mode for a self-contained resource is a learner who cannot tell whether their environment or their code is broken.",
     "what_it_asserts": [
       "Python version at least 3.10 and the DATA path resolves from wherever the notebook was opened.",
-      "All seventeen cached-path input files are present, and each SHA-256 matches the manifest.",
-      "The provenance-safe CSV reader returns the right row count on data/boltz2_comparison.csv (7 rows) and data/posebusters_diffsbdd.csv (20 rows), and the negative control fires: reading either with pandas comment='#' produces NaN cells, which the check reports as the trap it is rather than as an error.",
-      "RDKit imports and round-trips one SMILES containing a nitrile, since that character is the cause of the parsing trap.",
+      "All twenty-five cached input files (seventeen cached-path inputs plus eight supporting files) are present, and each SHA-256 matches data/MANIFEST.sha256.json.",
+      "The provenance-safe CSV reader returns the right row count on data/boltz2_comparison.csv (7 rows) and data/posebusters_diffsbdd.csv (20 rows), and the negative control fires: reading either with pandas comment='#' produces NaN cells, which the check flags as the parsing hazard.",
+      "RDKit imports and round-trips one SMILES containing a nitrile, since that character causes the parsing hazard.",
       "torch imports and a two-layer MLP does one forward pass on CPU.",
       "The two toy checkpoints load with torch.load and expose the expected state-dict keys.",
-      "One canary number reproduces exactly: pairwise diversity of the twenty shipped ligands under the RDKit topological fingerprint equals 0.8089776623453144. The shipped SDF carries no explicit hydrogens, so Chem.RemoveHs is a no-op on it and the value is identical with or without the call; if this check fails, the RDKit version differs from the one the bundle was built with, and the check says so.",
-      "Optional and reported rather than required: whether posebusters and posecheck are importable, whether flowmol is importable, whether a GPU is visible. Each absent item prints which exercises it opens and which module path is affected. Nothing here blocks the learner."
+      "One canary number reproduces bit for bit: pairwise diversity of the twenty shipped ligands under the RDKit topological fingerprint equals 0.8089776623453144. The shipped SDF carries no explicit hydrogens, so Chem.RemoveHs is a no-op on it; if this check fails, the RDKit version differs from the one the bundle was built with, and the check says so.",
+      "Four optional checks report whether posebusters, posecheck, and flowmol are importable and whether a GPU is visible. Each absent item prints which walkthrough path it affects without blocking the learner."
     ],
-    "expected_output": "A table of required checks all passing and four optional checks reported, then the line 'Required checks passed. You can run every module and every exercise on the cached CPU path.'",
+    "expected_output": "A table of ten required checks passing and four optional checks reported, then the line 'Required checks passed. You can run every module and every exercise on the cached CPU path.'",
     "runtime_cpu": "under 30 seconds",
     "failure_guidance": "Each failing required check prints the one action that fixes it, and the check never prints a traceback for a missing optional dependency."
   },
@@ -54,7 +54,7 @@
         "data/toy_sampler_sweep.csv"
       ],
       "expected_answer": "Ancestral DDPM crosses the 0.01 band at 32 steps. Seed-mean energy distances from the shipped sweep: 0.00475 at 32 steps and 0.0407 at 8 steps.",
-      "tolerance": "The crossing budget must be exactly 32. Energy-distance values within 20 percent of the seed-mean, because sampling is seeded but the reference draw is not pinned in the exercise; the shipped per-seed range at 8 steps is 0.0359 to 0.0511.",
+      "tolerance": "The crossing budget must be exactly 32. Energy-distance values within 35 percent of the seed-mean, because sampling is seeded while the reference draw is unpinned in the exercise; across the five shipped seeds the 200-step value spans 21 percent around its mean and the 8-step value spans 26 percent (0.0359 to 0.0511).",
       "grading_note": "The prediction step is graded for being made, not for being right. Learners routinely predict a gentle degradation and find a cliff, and that surprise is the point. Accept any crossing-budget answer of 32; reject 16 (0.01398, still above the band).",
       "runtime_cpu": "about 60 seconds if sampling; instant if reading the shipped sweep",
       "answer_source": [
@@ -150,7 +150,7 @@
       ],
       "expected_answer": "Part one: zero HETATM records. data/3rfm_protein.pdb holds 2250 ATOM records, one TER and one END, and nothing else; the six cofactor and water checks in the shipped table are therefore vacuous. Part two: every one of the twenty ligands has an atom within 0.57 angstroms of a caffeine atom; the median closest approach is 0.35 angstroms and the largest is 0.564. Part three: the generated ligands occupy the caffeine site by construction, because caffeine is what defined the pocket. Had the caffeine HETATM been retained, it would have been read as an organic cofactor that every ligand overlaps, failing minimum distance to organic cofactors and volume overlap with organic cofactors for all twenty and dropping the pass count from 15 to 0. Part four: dropping the reference ligand is correct here, because the design task is to replace it, not to sit beside it. It is not obvious because the same preparation would be wrong for a real cofactor such as a catalytic metal or a bound heme, which a designed ligand must not overlap. The choice is a scientific judgement the check cannot make for you.",
       "tolerance": "Part one exact (zero HETATM, 2250 ATOM). Part two: median closest approach 0.35 angstroms plus or minus 0.05, all twenty under 0.6 angstroms. Part three must reach 0 of 20, and must say why. Part four is graded on whether the learner names a case where the opposite preparation is correct.",
-      "grading_note": "THIS IS A FAILURE-DISCOVERY EXERCISE. The learner is led to it by a contradiction rather than told: the table says the ligands pass every cofactor check, and their own measurement says every ligand is essentially inside one. Nothing in the stem hints that the table is misleading. What it teaches: a verification result is a statement about the input you gave the verifier. Six of the nine intermolecular checks in this table were structurally incapable of failing, and the pass rate of 100 percent on them was reported alongside checks that could fail, with no visual distinction. The lesson transfers directly to reading a results table in a 2026 paper.",
+      "grading_note": "THIS IS A FAILURE-DISCOVERY EXERCISE. Contradiction drives it: the table says the ligands pass every cofactor check, while the learner's own distance calculation puts every ligand overlapping the caffeine site. Nothing in the stem hints that the table is misleading. A verification result describes the input handed to the verifier as much as the molecule. Six of the nine intermolecular checks in this table could not fail on an ATOM-only PDB, yet their 100 percent pass rate sits unmarked beside checks that could fail.",
       "runtime_cpu": "about 10 seconds. RDKit, numpy and scipy only; no PoseBusters install needed.",
       "answer_source": [
         "recomputed: HETATM count and record census of data/3rfm_protein.pdb; per-ligand minimum interatomic distance to the caffeine reference, all 20 ligands",
@@ -200,7 +200,7 @@
       ],
       "expected_answer": "Strain (median about 134 kcal/mol, ratio roughly 350 times the caffeine reference of 0.39) DRIFTS: PoseCheck embeds its relaxed reference ensemble with AllChem.EmbedMolecule and passes no random seed, so re-running moves individual ligands by up to about 3 percent while leaving most bit-identical. The ratio is the least stable number in the dataset because numerator and denominator both drift. Clash count (median 2.5 for the batch, 3 for the caffeine pose) REPRODUCES: it is computed from fixed geometry with no embedding step. Diversity (0.8090) REPRODUCES BIT-FOR-BIT but is DEFINITION-DEPENDENT: it is 0.9175 under a different fingerprint. The cofactor pass rate is VACUOUS: the receptor has no cofactors, so the check could not fail. A defensible ranking: clash count, then diversity with its fingerprint named, then strain as an order of magnitude, then the cofactor pass rate, which should not be reported at all without saying the receptor contained nothing to check.",
       "tolerance": "All four classifications must be correct. The ranking is graded on the defence rather than the order, except that the vacuous check must be last.",
-      "grading_note": "This is the synthesis exercise for module 4 and the one to keep if only one exercise from M4 survives a time cut. Note the asymmetry worth naming out loud: within one tool, PoseCheck, one metric reproduces and another does not.",
+      "grading_note": "Synthesis exercise for module 4, and the one to keep if only one M4 task survives a time cut. Within one tool (PoseCheck), clash count reproduces exactly while strain energy drifts.",
       "runtime_cpu": "instant; this is a reading and classification task",
       "answer_source": [
         "X5's recomputation",
@@ -226,7 +226,7 @@
       ],
       "expected_answer": "By coordinate: median scaffold coordinate retention 1.00, so all ten kept the nine pinned atoms exactly where they were put. By SMARTS: 2 of 10, a 20.0 percent retention rate. The difference is not a failure of inpainting. Inpainting fixes atom positions and element identities; bond orders are re-perceived from geometry afterwards (by OpenBabel here), and that re-perception can assign a different aromatic-versus-aliphatic pattern than the original. The coordinate measurement answers the question the method promises. A defensible fourth task: fix the pocket and a subset of the ligand's atoms chosen by a medicinal chemist rather than by a scaffold definition, which is the same operation with a different mask; or fix the pocket and start the chain from a known inactive to steer away from it.",
       "tolerance": "1.00 and 2 of 10 exact. The fourth task is graded on whether the learner correctly names what is masked and where the chain starts, not on originality.",
-      "grading_note": "If the exercise reuses that recorded cell, drop its trailing print or read best_qed 0.7229067081355963 from data/diffsbdd_optimize_metrics.json. The published cell raises NameError on the cached path because that print reads a variable assigned only in the fresh branch. Say so in the exercise notebook rather than patching it silently; a published defect the learner can see is worth more than a silently patched one.",
+      "grading_note": "If the exercise reuses that recorded cell, drop its trailing print or read best_qed (0.7229067081355963) from data/diffsbdd_optimize_metrics.json. The recorded cell raises NameError on the cached path because its trailing print reads a variable assigned only in the fresh branch; X8 documents this and reads the JSON directly.",
       "runtime_cpu": "instant",
       "answer_source": [
         "recomputed data/diffsbdd_inpaint_metrics.json: median_scaffold_coord_retention 1.0, scaffold_retention_pct 20.0, n_valid 10"
@@ -241,7 +241,7 @@
       ],
       "module": "M6",
       "difficulty": "intermediate",
-      "stem": "From the re-docking table, answer three questions and then draw one conclusion. How many of the twenty top-ranked re-docked poses land within 2 angstroms of the pose the generator produced? How many re-docked centroids sit within 5 angstroms of the co-crystallized caffeine? On the identical PoseBusters battery, which checks does each pose source fail? Then write the one sentence those three answers support together, and say what it implies about how much to trust a single rendered pose.",
+      "stem": "From the re-docking table, answer three questions and then draw one conclusion. How many of the twenty top-ranked re-docked poses fall within 2 angstroms of the pose the generator produced? How many re-docked centroids sit within 5 angstroms of the co-crystallized caffeine? On the identical PoseBusters battery, which checks does each pose source fail? Then write the one sentence those three answers support together, and say what it implies about how much to trust a single rendered pose.",
       "starter_state": "data/diffdock_redock_posebusters.csv and data/posebusters_diffsbdd.csv loaded with the provenance-safe reader; the three questions and the conclusion blank.",
       "cached_inputs": [
         "data/diffdock_redock_posebusters.csv",
@@ -249,7 +249,7 @@
       ],
       "expected_answer": "Zero of twenty within 2 angstroms on the top-ranked pose, median separation 4.39 angstroms; allowing the closest of ten returned poses, two of twenty. Nineteen of twenty re-docked centroids within 5 angstroms of the co-crystal caffeine, median 1.77 angstroms, against 0.63 angstroms for the generated poses. The two sources fail in opposite directions: re-docked poses pass bond lengths and bond angles at 100 percent and violate minimum distance to protein on 55 percent, while the generated poses pass every ligand-to-protein check and fail bond angles on 15 percent and bond lengths on 10 percent. Fully valid: 15 of 20 generated against 8 of 20 re-docked. The sentence: two independent methods agree about which site the molecule occupies and disagree about the pose within it by about 4 angstroms, so a single rendered pose deserves confidence about the site and very little about the geometry.",
       "tolerance": "Counts exact. Median RMSD 4.4 plus or minus 0.1. The 0.63 angstrom figure for the generated poses is recomputed as 0.632; quote 0.63, not the 0.6 printed on the original figure.",
-      "grading_note": "The trap is to read the disagreement as one method being wrong. No experimental pose exists for a molecule that has never been made, so neither can be called correct. DiffDock's own median top-pose confidence is 0.097 with seven of twenty negative, which is worth showing the learner as the docking model's own hedge.",
+      "grading_note": "The trap is declaring one method wrong. No experimental pose exists for an unsynthesized molecule, so neither source is ground truth. DiffDock's own median top-pose confidence is 0.097, with seven of twenty negative.",
       "runtime_cpu": "instant",
       "answer_source": [
         "recomputed generated-pose centroid median 0.632 from data/diffsbdd_generated.sdf against data/3rfm_caffeine_ref.sdf"

@@ -20,12 +20,12 @@ Every numeric answer is recomputed from the cached CSVs/JSONs the exercises read
 from the shipped SDFs via RDKit, exactly as the worked-solution notebooks compute it.
 Tolerance bands follow the notebooks' documented rules: the two seeded toy energy
 distances (X1) carry the plus-or-minus-35% window around the five-seed mean that SOL1
-specifies; everything else is a tight absolute band that a pinned-requirements run
-lands in exactly, widened enough to absorb minor library drift. Text answers use the
+specifies; everything else is a tight absolute band around the pinned-requirements
+value, widened enough to absorb minor library drift. Text answers use the
 exact tokens the exercise stems instruct.
 
 If RDKit is not importable, the few fingerprint/substructure values fall back to the
-full-precision constants printed by the worked solutions (clearly marked below); the
+full-precision constants printed by the worked solutions (marked below); the
 resulting file is identical, and every CSV/JSON-derived value is still recomputed.
 """
 from __future__ import annotations

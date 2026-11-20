@@ -32,57 +32,49 @@ Confirms the bundle is intact and the base environment works, in under 30 second
 What it asserts:
 
 - Python version at least 3.10 and the DATA path resolves from wherever the notebook was opened.
-- All seventeen cached-path input files are present, and each SHA-256 matches the manifest.
-- The provenance-safe CSV reader returns the right row count on data/boltz2_comparison.csv (7 rows) and data/posebusters_diffsbdd.csv (20 rows), and the negative control fires: reading either with pandas comment='#' produces NaN cells, which the check reports as the trap it is rather than as an error.
-- RDKit imports and round-trips one SMILES containing a nitrile, since that character is the cause of the parsing trap.
+- All twenty-five cached input files (seventeen cached-path inputs plus eight supporting files) are present, and each SHA-256 matches `data/MANIFEST.sha256.json`.
+- The provenance-safe CSV reader returns the right row count on `data/boltz2_comparison.csv` (7 rows) and `data/posebusters_diffsbdd.csv` (20 rows), and the negative control fires: reading either with pandas `comment='#'` produces NaN cells, which the check flags as the parsing hazard.
+- RDKit imports and round-trips one SMILES containing a nitrile, since that character causes the parsing hazard.
 - torch imports and a two-layer MLP does one forward pass on CPU.
-- The two toy checkpoints load with torch.load and expose the expected state-dict keys.
-- One canary number reproduces exactly: pairwise diversity of the twenty shipped ligands under the RDKit topological fingerprint equals 0.8089776623453144. The shipped SDF carries no explicit hydrogens, so Chem.RemoveHs is a no-op on it and the value is identical with or without the call; if this check fails, the RDKit version differs from the one the bundle was built with, and the check says so.
-- Optional and reported rather than required: whether posebusters and posecheck are importable, whether flowmol is importable, whether a GPU is visible. Each absent item prints which exercises it opens and which module path is affected. Nothing here blocks the learner.
+- The two toy checkpoints load with `torch.load` and expose the expected state-dict keys.
+- One canary number reproduces bit for bit: pairwise diversity of the twenty shipped ligands under the RDKit topological fingerprint equals `0.8089776623453144`. The shipped SDF carries no explicit hydrogens, so `Chem.RemoveHs` is a no-op on it; if this check fails, the RDKit version differs from the one the bundle was built with, and the check says so.
+- Four optional checks report whether `posebusters`, `posecheck`, and `flowmol` are importable and whether a GPU is visible. Each absent item prints which walkthrough path it affects without blocking the learner.
 
-Expected output: A table of required checks all passing and four optional checks reported, then the line 'Required checks passed. You can run every module and every exercise on the cached CPU path.'
+Expected output: A table of ten required checks passing and four optional checks reported, then the line 'Required checks passed. You can run every module and every exercise on the cached CPU path.'
 
 Runtime: under 30 seconds. Each failing required check prints the one action that fixes it, and the check never prints a traceback for a missing optional dependency.
 
-The canary number deserves a word. `0.8089776623453144` is a sharp test of both the RDKit version
-and the code path in one line. The shipped SDF carries no explicit hydrogens, so `Chem.RemoveHs` is a
-no-op on it and the value is identical with or without the call; hydrogen handling moves the number
-only when hydrogens are present, which X6 draws out. It is the same number exercise X6 asks the
-learner to compute, so the self-check has already proved their environment can produce it.
+`0.8089776623453144` tests both the RDKit version and the pair-counting code in one line. Because the shipped SDF carries no explicit hydrogens, `Chem.RemoveHs` leaves the number unchanged here; hydrogen handling moves the value when explicit hydrogens are added, which X6 demonstrates. X6 asks the learner for this same number later, so a passing X0 proves the machine can produce it.
 
-## The two exercises where the learner discovers a failure
+## The two failure-discovery exercises
 
-There are two, and they are the two the whole set is built around.
+X5 and X10 ask the learner to uncover a flaw in a reported result.
 
-**X5, the check that could not have failed.** The learner is shown a published results table saying
-all twenty ligands pass every intermolecular check, including two checks about organic cofactors.
-They then measure, themselves, that every one of those twenty ligands has an atom within 0.57
-angstroms of the co-crystallized caffeine. The contradiction is theirs to resolve, and resolving it
-means discovering that the receptor file has zero HETATM records, so six of the nine intermolecular
-checks were structurally incapable of failing. Had the caffeine been retained, the pass count would
-have been 0 of 20 rather than 15 of 20. The exercise then asks which preparation is correct, and the
-answer is that it depends on whether the retained molecule is a reference ligand being replaced or a
-genuine cofactor such as a catalytic metal, which is a scientific judgement the check cannot make.
-Nothing in the stem hints that anything is wrong.
+**X5, the check that could not have failed.** The learner sees a published results table stating that
+all twenty ligands pass every intermolecular check, including two checks on organic cofactors. They
+then measure that every one of those twenty ligands has an atom within 0.57 angstroms of the
+co-crystallized caffeine. Resolving the contradiction requires inspecting `data/3rfm_protein.pdb`,
+which holds zero HETATM records; six of the nine intermolecular checks had no atoms to test against.
+Retaining the caffeine record drops the pass count from 15 of 20 to 0 of 20. Part four asks which
+preparation is right: dropping a reference ligand you intend to replace is sound, whereas stripping a
+catalytic metal or bound heme hides a clash. Nothing in the stem hints that anything is wrong.
 
-Why this one rather than the alternatives: it needs only RDKit, numpy and scipy
-against three shipped files, it runs in ten seconds, the answer is exact rather than statistical,
-and the failure is a reasoning failure rather than a tooling artifact. It is also the one whose
-lesson transfers most directly to reading someone else's paper.
+X5 needs only RDKit, numpy, and scipy against three shipped files, runs in ten seconds, and yields
+an exact integer answer. Its lesson transfers directly to reading PoseBusters tables in published
+papers.
 
-**X10, read the wrong number on purpose.** The learner is asked to convert Boltz-2's continuous
-affinity value to micromolar for two molecules, before being told anything about calibration. They
-get 25.0 micromolar for caffeine, the drug that is known to bind, and 13.3 micromolar for a
-generated molecule the same model scored 0.09 on its binder head. Their own output says the rejected
-molecule is twice as potent as the real one. Then part four: the two Boltz-2 implementations agree on
-every summary statistic (Spearman 0.964, mean absolute probability difference 0.029, five of seven
-ranks identical) and disagree exactly on which design is best, and the two that swap are the top two.
-So the sentence a project would write, 'design 2 was our best candidate', is a statement
-about an implementation.
+**X10, read the wrong number on purpose.** Before any warning about calibration, the learner converts
+Boltz-2's continuous affinity output to micromolar for two molecules: 25.0 micromolar for caffeine
+(the known binder) and 13.3 micromolar for a FlowMol3 molecule that scored 0.09 on the binary binder
+head. Their own output ranks a rejected molecule twice as potent as the co-crystal control. Part four
+then compares two Boltz-2 implementations: they agree on every summary statistic (Spearman 0.964,
+mean absolute probability difference 0.029, five of seven ranks identical) while swapping designs 0
+and 2 at the top of the list. Calling design 2 "our best candidate" describes the implementation
+that ran, not the chemistry.
 
-The published `boltz2_complex` figure caption makes precisely this error, calling the rendered ligand the
-highest-probability of the five without naming the implementation. The exercise notebook should say
-so. A published error the learner catches is a better argument for the loop than any amount of prose.
+An earlier caption on `boltz2_complex` made this mistake, calling the rendered ligand the
+highest-probability design of the five without naming the build. Catching a published slip firsthand
+makes the case for verification better than any lecture.
 
 ## The exercises
 
@@ -98,7 +90,7 @@ Objectives O1, O2. Follows M1. Difficulty introductory. Expected CPU runtime: ab
 
 **Expected answer.** Ancestral DDPM crosses the 0.01 band at 32 steps. Seed-mean energy distances from the shipped sweep: 0.00475 at 32 steps and 0.0407 at 8 steps.
 
-**Tolerance.** The crossing budget must be exactly 32. Energy-distance values within 20 percent of the seed-mean, because sampling is seeded but the reference draw is not pinned in the exercise; the shipped per-seed range at 8 steps is 0.0359 to 0.0511.
+**Tolerance.** The crossing budget must be exactly 32. Energy-distance values within 35 percent of the seed-mean, because sampling is seeded while the reference draw is unpinned in the exercise; across the five shipped seeds the 200-step value spans 21 percent around its mean and the 8-step value spans 26 percent (0.0359 to 0.0511).
 
 **Grading note.** The prediction step is graded for being made, not for being right. Learners routinely predict a gentle degradation and find a cliff, and that surprise is the point. Accept any crossing-budget answer of 32; reject 16 (0.01398, still above the band).
 
@@ -172,7 +164,7 @@ Objectives O10, O11. Follows M4. Difficulty advanced. Expected CPU runtime: abou
 
 **Tolerance.** Part one exact (zero HETATM, 2250 ATOM). Part two: median closest approach 0.35 angstroms plus or minus 0.05, all twenty under 0.6 angstroms. Part three must reach 0 of 20, and must say why. Part four is graded on whether the learner names a case where the opposite preparation is correct.
 
-**Grading note.** THIS IS A FAILURE-DISCOVERY EXERCISE. The learner is led to it by a contradiction rather than told: the table says the ligands pass every cofactor check, and their own measurement says every ligand is essentially inside one. Nothing in the stem hints that the table is misleading. What it teaches: a verification result is a statement about the input you gave the verifier. Six of the nine intermolecular checks in this table were structurally incapable of failing, and the pass rate of 100 percent on them was reported alongside checks that could fail, with no visual distinction. The lesson transfers directly to reading a results table in a 2026 paper.
+**Grading note.** THIS IS A FAILURE-DISCOVERY EXERCISE. Contradiction drives it: the table says the ligands pass every cofactor check, while the learner's own distance calculation puts every ligand overlapping the caffeine site. Nothing in the stem hints that the table is misleading. A verification result describes the input handed to the verifier as much as the molecule. Six of the nine intermolecular checks in this table could not fail on an ATOM-only PDB, yet their 100 percent pass rate sits unmarked beside checks that could fail.
 
 **Answer provenance.** Recomputed: HETATM count and record census of data/3rfm_protein.pdb; per-ligand minimum interatomic distance to the caffeine reference, all 20 ligands; the 15-of-20 baseline; the recorded run, which shows the 0-valid outcome for the retained-HETATM preparation
 
@@ -210,7 +202,7 @@ Objectives O13. Follows M4. Difficulty advanced. Expected CPU runtime: instant; 
 
 **Tolerance.** All four classifications must be correct. The ranking is graded on the defence rather than the order, except that the vacuous check must be last.
 
-**Grading note.** This is the synthesis exercise for module 4 and the one to keep if only one exercise from M4 survives a time cut. Note the asymmetry worth naming out loud: within one tool, PoseCheck, one metric reproduces and another does not.
+**Grading note.** Synthesis exercise for module 4, and the one to keep if only one M4 task survives a time cut. Within one tool (PoseCheck), clash count reproduces exactly while strain energy drifts.
 
 **Answer provenance.** X5's recomputation; the recorded run recording the unseeded ensemble
 
@@ -228,7 +220,7 @@ Objectives O14, O15, O16. Follows M5. Difficulty intermediate. Expected CPU runt
 
 **Tolerance.** 1.00 and 2 of 10 exact. The fourth task is graded on whether the learner correctly names what is masked and where the chain starts, not on originality.
 
-**Grading note.** If the exercise reuses that recorded cell, drop its trailing print or read best_qed 0.7229067081355963 from data/diffsbdd_optimize_metrics.json. The published cell raises NameError on the cached path because that print reads a variable assigned only in the fresh branch. Say so in the exercise notebook rather than patching it silently; a published defect the learner can see is worth more than a silently patched one.
+**Grading note.** If the exercise reuses that recorded cell, drop its trailing print or read `best_qed` (`0.7229067081355963`) from `data/diffsbdd_optimize_metrics.json`. The recorded cell raises `NameError` on the cached path because its trailing print reads a variable assigned only in the fresh branch; X8 documents this and reads the JSON directly.
 
 **Answer provenance.** Recomputed data/diffsbdd_inpaint_metrics.json: median_scaffold_coord_retention 1.0, scaffold_retention_pct 20.0, n_valid 10
 
@@ -236,7 +228,7 @@ Objectives O14, O15, O16. Follows M5. Difficulty intermediate. Expected CPU runt
 
 Objectives O17, O18. Follows M6. Difficulty intermediate. Expected CPU runtime: instant.
 
-**Stem.** From the re-docking table, answer three questions and then draw one conclusion. How many of the twenty top-ranked re-docked poses land within 2 angstroms of the pose the generator produced? How many re-docked centroids sit within 5 angstroms of the co-crystallized caffeine? On the identical PoseBusters battery, which checks does each pose source fail? Then write the one sentence those three answers support together, and say what it implies about how much to trust a single rendered pose.
+**Stem.** From the re-docking table, answer three questions and then draw one conclusion. How many of the twenty top-ranked re-docked poses fall within 2 angstroms of the pose the generator produced? How many re-docked centroids sit within 5 angstroms of the co-crystallized caffeine? On the identical PoseBusters battery, which checks does each pose source fail? Then write the one sentence those three answers support together, and say what it implies about how much to trust a single rendered pose.
 
 **Starter state.** data/diffdock_redock_posebusters.csv and data/posebusters_diffsbdd.csv loaded with the provenance-safe reader; the three questions and the conclusion blank.
 
@@ -246,7 +238,7 @@ Objectives O17, O18. Follows M6. Difficulty intermediate. Expected CPU runtime: 
 
 **Tolerance.** Counts exact. Median RMSD 4.4 plus or minus 0.1. The 0.63 angstrom figure for the generated poses is recomputed as 0.632; quote 0.63, not the 0.6 printed on the original figure.
 
-**Grading note.** The trap is to read the disagreement as one method being wrong. No experimental pose exists for a molecule that has never been made, so neither can be called correct. DiffDock's own median top-pose confidence is 0.097 with seven of twenty negative, which is worth showing the learner as the docking model's own hedge.
+**Grading note.** The trap is declaring one method wrong. No experimental pose exists for an unsynthesized molecule, so neither source is ground truth. DiffDock's own median top-pose confidence is 0.097, with seven of twenty negative.
 
 **Answer provenance.** Recomputed generated-pose centroid median 0.632 from data/diffsbdd_generated.sdf against data/3rfm_caffeine_ref.sdf
 

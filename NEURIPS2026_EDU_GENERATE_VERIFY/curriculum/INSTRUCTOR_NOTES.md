@@ -18,9 +18,9 @@ The base environment in `requirements.txt`: Python 3.10 or later, numpy, pandas,
 RDKit and a CPU build of PyTorch. Nothing else is required for any module or any exercise on the
 cached path. No GPU, no API key, no network connection at run time, no third-party model install.
 
-Four packages are optional and each opens a fresh path rather than a lesson: `posebusters` and
-`posecheck` let a learner re-run the M4 batteries themselves, `flowmol` lets them sample their own
-molecules in M3, and a visible GPU changes nothing on the teaching path at all. The self-check reports each as present or absent and names which exercise it opens. None of them blocks anything.
+Four packages are optional and add fresh-compute extensions: `posebusters` and
+`posecheck` let a learner re-run the M4 batteries locally, `flowmol` lets them sample fresh
+molecules in M3, and a visible GPU changes nothing on the teaching path. The self-check reports each as present or absent and names which walkthrough it extends. None of them blocks anything.
 
 ### Run X0 first, always
 
@@ -28,23 +28,21 @@ X0 is the environment self-check. It takes under thirty seconds and it exists be
 failure mode for a self-contained resource is a learner who cannot tell whether their environment or
 their code is broken.
 
-It asserts eight things. Python is at least 3.10 and the data path resolves from wherever the notebook
-was opened. All seventeen cached-path input files are present and each checksum matches the manifest.
-The provenance-safe CSV reader returns the right row count on two files, 7 rows for the affinity comparison and 20 for the battery run on the ligands designed with a
-protein pocket held fixed as context. The negative control fires, which means reading
-either file with the pandas comment character produces NaN cells, and the check reports that as the trap it is rather than as an error. RDKit imports and round-trips one molecule containing a nitrile,
-because that character is the cause of the parsing trap. PyTorch imports and a two-layer network does
-one forward pass on CPU. The two toy checkpoints load and expose the state-dict keys the notebooks
-expect. And one canary number reproduces exactly: the pairwise diversity of the twenty shipped ligands
-under the RDKit topological fingerprint, a bit vector summarizing a molecule's substructures:
-0.8089776623453144.
+It runs ten required checks: Python is at least 3.10; the data path resolves from wherever the
+notebook opened; all twenty-five cached inputs (the seventeen cached-path files plus eight supporting
+files) are present; every SHA-256 matches `data/MANIFEST.sha256.json`; `gv.read_metrics_csv` returns
+7 rows on `boltz2_comparison.csv` and 20 on `posebusters_diffsbdd.csv`; the negative control confirms
+that `pd.read_csv(path, comment='#')` produces 16 NaN cells on `boltz2_comparison.csv`; RDKit imports
+and round-trips a nitrile SMILES (`C#N`, the substring behind that parsing hazard); PyTorch runs one
+CPU forward pass through a two-layer MLP; both pinned toy checkpoints load with expected state-dict
+keys; and the canary reproduces bit for bit (`0.8089776623453144`, pairwise diversity of the twenty
+DiffSBDD ligands under the RDKit topological fingerprint, a bit vector summarizing a molecule's
+substructures).
 
-That last one is the sharpest single test in the file. It tests the RDKit version and the code path at
-once. The shipped SDF carries no explicit hydrogens, so Chem.RemoveHs is a no-op on it and the value is
-identical with or without the call; hydrogen handling moves the number only when hydrogens are present,
-which X6 draws out. It is the same
-number X6 will ask the learner to compute, which means their environment has already proved it can
-produce the answer before they are asked for it.
+That tenth check tests the RDKit version and the pair-counting code together. Because the shipped SDF
+carries no explicit hydrogens, `Chem.RemoveHs` is a no-op on this file; hydrogen handling shifts the
+number when explicit hydrogens are present, which X6 measures. X6 asks learners for this same value,
+so a passing X0 proves their machine can produce it before they start.
 
 Expected output is a table of ten required checks passing and four optional checks reported, then the
 line stating that every module and every exercise will run on the cached CPU path. Each failing required
@@ -113,41 +111,35 @@ the cause, the fix, and what to say while you fix it.
 **Symptom.** A learner's DataFrame has NaN scattered through it, or a SMILES string is truncated
 mid-molecule, and the code looks correct.
 
-**Cause.** Every metrics CSV in `data/` carries provenance as leading lines that begin with the hash
-character. The instinct is `pd.read_csv(path, comment='#')`. That does strip the provenance, and it also
-truncates every field at the first hash inside the data, and the hash is how a triple bond is written in
-SMILES. Measured damage: 16 cells become NaN in the affinity comparison file, 26 in the novelty file for the pocket-conditioned ligands, meaning the ones designed with a protein
-pocket held fixed as context, and one SMILES truncates mid-string in the pocket-conditioned metrics file, where
-`COC1C(=C=O)C(C#N)=NC2=C1C(c1ccc(Cl)cc1)N1CCCC1C2` becomes `COC1C(=C=O)C(C`.
+**Cause.** Every metrics CSV in `data/` carries provenance as leading `#` lines. Reaching for
+`pd.read_csv(path, comment='#')` strips those header lines, and also truncates every data row at its
+first `#`, which in SMILES denotes a triple bond. Measured damage: 16 NaN cells in
+`boltz2_comparison.csv`, 26 in `novelty_diffsbdd.csv` (for the pocket-conditioned ligands designed
+with the protein pocket held fixed as context), and a SMILES cut mid-string in `diffsbdd_metrics.csv`,
+turning `COC1C(=C=O)C(C#N)=NC2=C1C(c1ccc(Cl)cc1)N1CCCC1C2` into `COC1C(=C=O)C(C`.
 
-**Fix.** Use the provenance-safe reader that ships with the notebooks and is imported by every exercise:
-strip only the leading hash lines, then read the rest normally. Never pass the comment argument to pandas.
+**Fix.** Use `gv.read_metrics_csv`, imported by every exercise: strip only the leading `#` lines,
+then parse the remainder normally. Never pass `comment='#'` to pandas on SMILES tables.
 
-**What to say.** This is a teaching moment rather than an interruption. The corruption is silent, it looks
-like a data problem rather than a code problem, and it produces a table that a careless reader would
-analyse. It is the same category of failure as X5: a result that is wrong because of how the input was
-prepared, with nothing in the output announcing it.
+**What to say.** Point out why silent truncation is dangerous: pandas raises no exception and returns
+a plausible-looking DataFrame with missing cells. Like X5, it shows how input handling corrupts a
+downstream number without warning.
 
-X0's negative control deliberately triggers this and reports it, so a learner has already seen the failure
-before they can hit it accidentally.
+X0's negative control triggers this on purpose so learners see the 16 NaN count before starting X1.
 
 ### 3.2 A recorded data cell raises NameError on the cached path
 
-**Symptom.** A learner running the optimization section gets `NameError` on a variable name, at the
-very end of a cell that otherwise ran fine.
+**Symptom.** A learner running the optimization section gets `NameError` on a variable name at the
+end of a cell that otherwise succeeded.
 
-**Cause.** The cell's trailing print statement reads a variable that is assigned only in the fresh branch.
-On the cached path that branch never executes, so the print fails after the useful work has already
-completed. The defect is present in the recorded run, and this bundle preserves it rather than silently patching it.
+**Cause.** The recorded cell's trailing print reads a variable assigned only on the fresh-compute
+branch. On the cached path that branch never runs, so the print fails after the plot renders.
 
-**Fix.** Drop the trailing print, or read the best drug-likeness value, 0.7229067081355963, from
-`data/diffsbdd_optimize_metrics.json`. The exercise notebook for X8 does the latter and says why in a
-markdown cell.
+**Fix.** Drop the trailing print, or read `best_qed` (`0.7229067081355963`) from
+`data/diffsbdd_optimize_metrics.json`. Exercise X8 reads the JSON and notes why in a markdown cell.
 
-**What to say.** Say that the notebook is shipped as published rather than quietly patched, and that a
-published defect a learner can see is worth more than a file that hides it. Then point at the fix. Do not
-apologize for it; a room that watches an author leave their own bug visible and documented learns something
-about how to publish.
+**What to say.** State that the recorded cell comes straight from the prior run, point to the one-line
+fix in `diffsbdd_optimize_metrics.json`, and keep moving.
 
 ### 3.3 The thread-affinity abort
 
@@ -170,7 +162,7 @@ this workload, and move on.
 ### 3.4 The Unicode validation trap
 
 **Symptom.** Not a runtime error. The notebook validator or the bundle checker fails on a file that looks
-fine, or a rendered figure fails review.
+fine, or a rendered figure fails a character check.
 
 **Cause.** The house rule is no character in Unicode category So anywhere in the material. That category is
 wider than people expect: it catches emoji, and it also catches box-drawing characters used as a horizontal
@@ -183,7 +175,7 @@ for any character whose Unicode category is So, plus the em dash.
 
 **What to say.** Nothing to a learner. This one is for you and for anyone reusing the material.
 
-### 3.5 Two smaller things worth knowing
+### 3.5 Figure stems and the corrected Boltz-2 render
 
 Figure stems are just names. The file stem for the `pocket_ligand` figure is
 `pocket_ligand`, left over from an earlier numbering. Do not read meaning into stem numbers anywhere.
@@ -201,8 +193,8 @@ or build, then each discussion prompt printed immediately above what a good answ
 verbatim as you would put them to the room. The answers are what to listen for, not a script. Where a prompt
 has no single right answer, the note says so.
 
-Twenty-eight prompts across eight modules. The lesson guide points here rather than duplicating them, so you
-prepare a session from one file.
+Twenty-eight prompts across eight modules. The lesson guide links here without duplicating them, so
+you prepare a session from one file.
 
 ### M1. Refinement needs a referee
 
@@ -255,17 +247,16 @@ diagnostic rather than the definition of the other half of the system.
 
 **Misconceptions to pre-empt.**
 
-The first is that flow matching is a different family of model. Here it is the identical network
-architecture trained on a different regression target, which is the most direct way to see
-that the difference is in the objective and the sampler rather than in the capacity.
+The first is that flow matching is a different model family. Here the identical `FieldMLP`
+architecture is trained on a velocity target instead of a noise target, isolating the objective and
+sampler from network capacity.
 
-The second is that a ratio is a property of two methods. It is a property of two methods at a
-threshold. This is the first of three places the curriculum makes that point; the others are
-the fingerprint choice in M4 and the retention measurement in M5. Naming it here means you can call back to it twice.
+The second is that a speedup ratio belongs to two methods unconditionally. A ratio holds only at a
+chosen quality threshold. This recurs in M4 (fingerprints) and M5 (scaffold retention); naming it
+here lets you call back to it twice.
 
-The third, and the one worth the most classroom time, is that finding a confound means the original
-result was wrong. Learners often hear the control as a debunking. It is not. The measurement is
-intact and the story about why is what moved.
+The third, where rooms spend the most time, is hearing a confound as a refutation of the measurement.
+The fourfold step-count gap stands; only the causal story about straight paths failed the control.
 
 **Discussion prompts and expected answers.**
 
@@ -296,12 +287,10 @@ mapped the move onto their own work, which is the transfer this module is trying
 
 **Misconceptions to pre-empt.**
 
-The first is that equivariance is an optimization trick. It is a statement about what the model is
-allowed to represent. A model without it can still learn to be approximately rotation-consistent, at
-the cost of capacity and data, and will still be wrong in ways that depend on the input orientation.
-Worth adding: TABASCO (2025) throws this inductive bias away and defends the choice on the
-verification battery rather than on the loss, which is exactly the inversion this curriculum is
-about, and a good thing to mention in one sentence here and pick up again in the bridge.
+The first is that equivariance is an optimization trick. It restricts the functions the network can
+represent. Without it, a network spends capacity learning approximate rotation consistency from data
+and still drifts with input orientation. Mention TABASCO (2025) in one sentence here and pick it up
+in the bridge: it drops SE(3) equivariance and defends that choice on PoseBusters validity.
 
 The second is that 100 percent validity means the molecules are good. This is the one that must not
 survive the module, and pre-empting it directly is better than letting it die in module 4. Ask what
@@ -354,9 +343,8 @@ The third is that a number with more decimal places is a better number. The stra
 to three significant figures on purpose. Learners copy precision from their output; teach them to
 copy it from the measurement's stability instead.
 
-The fourth is subtle and worth catching: that choosing a different fingerprint is a mistake somebody
-made. Both fingerprints are correct and standard. The failure is reporting either one without saying
-which.
+The fourth is assuming that choosing a different fingerprint is a mistake. Both fingerprints are
+standard; the mistake is reporting either number without naming which fingerprint produced it.
 
 **Discussion prompts and expected answers.**
 
@@ -554,11 +542,11 @@ sequence could encode the generated backbone, judged by the self-consistency tes
 generator's own confidence. A designable backbone is not a functional binder, and no experiment has been run on any of
 these.
 
-The third is that the generator's own confidence is the check. It is not; the independence of the refolder is
-what makes the number informative, exactly as the independence of the docking model did in M6. Worth adding
-the one place independence is strongest in the whole curriculum: ESMFold and RFdiffusion are trained on
-different objectives, so their agreement is better evidence than the ligand-side pairs, where generator and
-checker were both PDB-trained equivariant diffusion models.
+The third is treating the generator's own confidence as the check. Refolding with an independent
+predictor makes the test informative, matching DiffDock's role in M6. Contrast this with the ligand
+modules: ESMFold and RFdiffusion train on different objectives (single-sequence folding vs backbone
+diffusion), so their agreement carries more weight than two PDB-trained equivariant diffusion models
+agreeing on a ligand pose.
 
 The fourth is that longer designs should be harder. The sweep says otherwise on this data, and asking for the
 prediction before showing the number is free.
@@ -668,11 +656,10 @@ exercise with enough clock left to finish it.
 | 1:18 | figure `boltz_a2a_triage` | Structure confidence 0.95 against an affinity of 0.09 on the same molecule. |
 | 1:20 | exercise X10 | Convert two values, read the two probabilities, find the implementation swap. Runs to 1:30. |
 
-Two rows carry the point rather than the decoration. The model on-ramp at 0:33 and 1:15 is a named slot with
-a cost, not a clause folded into a walkthrough, because a learner who meets FlowMol3 and its validity curve in
-the same breath learns neither. And the silence at 1:03 is scheduled, because X5's discovery happens in the
-learner rather than on the slide, and an instructor who talks through it removes the thing the exercise exists
-to produce.
+Protect two slots in that grid. Give the model on-ramps at 0:33 and 1:15 their own dedicated minutes;
+introducing FlowMol3 in the same sentence as its validity curve overwhelms a room new to molecular
+models. Keep the silence at 1:03 intact so learners reconcile the table and their distance calculation
+for themselves instead of hearing the answer from the front of the room.
 
 ### 60-minute seminar
 
@@ -780,8 +767,8 @@ predictors did not.
 one action that resolves it.
 
 **X1, step budget, 12 minutes, introductory.** The crossing budget must be exactly 32; reject 16, which sits at
-0.01398 and is still above the band. Energy distances within 20 percent of the seed-mean, since the reference
-draw is not pinned in the exercise; the shipped per-seed range at 8 steps is 0.0359 to 0.0511. The prediction is
+0.01398 and stays above the band. Energy distances within 35 percent of the seed-mean, since the reference
+draw is unpinned in the exercise; across the five shipped seeds the 200-step value spans 21 percent around its mean and the 8-step value spans 26 percent (0.0359 to 0.0511). The prediction is
 graded for existing.
 
 **X2, two ways to be fooled, 15 minutes, intermediate.** Part one within a factor of three of 0.0001. Part two
@@ -800,7 +787,7 @@ without the denominator should be prompted for it rather than marked down on the
 
 **X5, the check that could not have failed, 20 minutes, advanced.** The required failure-discovery exercise.
 Part one exact: zero cofactor or water records, 2250 protein atom records. Part two: median closest approach
-0.347 angstroms plus or minus 0.05, with all twenty ligands under 0.6. Part three must reach 0 of 20 and must
+0.346 angstroms plus or minus 0.05, with all twenty ligands under 0.6. Part three must reach 0 of 20 and must
 say why: the generated ligands occupy the caffeine site by construction, because caffeine is what defined the
 pocket, so a retained caffeine would be read as a cofactor that every ligand overlaps. Part four is graded on
 whether the learner names a case where the opposite preparation is correct, such as a catalytic metal or a bound
@@ -861,11 +848,10 @@ vary by paper and are graded against the rubric rather than against a key.
 X5 and X10 need a different standard from the rest, because a learner who reaches the wrong conclusion may have
 done exactly what was asked.
 
-In X5, the credit is in part three. Parts one and two are measurements a careful learner completes without
-insight. A learner who produces both correct measurements and does not notice they contradict the published
-table has demonstrated the exact failure the exercise is about, and the productive response is to put the two
-outputs side by side and wait, rather than to mark it wrong. In X10, the credit is in noticing. The invalid
-conversion is supposed to happen.
+In X5, part three carries the credit. Parts one and two are straightforward measurements. If a learner
+computes zero HETATM records and sub-0.6-angstrom distances to caffeine without spotting the
+contradiction with the PoseBusters table, put the two outputs side by side and wait before stepping
+in. In X10, part three carries the credit; part one's invalid micromolar conversion is the setup.
 
 Both exercises can also be run as demos, and in the 60-minute configuration they are. Run as a demo, the
 question to the room replaces the grading: in X5, "the table says these all pass a cofactor check and your

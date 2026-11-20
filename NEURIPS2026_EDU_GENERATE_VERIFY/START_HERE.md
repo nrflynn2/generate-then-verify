@@ -10,9 +10,9 @@ on a laptop.
 
 Read the results table of a 2026 paper on molecular generation and say which numbers are
 measurements, which are definitions in disguise, and which could not have failed. Run a generated
-molecule through a physical validity battery and interpret the verdict. Say why two independent
-methods disagreeing is information rather than an error. And decline to quote a number without
-naming what computed it. All twenty-four objectives are in
+molecule through a physical validity battery and interpret the verdict. Read disagreement between
+two independent methods as a bound on pose uncertainty. Decline to quote a number without naming
+what computed it. All twenty-four objectives are in
 `curriculum/objectives_prerequisite_map.md`, each with an exercise that checks it.
 
 ## What you need
@@ -31,24 +31,21 @@ the manifest (those seventeen plus eight supporting files) against their checksu
 no download, no third-party model install. Every module and every exercise works this way, and every number in the material
 is reproducible from these files. This is how the material is meant to be taught.
 
-**Full local.** Recompute results yourself on CPU. Two tools are worth installing. PoseBusters
-(`pip install posebusters`, about 130 seconds for twenty molecules) is a battery of pass/fail
-geometric checks on a pose, meaning the position and orientation a molecule takes inside a binding
-pocket, the cavity on a protein's surface where a small molecule sits, and it covers bond lengths, bond angles, internal clashes, ring flatness and
-distances to the protein. PoseCheck (`pip install posecheck`, about 2.4 seconds per molecule) reports
-a strain energy, how far a molecule has been bent from the shape it would relax into, along with a
-profile of its contacts with the protein. Running either turns modules 4 and 5 from reading into
-measuring. Installing FlowMol3 or DiffSBDD to generate your own molecules is a real install with a
-model download, tens of minutes, and it is the most rewarding extension here because your own
-molecules fail differently from these.
+**Full local.** Recompute the checks yourself on CPU with two pip-installable packages. PoseBusters
+(`pip install posebusters`, about 130 seconds for twenty molecules) runs pass/fail geometric checks
+on a pose, the position and orientation a molecule takes inside a binding pocket (the surface cavity
+where a small molecule sits). It tests bond lengths, bond angles, internal clashes, ring flatness,
+and distances to the protein. PoseCheck (`pip install posecheck`, about 2.4 seconds per molecule)
+measures strain energy (how far a pose bends a molecule from its relaxed shape) and protein-ligand
+contacts. Installing FlowMol3 or DiffSBDD to sample your own molecules takes tens of minutes and a
+checkpoint download, and your own batch will fail in different places from the shipped one.
 
-**GPU.** Two things need one, and both ship complete recordings so nothing is blocked: scoring a
-molecule with the affinity model in module 7 (24 to 48 GB of video memory) and generating protein
-backbones in module 8. One thing cannot be re-run at all, the re-docking in module 6, where docking means predicting where
-and how a given molecule sits in a given pocket, because it used a hosted service whose served
-weights differ from the public release. The finding it supports, that two independent methods
-disagree about the pose, meaning the specific position and orientation of the molecule inside that
-pocket, holds regardless.
+**GPU.** Two steps require an accelerator, and both ship complete recordings so nothing is blocked:
+scoring ligands with Boltz-2 in module 7 (24 to 48 GB of video memory) and generating protein
+backbones in module 8. Module 6's re-docking (docking predicts where and how a given molecule sits
+in a pocket) ran against a hosted endpoint whose served weights differ from the public release, so
+public weights return different numbers; the 4-angstrom pose disagreement between the two methods
+holds under either build.
 
 ## The order to open things in
 
@@ -62,22 +59,21 @@ Teaching rather than learning? Read `curriculum/LESSON_GUIDE.md` and
 `curriculum/INSTRUCTOR_NOTES.md`, then pick one of the three configurations in
 `curriculum/reuse_and_adaptation_plan.md`.
 
-Only have an hour? Do exercises X5 and X10. Each takes about twenty minutes and each is a place
-where you find a failure rather than reproduce a success.
+Only have an hour? Do exercises X5 and X10. Each takes about twenty minutes and hands you a
+plausible result that breaks when you inspect how it was produced.
 
 ## Confirm your environment
 
 Run `exercises/EX0_environment_selfcheck.ipynb`. It runs ten required checks and reports four
-optional packages. Expected output is a table with all ten required checks passing, followed by the line saying you can
-run every module and every exercise on the cached CPU path.
+optional packages. Expected output is a table with all ten required checks passing, followed by the
+line confirming that every module and exercise runs on the cached CPU path.
 
-The sharpest of the ten is a canary number: the pairwise diversity of the twenty shipped ligands, the
-small molecules designed to bind a protein, measured under the RDKit topological fingerprint, a bit
-vector summarizing which substructures a molecule contains, which must come out as
-0.8089776623453144, which tests your RDKit version and
-your code path at once. The shipped ligands carry no explicit hydrogens, so removing them changes
-nothing here; hydrogen handling moves the number only when hydrogens are present. Exercise X6 asks
-you for the same number later and shows how much the convention changes it.
+The sharpest check is a canary value. Across the twenty shipped ligands (small molecules designed
+to bind a protein), pairwise diversity under the RDKit topological fingerprint (a bit vector
+summarizing which substructures a molecule contains) must equal `0.8089776623453144`. One float
+tests your RDKit version and your pair-counting path together. Because the shipped ligands carry no
+explicit hydrogens, `Chem.RemoveHs` changes nothing on this file; exercise X6 adds explicit
+hydrogens and measures how far the number moves.
 
 The four optional checks report whether the two validation tools and the molecular generator are
 importable and whether a GPU is visible. Each prints which exercise it opens; none of them blocks
@@ -90,9 +86,8 @@ pandas. The data files carry provenance as leading comment lines, and the same c
 bond inside a molecule string, so that argument truncates real data. Use the provenance-safe reader the
 notebooks import. The self-check demonstrates this failure on purpose so you have seen it once.
 
-**A NameError at the very end of a cell that otherwise ran.** One published data cell, on the cached path. Its last print reads a variable assigned only in the recompute branch. The notebook ships as
-published rather than quietly patched; drop the print, or read the value from
-`data/diffsbdd_optimize_metrics.json`. The exercise notebook does the latter and says why.
+**A NameError at the very end of a cell that otherwise ran.** One recorded QED-optimization cell reads a variable assigned only on the fresh-compute branch in its trailing print. Drop the print, or read `best_qed` from
+`data/diffsbdd_optimize_metrics.json` as exercise X8 does.
 
 **The kernel dies on import with an OpenMP or thread-affinity message.** Set `OMP_NUM_THREADS=1`
 and restart. Nothing on the cached path is compute-bound, so this costs no runtime.

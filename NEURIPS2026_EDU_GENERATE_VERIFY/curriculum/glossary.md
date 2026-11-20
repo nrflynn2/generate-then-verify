@@ -11,8 +11,8 @@ was tested against the actual drafts.
 **general** (11 terms). Plain-English meaning close enough to the technical meaning that a
 non-specialist reads them correctly. Allowed in the opening paragraph.
 
-**domain** (15 terms). From chemistry, structural biology or machine learning; a non-specialist will
-not know them, but one clause defines each. Allowed anywhere after the opening paragraph, defined at
+**domain** (15 terms). From chemistry, structural biology or machine learning; unfamiliar to a
+non-specialist and defined in one clause. Allowed anywhere after the opening paragraph, defined at
 first use.
 
 **specialist** (28 terms). Meaning is set by a specific method, tool or paper. Forbidden in the
@@ -20,11 +20,10 @@ opening paragraph. Defined within 200 characters of first use everywhere else.
 
 ## Why the constraint holds
 
-Measured against the concept statement in `concept_statement.md`: the first paragraph contains zero
-specialist terms and zero domain terms. It carries the whole concept using only general-tier
-vocabulary, which makes the plain-opening rule a design property rather than a hope. The two
-specialist terms that appear anywhere in the opening section, PoseBusters and PoseCheck, both arrive
-with their gloss in the same sentence, so both satisfy the 200-character rule.
+Measured against `concept_statement.md`: the first paragraph contains zero specialist terms and zero
+domain terms. It states the concept in general-tier vocabulary alone. The two specialist terms in the
+opening section, PoseBusters and PoseCheck, each carry their gloss in the same sentence, satisfying
+the 200-character rule.
 
 Two notes for whoever implements the jargon checker:
 

@@ -13,7 +13,7 @@
       },
       {
         "audience": "Lecturers and research groups who want to teach or learn with clear and self-contained examples",
-        "how_this_resource_serves_them": "Every module has a path that runs on a laptop CPU with no key, no GPU and no download, against seventeen shipped data files totalling 706 kB. Nothing in the teaching path depends on the author's compute.",
+        "how_this_resource_serves_them": "Every module has a path that runs on a laptop CPU with no key, no GPU and no download, against seventeen shipped data files totalling 722,824 bytes. Nothing in the teaching path depends on the author's compute.",
         "entry_point": "the environment self-check X0, then any module"
       },
       {
@@ -124,7 +124,7 @@
         "module": "M8"
       }
     ],
-    "what_a_learner_can_do_at_the_end": "Read the results table of a 2026 generative-chemistry paper and say which numbers are measurements, which are definitions in disguise, and which could not have failed. Run a pocket-conditioned generator's output through a physical validity battery and interpret the verdict. Say why two independent methods disagreeing is information rather than an error. And decline to quote a number without naming what computed it."
+    "what_a_learner_can_do_at_the_end": "Read the results table of a 2026 generative-chemistry paper and say which numbers are measurements, which are definitions in disguise, and which could not have failed. Run a pocket-conditioned generator's output through a physical validity battery and interpret the verdict. Read disagreement between two independent methods as a bound on pose uncertainty. Decline to quote a number without naming what computed it."
   },
   "objectives": [
     {

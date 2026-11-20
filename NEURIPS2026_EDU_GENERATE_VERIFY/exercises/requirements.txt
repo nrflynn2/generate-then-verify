@@ -10,7 +10,7 @@
 # is required at run time; the only network access is this install.
 #
 # The versions below are the ones the shipped executed outputs were produced with.
-# Later versions will very probably work: every tolerance in the self-checks is set
+# Later versions should also work: every tolerance in the self-checks is set
 # wide enough to absorb minor numerical drift, and the one bit-for-bit value in the
 # set (the X0 canary, 0.8089776623453144) is an RDKit fingerprint that has been
 # stable across recent releases. If the canary check fails, the exercises still run
@@ -36,9 +36,8 @@ nbformat==5.10.4
 #   uv venv --python 3.11 && source .venv/bin/activate
 #   uv pip install -r requirements.txt
 #
-# conda, which is what the tested environment used. pytorch-cpu rather than
-# pytorch keeps the download near 100 MB instead of near 2 GB, and nothing here
-# touches a GPU:
+# conda, which is what the tested environment used. Installing pytorch-cpu keeps
+# the download near 100 MB instead of near 2 GB, and nothing here touches a GPU:
 #
 #   conda create -n generate-verify -c conda-forge python=3.11 numpy scipy pandas \
 #       matplotlib-base rdkit pytorch-cpu scikit-learn nbformat
